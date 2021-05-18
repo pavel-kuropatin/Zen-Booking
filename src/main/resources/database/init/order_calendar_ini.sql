@@ -3,7 +3,7 @@ drop table if exists order_calendar;
 create table order_calendar(
     id           bigserial             not null constraint order_calendar_pk primary key,
     order_id     bigint                not null constraint order_calendar_order_id_fk references "order",
-    apartment_id bigint                not null constraint order_calendar_apartment_id_fk references apartment,
+    property_id bigint                not null constraint order_calendar_property_id_fk references property,
     order_date   date                  not null,
     is_deleted   boolean default false not null,
     created      timestamp(6)          not null,
@@ -19,8 +19,8 @@ create unique index order_calendar_id_uindex
 create unique index order_calendar_order_id_index
     on order_calendar (order_id);
 
-create unique index order_calendar_apartment_id_index
-    on order_calendar (apartment_id);
+create unique index order_calendar_property_id_index
+    on order_calendar (property_id);
 
 create unique index order_calendar_order_date_index
     on order_calendar (order_date);
@@ -31,9 +31,9 @@ create unique index order_calendar_is_deleted_index
 create trigger created_trigger
     before insert on order_calendar
     for each row
-execute procedure set_timestamp_created();
+    execute procedure set_timestamp_created();
 
-create trigger changed_trigger
+create trigger updated_trigger
     before update on order_calendar
     for each row
-execute procedure set_timestamp_updated();
+    execute procedure set_timestamp_updated();
