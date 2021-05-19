@@ -2,7 +2,7 @@ drop table if exists order_calendar;
 
 create table order_calendar(
     id          bigserial             not null constraint order_calendar_pk primary key,
-    order_id    bigint                not null constraint order_calendar_order_id_fk references "order",
+    order_id    bigint                not null constraint order_calendar_order_id_fk references orders,
     property_id bigint                not null constraint order_calendar_property_id_fk references property,
     order_date  date                  not null,
     is_deleted  boolean default false not null,

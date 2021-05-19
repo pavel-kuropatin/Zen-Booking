@@ -3,7 +3,7 @@ drop table if exists property_ownership;
 create table property_ownership(
     id          bigserial                  not null constraint property_ownership_pk primary key,
     property_id bigint                     not null constraint property_ownership_property_id_fk references property,
-    user_id     bigint                     not null constraint property_ownership_user_id_fk references "user",
+    user_id     bigint                     not null constraint property_ownership_user_id_fk references users,
     is_deleted  boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null

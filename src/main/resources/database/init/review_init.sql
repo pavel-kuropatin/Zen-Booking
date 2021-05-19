@@ -2,7 +2,7 @@ drop table if exists review;
 
 create table review(
     id          bigserial                  not null constraint review_pk primary key,
-    user_id     bigint                     not null constraint review_user_id_fk references "user",
+    user_id     bigint                     not null constraint review_user_id_fk references users,
     property_id bigint                     not null constraint review_property_id_fk references property,
     summary     varchar(100)               not null,
     description varchar(500)               not null,
