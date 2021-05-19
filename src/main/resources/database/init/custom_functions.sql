@@ -14,3 +14,8 @@ create or replace function set_timestamp_updated()
         return new;
     end;
     $$ language plpgsql;
+
+-- select *, date_part('year', age(birth_date)) as age
+-- from users
+-- where date_part('year', age(birth_date)) between (18 + 1) and (25 - 1)
+-- order by id;
