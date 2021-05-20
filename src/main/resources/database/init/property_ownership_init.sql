@@ -4,7 +4,7 @@ create table property_ownership(
     id          bigserial                  not null constraint property_ownership_pk primary key,
     property_id bigint                     not null constraint property_ownership_property_id_fk references property,
     user_id     bigint                     not null constraint property_ownership_user_id_fk references users,
-    is_deleted  boolean      default false not null,
+    deleted     boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
 );
@@ -21,8 +21,8 @@ create unique index property_ownership_apartment_id_uindex
 create index property_ownership_user_id_index
     on property_ownership (user_id);
 
-create index property_ownership_is_deleted_index
-    on property_ownership (is_deleted);
+create index property_ownership_deleted_index
+    on property_ownership (deleted);
 
 create trigger created_trigger
     before insert on property_ownership

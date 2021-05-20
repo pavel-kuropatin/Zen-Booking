@@ -20,10 +20,10 @@ create table property(
     tv           boolean      default false not null,
     internet     boolean      default false not null,
     pets_allowed boolean      default false not null,
-    is_available boolean      default false not null,
-    is_approved  boolean      default false not null,
-    is_banned    boolean      default false not null,
-    is_deleted   boolean      default false not null,
+    available    boolean      default false not null,
+    approved     boolean      default false not null,
+    banned       boolean      default false not null,
+    deleted      boolean      default false not null,
     created      timestamp(6)               not null,
     updated      timestamp(6)               not null
 );
@@ -85,17 +85,17 @@ create index property_internet_index
 create index property_pets_allowed_index
     on property (pets_allowed);
 
-create index property_is_available_index
-    on property (is_available);
+create index property_available_index
+    on property (available);
 
-create index property_is_approved_index
-    on property (is_approved);
+create index property_approved_index
+    on property (approved);
 
-create index property_is_banned_index
-    on property (is_banned);
+create index property_banned_index
+    on property (banned);
 
-create index property_is_deleted_index
-    on property (is_deleted);
+create index property_deleted_index
+    on property (deleted);
 
 create trigger created_trigger
     before insert on property

@@ -7,8 +7,8 @@ create table review(
     summary     varchar(100)               not null,
     description varchar(500)               not null,
     rating      smallint                   not null,
-    is_approved boolean      default false not null,
-    is_deleted  boolean      default false not null,
+    approved    boolean      default false not null,
+    deleted     boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
 );
@@ -28,11 +28,11 @@ create index review_property_id_index
 create index review_rating_index
     on review (rating);
 
-create index review_is_approved_index
-    on review (is_approved);
+create index review_approved_index
+    on review (approved);
 
-create index review_is_deleted_index
-    on review (is_deleted);
+create index review_deleted_index
+    on review (deleted);
 
 create trigger created_trigger
     before insert on review

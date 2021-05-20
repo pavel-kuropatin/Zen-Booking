@@ -1,19 +1,19 @@
 drop table if exists users;
 
 create table users(
-    id               bigserial                              not null constraint users_pk primary key,
-    login            varchar(32)                            not null,
-    password         varchar(32)                            not null,
-    name             varchar(32)                            not null,
-    surname          varchar(32)                            not null,
-    birth_date       date                                   not null,
-    email            varchar(64)                            not null,
-    phone            varchar(32)                            not null,
-    personal_account varchar(64)  default gen_random_uuid() not null,
-    is_banned        boolean      default false             not null,
-    is_deleted       boolean      default false             not null,
-    created          timestamp(6)                           not null,
-    updated          timestamp(6)                           not null
+    id               bigserial                                      not null constraint users_pk primary key,
+    login            varchar(32)                                    not null,
+    password         varchar(32)                                    not null,
+    name             varchar(32)                                    not null,
+    surname          varchar(32)                                    not null,
+    birth_date       date                                           not null,
+    email            varchar(64)                                    not null,
+    phone            varchar(32)                                    not null,
+    personal_account varchar(32)  default random_personal_account() not null,
+    banned           boolean      default false                     not null,
+    deleted          boolean      default false                     not null,
+    created          timestamp(6)                                   not null,
+    updated          timestamp(6)                                   not null
 );
 
 alter table users
@@ -43,11 +43,11 @@ create index users_phone_index
 create index users_personal_account_index
     on users (personal_account);
 
-create index users_is_banned_index
-    on users (is_banned);
+create index users_banned_index
+    on users (banned);
 
-create index users_is_deleted_index
-    on users (is_deleted);
+create index users_deleted_index
+    on users (deleted);
 
 create trigger created_trigger
     before insert on users
