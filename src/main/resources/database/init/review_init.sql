@@ -2,8 +2,7 @@ drop table if exists review;
 
 create table review(
     id          bigserial                  not null constraint review_pk primary key,
-    user_id     bigint                     not null constraint review_user_id_fk references users,
-    property_id bigint                     not null constraint review_property_id_fk references property,
+    order_id    bigint                     not null constraint review_order_id_fk references orders,
     summary     varchar(100)               not null,
     description varchar(500)               not null,
     rating      smallint                   not null,
@@ -19,11 +18,8 @@ alter table review
 create unique index review_id_uindex
     on review (id);
 
-create index review_user_id_index
-    on review (user_id);
-
-create index review_property_id_index
-    on review (property_id);
+create index review_order_id_index
+    on review (order_id);
 
 create index review_rating_index
     on review (rating);
