@@ -6,8 +6,8 @@ create table admins(
     login          varchar(32)                  not null,
     password       varchar(32)                  not null,
     displayed_name varchar(32)                  not null,
-    is_banned      boolean      default false   not null,
-    is_deleted     boolean      default false   not null,
+    banned         boolean      default false   not null,
+    deleted        boolean      default false   not null,
     created        timestamp(6)                 not null,
     updated        timestamp(6)                 not null
 );
@@ -27,11 +27,11 @@ create unique index admins_login_uindex
 create index admins_displayed_name_index
     on admins (displayed_name);
 
-create index admins_is_banned_index
-    on admins (is_banned);
+create index admins_banned_index
+    on admins (banned);
 
-create index admins_is_deleted_index
-    on admins (is_deleted);
+create index admins_deleted_index
+    on admins (deleted);
 
 create trigger created_trigger
     before insert on admins
