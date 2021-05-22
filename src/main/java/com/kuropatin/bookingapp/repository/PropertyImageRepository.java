@@ -15,7 +15,7 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
     PropertyImage findPropertyImageById(Long imageId);
 
     @Query(value = "UPDATE property_image SET deleted = true WHERE id = ?1", nativeQuery = true)
-    PropertyImage softDeletePropertyImage(Long imageId);
+    void softDeletePropertyImage(Long imageId);
 
     @Query(value = "SELECT * FROM property_image WHERE approved = false AND deleted = false", nativeQuery = true)
     List<PropertyImage> findAllNotApprovedPropertyImage();

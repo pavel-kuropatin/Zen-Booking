@@ -15,7 +15,7 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
     Property findPropertyById(Long propertyId);
 
     @Query(value = "UPDATE property SET deleted = true WHERE id = ?1", nativeQuery = true)
-    Property softDeleteProperty(Long propertyId);
+    void softDeleteProperty(Long propertyId);
 
     @Query(value = "SELECT * FROM property WHERE approved = false AND banned = false AND deleted = false", nativeQuery = true)
     List<Property> findAllNotApprovedProperty();
