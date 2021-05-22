@@ -27,8 +27,11 @@ public class Property {
     @Column(name = "id")
     private long id;
 
+    @Column(name = "user_id")
+    private long userId;
+
     @Column(name = "type")
-    private PropertyType type;
+    private String type;
 
     @Column(name = "name")
     private String name;
@@ -98,6 +101,18 @@ public class Property {
 
     @Column(name = "updated")
     private Timestamp updated;
+
+//    @ManyToOne(optional = false, cascade=CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private User user;
+//
+//    public void setUser(User user) {
+//        this.user = user;
+//    }
+//
+//    public void removeUser(User user) {
+//        this.user = null;
+//    }
 
     @Override
     public String toString() {

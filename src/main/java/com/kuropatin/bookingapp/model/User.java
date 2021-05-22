@@ -1,5 +1,6 @@
 package com.kuropatin.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,6 +65,18 @@ public class User {
 
     @Column(name = "updated")
     private Timestamp updated;
+
+//    @JsonIgnore
+//    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
+//    private Set<Property> userProperty;
+//
+//    public void addProperty(Property property) {
+//        userProperty.add(property);
+//    }
+//
+//    public void removeProperty(Property property) {
+//        userProperty.remove(property);
+//    }
 
     @Override
     public String toString() {
