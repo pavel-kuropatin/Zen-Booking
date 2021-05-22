@@ -20,7 +20,7 @@ alter table orders
 create unique index orders_id_uindex
     on orders (id);
 
-create index orders_client_id_index
+create index orders_user_id_index
     on orders (user_id);
 
 create index orders_property_id_index
