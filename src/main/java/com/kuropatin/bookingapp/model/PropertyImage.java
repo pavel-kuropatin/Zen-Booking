@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -18,8 +16,8 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "property_image")
-@SQLDelete(sql = "UPDATE property_image SET deleted = true WHERE id=?")
-@Where(clause = "banned = false AND deleted = false")
+//@SQLDelete(sql = "UPDATE property_image SET deleted = true WHERE id=?")
+//@Where(clause = "banned = false AND deleted = false")
 public class PropertyImage {
 
     @Id

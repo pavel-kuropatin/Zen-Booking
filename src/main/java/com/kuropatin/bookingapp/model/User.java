@@ -1,19 +1,15 @@
 package com.kuropatin.bookingapp.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,9 +17,19 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
-@Where(clause = "banned = false AND deleted = false")
+//@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
+//@Where(clause = "banned = false AND deleted = false")
 public class User {
+
+    public User(String login, String password, String name, String surname, Date birthDate, String email, String phone) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.birthDate = birthDate;
+        this.email = email;
+        this.phone = phone;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
