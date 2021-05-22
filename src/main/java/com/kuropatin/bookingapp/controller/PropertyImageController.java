@@ -26,8 +26,8 @@ public class PropertyImageController {
     }
 
     @GetMapping("/{imageId}")
-    public ResponseEntity<PropertyImage> getById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
-        return new ResponseEntity<>(service.getImageOfPropertyById(propertyId, imageId), HttpStatus.OK);
+    public ResponseEntity<PropertyImage> getById(@PathVariable final Long imageId) {
+        return new ResponseEntity<>(service.getPropertyImageById(imageId), HttpStatus.OK);
     }
 
     @PostMapping
@@ -41,7 +41,7 @@ public class PropertyImageController {
     }
 
     @DeleteMapping("/{imageId}")
-    public ResponseEntity<PropertyImage> deleteById(@PathVariable final Long imageId) {
-        return new ResponseEntity<>(service.deleteById(imageId), HttpStatus.OK);
+    public ResponseEntity<String> deleteById(@PathVariable final Long imageId) {
+        return new ResponseEntity<>(service.softDeletePropertyImage(imageId), HttpStatus.OK);
     }
 }

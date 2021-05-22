@@ -26,23 +26,23 @@ public class PropertyController {
     }
 
     @GetMapping("/{propertyId}")
-    public ResponseEntity<Property> getById(@PathVariable final Long userId, @PathVariable final Long propertyId) {
-        return new ResponseEntity<>(service.getPropertyOfUserById(userId, propertyId), HttpStatus.OK);
+    public ResponseEntity<Property> getById(@PathVariable final Long propertyId) {
+        return new ResponseEntity<>(service.getPropertyById(propertyId), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Property> create(@PathVariable final Long userId, @RequestBody final Property property) {
-        Property propertyToSave = service.create(userId, property);
+        Property propertyToSave = service.createProperty(userId, property);
         return new ResponseEntity<>(propertyToSave, HttpStatus.CREATED);
     }
 
     @PutMapping("/{propertyId}")
     public ResponseEntity<Property> update(@PathVariable final Long propertyId, @RequestBody final Property property) {
-        return new ResponseEntity<>(service.update(propertyId, property), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.updateProperty(propertyId, property), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{propertyId}")
-    public ResponseEntity<Property> deleteById(@PathVariable final Long propertyId) {
-        return new ResponseEntity<>(service.deleteById(propertyId), HttpStatus.OK);
+    public ResponseEntity<String> deleteById(@PathVariable final Long propertyId) {
+        return new ResponseEntity<>(service.softDeleteProperty(propertyId), HttpStatus.OK);
     }
 }
