@@ -1,7 +1,6 @@
 package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.PropertyImageNotFoundException;
-import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class PropertyImageService {
         if(repository.existsById(imageId)) {
             return repository.findPropertyImageById(imageId);
         } else {
-            throw new PropertyNotFoundException(imageId);
+            throw new PropertyImageNotFoundException(imageId);
         }
     }
 
