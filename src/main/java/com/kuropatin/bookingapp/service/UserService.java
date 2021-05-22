@@ -47,6 +47,7 @@ public class UserService {
             userToUpdate.setBirthDate(user.getBirthDate());
             userToUpdate.setEmail(user.getEmail());
             userToUpdate.setPhone(user.getPhone());
+            userToUpdate.setPersonalAccount(user.getPersonalAccount());
             return repository.save(userToUpdate);
         }
     }
