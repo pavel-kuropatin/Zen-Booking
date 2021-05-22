@@ -42,9 +42,7 @@
   /user/{userId}/order/                                   - просмотр всех заказов юзера {userId}
   /user/{userId}/order/{orderId}/                         - просмотр/изменение/удаление заказа {orderId} юзера {userId}
 
-  Под вопросом:
-
-  /property/                                              - просмотр всей собственности, доступной для заказа юзера, поиск по ней
-  /property/{propertyId}/                                 - просмотр собственности {propertyId} и её заказ
-  /property/{propertyId}/review/                          - просмотр всех отзывов собственности {propertyId}
-  /property/{propertyId}/review/{reviewId}/               - просмотр отзыва {reviewId} собственности {propertyId}
+  /booking/                                               - просмотр всей собственности, доступной для заказа юзера, поиск по ней
+  /booking/{propertyId}/                                  - просмотр собственности {propertyId} и её заказ
+  /booking/{propertyId}/review/                           - просмотр всех отзывов собственности {propertyId}
+  /booking/{propertyId}/review/{reviewId}/                - просмотр отзыва {reviewId} собственности {propertyId}
