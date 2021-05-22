@@ -33,7 +33,8 @@ public class PropertyService {
         return repository.findById(propertyId).orElseThrow(() -> new PropertyNotFoundException(propertyId));
     }
 
-    public Property create(Property property) {
+    public Property create(Long userId, Property property) {
+        property.setUserId(userId);
         return repository.save(property);
     }
 

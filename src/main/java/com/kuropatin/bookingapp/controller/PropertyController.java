@@ -32,8 +32,7 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<Property> create(@PathVariable final Long userId, @RequestBody final Property property) {
-        property.setUserId(userId);
-        Property propertyToSave = service.create(property);
+        Property propertyToSave = service.create(userId, property);
         return new ResponseEntity<>(propertyToSave, HttpStatus.CREATED);
     }
 
