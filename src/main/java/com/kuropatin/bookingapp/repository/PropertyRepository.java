@@ -8,9 +8,36 @@ import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
-    @Query(value = "SELECT * FROM property WHERE user_id = ?1", nativeQuery = true)
-    List<Property> getAllPropertyOfUser(Long userId);
+    @Query(value = "SELECT * FROM property WHERE approved = true AND banned = false AND deleted = false AND user_id = ?1", nativeQuery = true)
+    List<Property> findAllPropertyOfUser(Long userId);
 
-    @Query(value = "SELECT * FROM property WHERE user_id = ?1 AND id = ?2", nativeQuery = true)
-    Property getPropertyOfUserById(Long userId, Long propertyId);
+    @Query(value = "SELECT * FROM property WHERE approved = true AND banned = false AND deleted = false AND id = ?1", nativeQuery = true)
+    Property findPropertyById(Long propertyId);
+
+    @Query(value = "UPDATE property SET deleted = true WHERE id = ?1", nativeQuery = true)
+    Property softDeleteProperty(Long propertyId);
+
+    @Query(value = "SELECT * FROM property WHERE approved = false AND banned = false AND deleted = false", nativeQuery = true)
+    List<Property> findAllNotApprovedProperty();
+
+    @Query(value = "SELECT * FROM property WHERE approved = false AND banned = false AND deleted = false AND id = ?1", nativeQuery = true)
+    Property findNotApprovedPropertyById(Long propertyId);
+
+    @Query(value = "SELECT * FROM property WHERE banned = true AND deleted = false", nativeQuery = true)
+    List<Property> findAllBannedProperty();
+
+    @Query(value = "SELECT * FROM property WHERE banned = true AND deleted = false AND id = ?1", nativeQuery = true)
+    Property findBannedPropertyById(Long propertyId);
+
+    @Query(value = "UPDATE property SET approved = true WHERE id = ?1", nativeQuery = true)
+    Property approveProperty(Long propertyId);
+
+    @Query(value = "UPDATE property SET approved = false WHERE id = ?1", nativeQuery = true)
+    Property disapproveProperty(Long propertyId);
+
+    @Query(value = "UPDATE property SET banned = true WHERE id = ?1", nativeQuery = true)
+    Property banProperty(Long propertyId);
+
+    @Query(value = "UPDATE property SET banned = false WHERE id = ?1", nativeQuery = true)
+    Property unbanProperty(Long propertyId);
 }
