@@ -22,3 +22,25 @@
   Планируется:
 - Администратор может простатривать действия модераторов.
 - Модераторы могут просматривать историю своих действий
+
+  Эндпоинты для юзеров:
+
+  /user/                                                  - просмотр всех юзеров/добавление юзера
+  /user/{userId}/                                         - просмотр/изменение/удаление юзера {userId}
+
+  /user/{userId}/property/                                - просмотр всей собственности/добавление собственности юзера {userId}
+  /user/{userId}/property/{propertyId}/                   - просмотр/изменение/удаление собственности {propertyId} юзера {userId}
+
+  /user/{userId}/property/{propertyId}/image/             - просмотр всех изображений/добавление изображения собственности {propertyId} юзера {userId}
+  /user/{userId}/property/{propertyId}/image/{imageId}/   - просмотр/удаление изображения {imageId} собственности {propertyId} юзера {userId}
+
+  /user/{userId}/property/review/                         - просмотр всех отзывов юзера {userId}
+  /user/{userId}/property/{propertyId}/review/{reviewId}/ - просмотр/изменение/удаление отзыва {reviewId} юзера {userId}
+
+  /user/{userId}/order/                                   - просмотр всех заказов юзера {userId}
+  /user/{userId}/order/{orderId}/                         - просмотр/изменение/удаление заказа {orderId} юзера {userId}
+
+  /property/                                              - просмотр всей собственности, доступной для заказа юзера
+  /property/{propertyId}/                                 - просмотр собственности {propertyId} и её заказ
+  /property/{propertyId}/review/                          - просмотр всех отзывов собственности {propertyId}
+  /property/{propertyId}/review/{reviewId}/               - просмотр отзыва {reviewId} собственности {propertyId}
