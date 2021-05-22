@@ -1,9 +1,11 @@
 package com.kuropatin.bookingapp.repository;
 
 import com.kuropatin.bookingapp.model.PropertyImage;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
@@ -14,6 +16,8 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
     @Query(value = "SELECT * FROM property_image WHERE approved = true AND deleted = false AND id = ?1", nativeQuery = true)
     PropertyImage findPropertyImageById(Long imageId);
 
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE property_image SET deleted = true WHERE id = ?1", nativeQuery = true)
     void softDeletePropertyImage(Long imageId);
 
@@ -23,9 +27,13 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
     @Query(value = "SELECT * FROM property_image WHERE approved = false AND deleted = false AND id = ?1", nativeQuery = true)
     PropertyImage findNotApprovedPropertyImageById(Long imageId);
 
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE property_image SET approved = true WHERE id = ?1", nativeQuery = true)
     PropertyImage approvePropertyImage(Long imageId);
 
+    @Modifying
+    @Transactional
     @Query(value = "UPDATE property_image SET approved = false WHERE id = ?1", nativeQuery = true)
     PropertyImage disapprovePropertyImage(Long imageId);
 }
