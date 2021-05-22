@@ -1,32 +1,32 @@
 drop table if exists property;
 
 create table property(
-    id           bigserial                  not null constraint property_pk primary key,
-    user_id      bigint                     not null constraint orders_user_id_fk references users,
-    type         varchar(64)                not null,
-    name         varchar(64)                not null,
-    description  varchar(500)               not null,
-    country      varchar(64)                not null,
-    region       varchar(64)                not null,
-    city         varchar(64)                not null,
-    street       varchar(64)                not null,
-    building     varchar(64)                not null,
-    apartment    varchar(64)  default '',
-    price        integer                    not null,
-    guests       smallint                   not null,
-    rooms        smallint                   not null,
-    beds         smallint                   not null,
-    kitchen      boolean      default false not null,
-    washer       boolean      default false not null,
-    tv           boolean      default false not null,
-    internet     boolean      default false not null,
-    pets_allowed boolean      default false not null,
-    available    boolean      default false not null,
-    approved     boolean      default false not null,
-    banned       boolean      default false not null,
-    deleted      boolean      default false not null,
-    created      timestamp(6)               not null,
-    updated      timestamp(6)               not null
+    id           bigserial                    not null constraint property_pk primary key,
+    user_id      bigint                       not null constraint orders_user_id_fk references users,
+    type         varchar(64)                  not null,
+    name         varchar(64)                  not null,
+    description  varchar(500)                 not null,
+    country      varchar(64)                  not null,
+    region       varchar(64)                  not null,
+    city         varchar(64)                  not null,
+    street       varchar(64)                  not null,
+    building     varchar(64)                  not null,
+    apartment    varchar(64)    default '',
+    price        integer                      not null,
+    guests       smallint                     not null,
+    rooms        smallint                     not null,
+    beds         smallint                     not null,
+    kitchen      boolean        default false not null,
+    washer       boolean        default false not null,
+    tv           boolean        default false not null,
+    internet     boolean        default false not null,
+    pets_allowed boolean        default false not null,
+    available    boolean        default false not null,
+    approved     boolean        default false not null,
+    banned       boolean        default false not null,
+    deleted      boolean        default false not null,
+    created      timestamptz(6)               not null,
+    updated      timestamptz(6)               not null
 );
 
 alter table property
@@ -110,3 +110,5 @@ create trigger updated_trigger
     before update on property
     for each row
     execute procedure set_timestamp_updated();
+
+insert into property (user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved) values (3, 'apartment', 'big house', 'big house in the middle of a nowhere', 'belarus', 'minskaya oblast', 'soligorsk', 'zheleznodorozhnaya', '24', '121', 100, 5, 2, 3, true, true, true, true, false, true, true);

@@ -6,8 +6,8 @@ create table property_image(
     img_url     varchar(256)               not null,
     approved    boolean      default false not null,
     deleted     boolean      default false not null,
-    created     timestamp(6)               not null,
-    updated     timestamp(6)               not null
+    created     timestamptz(6)             not null,
+    updated     timestamptz(6)             not null
 );
 
 alter table property_image
@@ -34,3 +34,8 @@ create trigger updated_trigger
     before update on property_image
     for each row
     execute procedure set_timestamp_updated();
+
+insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image1', true);
+insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image2', true);
+insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image3', true);
+insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image4', true);
