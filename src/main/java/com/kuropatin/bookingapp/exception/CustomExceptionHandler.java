@@ -22,6 +22,21 @@ class CustomExceptionHandler {
         return throwCustomException(e);
     }
 
+    @ExceptionHandler(PropertyImageNotFoundException.class)
+    protected ResponseEntity<Object> propertyImageNotFoundHandler(PropertyImageNotFoundException e) {
+        return throwCustomException(e);
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    protected ResponseEntity<Object> orderNotFoundHandler(OrderNotFoundException e) {
+        return throwCustomException(e);
+    }
+
+    @ExceptionHandler(ReviewNotFoundException.class)
+    protected ResponseEntity<Object> reviewNotFoundHandler(ReviewNotFoundException e) {
+        return throwCustomException(e);
+    }
+
     private ResponseEntity<Object> throwCustomException(RuntimeException e) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
