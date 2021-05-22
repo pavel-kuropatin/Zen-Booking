@@ -2,6 +2,7 @@ drop table if exists property;
 
 create table property(
     id           bigserial                  not null constraint property_pk primary key,
+    user_id      bigint                     not null constraint orders_user_id_fk references users,
     type         varchar(64)                not null,
     name         varchar(64)                not null,
     description  varchar(500)               not null,
@@ -33,6 +34,9 @@ alter table property
 
 create unique index property_id_uindex
     on property (id);
+
+create index property_user_id_index
+    on orders (user_id);
 
 create index property_type_index
     on property (type);
