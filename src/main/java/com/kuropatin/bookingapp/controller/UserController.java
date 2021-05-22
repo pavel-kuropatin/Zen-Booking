@@ -32,16 +32,16 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> create(@RequestBody final User user) {
-        return new ResponseEntity<>(service.create(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}")
     public ResponseEntity<User> update(@PathVariable final Long userId, @RequestBody final User user) {
-        return new ResponseEntity<>(service.update(userId, user), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.updateUser(userId, user), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<User> deleteById(@PathVariable final Long userId) {
-        return new ResponseEntity<>(service.deleteById(userId), HttpStatus.OK);
+    public ResponseEntity<String> deleteById(@PathVariable final Long userId) {
+        return new ResponseEntity<>(service.softDeleteUser(userId), HttpStatus.OK);
     }
 }
