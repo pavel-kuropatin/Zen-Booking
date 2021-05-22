@@ -1,15 +1,15 @@
 drop table if exists admins;
 
 create table admins(
-    id             bigserial                    not null constraint admins_pk primary key,
-    role           varchar(5)   default 'MODER' not null,
-    login          varchar(32)                  not null,
-    password       varchar(32)                  not null,
-    displayed_name varchar(32)                  not null,
-    banned         boolean      default false   not null,
-    deleted        boolean      default false   not null,
-    created        timestamp(6)                 not null,
-    updated        timestamp(6)                 not null
+    id             bigserial                      not null constraint admins_pk primary key,
+    role           varchar(5)     default 'MODER' not null,
+    login          varchar(32)                    not null,
+    password       varchar(32)                    not null,
+    displayed_name varchar(32)                    not null,
+    banned         boolean        default false   not null,
+    deleted        boolean        default false   not null,
+    created        timestamptz(6)                 not null,
+    updated        timestamptz(6)                 not null
 );
 
 alter table admins

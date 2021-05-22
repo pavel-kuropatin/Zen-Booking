@@ -1,15 +1,15 @@
 drop table if exists review;
 
 create table review(
-    id          bigserial                  not null constraint review_pk primary key,
-    order_id    bigint                     not null constraint review_order_id_fk references orders,
-    summary     varchar(100)               not null,
-    description varchar(500)               not null,
-    rating      smallint                   not null,
-    approved    boolean      default false not null,
-    deleted     boolean      default false not null,
-    created     timestamp(6)               not null,
-    updated     timestamp(6)               not null
+    id          bigserial                    not null constraint review_pk primary key,
+    order_id    bigint                       not null constraint review_order_id_fk references orders,
+    summary     varchar(100)                 not null,
+    description varchar(500)                 not null,
+    rating      smallint                     not null,
+    approved    boolean        default false not null,
+    deleted     boolean        default false not null,
+    created     timestamptz(6)               not null,
+    updated     timestamptz(6)               not null
 );
 
 alter table review

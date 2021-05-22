@@ -10,8 +10,8 @@ create table orders(
     accepted_by_host boolean default false not null,
     cancelled        boolean default false not null,
     finished         boolean default false not null,
-    created          timestamp(6)          not null,
-    updated          timestamp(6)          not null
+    created          timestamptz(6)        not null,
+    updated          timestamptz(6)        not null
 );
 
 alter table orders
