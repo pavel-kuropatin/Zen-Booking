@@ -58,7 +58,7 @@ public class User {
     private String phone;
 
     @Column(name = "personal_account")
-    private String personalAccount;
+    private long personalAccount;
 
     @Column(name = "banned")
     private boolean banned;
