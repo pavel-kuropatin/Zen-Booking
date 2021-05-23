@@ -6,7 +6,7 @@ create table admins(
     login          varchar(32)                    not null,
     password       varchar(32)                    not null,
     displayed_name varchar(32)                    not null,
-    banned         boolean        default false   not null,
+    suspended      boolean        default false   not null,
     deleted        boolean        default false   not null,
     created        timestamptz(6)                 not null,
     updated        timestamptz(6)                 not null
@@ -27,8 +27,8 @@ create unique index admins_login_uindex
 create index admins_displayed_name_index
     on admins (displayed_name);
 
-create index admins_banned_index
-    on admins (banned);
+create index admins_suspended_index
+    on admins (suspended);
 
 create index admins_deleted_index
     on admins (deleted);
@@ -43,6 +43,6 @@ create trigger updated_trigger
     for each row
     execute procedure set_timestamp_updated();
 
-insert into admins values (default, 'ADMIN',      'admin',      'admin', 'Administrator', default, default, default, default);
-insert into admins values (default, 'MODER', 'moderator1', 'moderator1',    'Moderator1', default, default, default, default);
-insert into admins values (default, 'MODER', 'moderator2', 'moderator2',    'Moderator2', default, default, default, default);
+insert into public.admins (role, login, password, displayed_name) values ('admin',      'admin',      'admin', 'administrator');
+insert into public.admins (role, login, password, displayed_name) values ('moder', 'moderator1', 'moderator1',    'moderator1');
+insert into public.admins (role, login, password, displayed_name) values ('moder', 'moderator2', 'moderator2',    'moderator2');
