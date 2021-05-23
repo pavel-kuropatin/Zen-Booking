@@ -39,8 +39,8 @@ public class Admin {
     @Column(name = "displayed_name")
     private String displayedName;
 
-    @Column(name = "banned")
-    private boolean banned;
+    @Column(name = "suspended")
+    private boolean suspended;
 
     @Column(name = "deleted")
     private boolean deleted;
