@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -37,10 +38,10 @@ class CustomExceptionHandler {
         return throwCustomException(e);
     }
 
-//    @ExceptionHandler(SQLException.class)
-//    protected ResponseEntity<Object> reviewNotFoundHandler(SQLException e) {
-//        return throwCustomException(e);
-//    }
+    @ExceptionHandler(SQLException.class)
+    protected ResponseEntity<Object> reviewNotFoundHandler(SQLException e) {
+        return throwCustomSQLException(e);
+    }
 
     private ResponseEntity<Object> throwCustomException(RuntimeException e) {
         Map<String, Object> body = new LinkedHashMap<>();
@@ -48,5 +49,13 @@ class CustomExceptionHandler {
         body.put("status", HttpStatus.NOT_FOUND.value());
         body.put("error", e.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity<Object> throwCustomSQLException(Exception e) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", e.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
