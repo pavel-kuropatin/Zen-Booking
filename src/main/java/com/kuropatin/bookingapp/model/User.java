@@ -21,16 +21,6 @@ import java.util.Date;
 //@Where(clause = "banned = false AND deleted = false")
 public class User {
 
-    public User(String login, String password, String name, String surname, Date birthDate, String email, String phone) {
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.birthDate = birthDate;
-        this.email = email;
-        this.phone = phone;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
