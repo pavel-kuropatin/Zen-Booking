@@ -15,27 +15,27 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<Object> userNotFoundHandler(UserNotFoundException e) {
-        return throwCustomException(e);
+        return throwCustomNotFoundException(e);
     }
 
     @ExceptionHandler(PropertyNotFoundException.class)
     protected ResponseEntity<Object> propertyNotFoundHandler(PropertyNotFoundException e) {
-        return throwCustomException(e);
+        return throwCustomNotFoundException(e);
     }
 
     @ExceptionHandler(PropertyImageNotFoundException.class)
     protected ResponseEntity<Object> propertyImageNotFoundHandler(PropertyImageNotFoundException e) {
-        return throwCustomException(e);
+        return throwCustomNotFoundException(e);
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
     protected ResponseEntity<Object> orderNotFoundHandler(OrderNotFoundException e) {
-        return throwCustomException(e);
+        return throwCustomNotFoundException(e);
     }
 
     @ExceptionHandler(ReviewNotFoundException.class)
     protected ResponseEntity<Object> reviewNotFoundHandler(ReviewNotFoundException e) {
-        return throwCustomException(e);
+        return throwCustomNotFoundException(e);
     }
 
     @ExceptionHandler(SQLException.class)
@@ -43,7 +43,7 @@ class CustomExceptionHandler {
         return throwCustomSQLException(e);
     }
 
-    private ResponseEntity<Object> throwCustomException(RuntimeException e) {
+    private ResponseEntity<Object> throwCustomNotFoundException(RuntimeException e) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("status", HttpStatus.NOT_FOUND.value());
