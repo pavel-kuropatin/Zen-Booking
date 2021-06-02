@@ -111,4 +111,4 @@ create trigger updated_trigger
     for each row
     execute procedure set_timestamp_updated();
 
-insert into property (user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved) values (3, 'apartment', 'big house', 'big house in the middle of a nowhere', 'belarus', 'minskaya oblast', 'soligorsk', 'zheleznodorozhnaya', '24', '121', 100, 5, 2, 3, true, true, true, true, false, true, true);
+insert into property (user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved, created, updated) values (3, 'APARTMENT', 'Big house', 'Big house in the middle of a nowhere', 'Belarus', 'Minskaya oblast', 'Soligorsk', 'Zheleznodorozhnaya', '24', '121', 100, 5, 2, 3, true, true, true, true, false, true, true, current_timestamp, current_timestamp);
