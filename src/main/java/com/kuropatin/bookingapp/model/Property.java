@@ -1,14 +1,14 @@
 package com.kuropatin.bookingapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,17 +16,12 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "property")
-//@SQLDelete(sql = "UPDATE property SET deleted = true WHERE id=?")
-//@Where(clause = "banned = false AND deleted = false")
 public class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-
-    @Column(name = "user_id")
-    private long userId;
 
     @Column(name = "type")
     private String type;
@@ -68,31 +63,31 @@ public class Property {
     private short beds;
 
     @Column(name = "kitchen")
-    private boolean kitchen;
+    private boolean hasKitchen;
 
     @Column(name = "washer")
-    private boolean washer;
+    private boolean hasWasher;
 
     @Column(name = "tv")
-    private boolean tv;
+    private boolean hasTv;
 
     @Column(name = "internet")
-    private boolean internet;
+    private boolean hasInternet;
 
     @Column(name = "pets_allowed")
-    private boolean petsAllowed;
+    private boolean isPetsAllowed;
 
     @Column(name = "available")
-    private boolean available;
+    private boolean isAvailable;
 
     @Column(name = "approved")
-    private boolean approved;
+    private boolean isApproved;
 
     @Column(name = "banned")
-    private boolean banned;
+    private boolean isBanned;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
     @Column(name = "created")
     private Timestamp created;
@@ -100,20 +95,33 @@ public class Property {
     @Column(name = "updated")
     private Timestamp updated;
 
-//    @ManyToOne(optional = false, cascade=CascadeType.ALL)
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
-//
-//    public void removeUser(User user) {
-//        this.user = null;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<PropertyImage> propertyImages;
 
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+    }
+
+    public boolean hasKitchen() {
+        return hasKitchen;
+    }
+
+    public boolean hasWasher() {
+        return hasWasher;
+    }
+
+    public boolean hasTv() {
+        return hasTv;
+    }
+
+    public boolean hasInternet() {
+        return hasInternet;
     }
 }

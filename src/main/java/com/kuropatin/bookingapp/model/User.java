@@ -1,15 +1,14 @@
 package com.kuropatin.bookingapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,8 +16,6 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "users")
-//@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
-//@Where(clause = "banned = false AND deleted = false")
 public class User {
 
     @Id
@@ -51,10 +48,10 @@ public class User {
     private long personalAccount;
 
     @Column(name = "banned")
-    private boolean banned;
+    private boolean isBanned;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
     @Column(name = "created")
     private Timestamp created;
@@ -62,17 +59,9 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-//    @JsonIgnore
-//    @OneToMany (mappedBy="user", fetch=FetchType.EAGER)
-//    private Set<Property> userProperty;
-//
-//    public void addProperty(Property property) {
-//        userProperty.add(property);
-//    }
-//
-//    public void removeProperty(Property property) {
-//        userProperty.remove(property);
-//    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Property> property;
 
     @Override
     public String toString() {

@@ -1,9 +1,7 @@
 package com.kuropatin.bookingapp.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,8 +14,6 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "property_image")
-//@SQLDelete(sql = "UPDATE property_image SET deleted = true WHERE id=?")
-//@Where(clause = "banned = false AND deleted = false")
 public class PropertyImage {
 
     @Id
@@ -25,23 +21,25 @@ public class PropertyImage {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "property_id")
-    private long propertyId;
-
     @Column(name = "img_url")
     private String imgUrl;
 
     @Column(name = "approved")
-    private boolean approved;
+    private boolean isApproved;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean isDeleted;
 
     @Column(name = "created")
     private Timestamp created;
 
     @Column(name = "updated")
     private Timestamp updated;
+
+    @ManyToOne
+    @JoinColumn(name = "property_id", nullable = false)
+    @JsonBackReference
+    private Property property;
 
     @Override
     public String toString() {
