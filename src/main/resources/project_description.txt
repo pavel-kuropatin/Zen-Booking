@@ -27,7 +27,7 @@
 - TODO: Модераторы могут просматривать историю своих действий.
 - TODO: Добавить строки чтобы было видно кто подтвердил или забанил.
 
-  Эндпоинты для юзеров:
+  Эндпоинты (личные) для юзеров:
 
   /user/                                                  - просмотр всех юзеров/добавление юзера
   /user/{userId}/                                         - просмотр/изменение/удаление юзера {userId}
@@ -38,20 +38,25 @@
   /user/{userId}/property/{propertyId}/image/             - просмотр всех изображений/добавление изображения собственности {propertyId} юзера {userId}
   /user/{userId}/property/{propertyId}/image/{imageId}/   - просмотр/удаление изображения {imageId} собственности {propertyId} юзера {userId}
 
-  /user/{userId}/property/review/                         - просмотр всех отзывов юзера {userId}
+  /user/{userId}/property/{propertyId}/review/            - просмотр всех отзывов юзера {userId}
   /user/{userId}/property/{propertyId}/review/{reviewId}/ - просмотр/изменение/удаление отзыва {reviewId} юзера {userId}
 
   /user/{userId}/order/                                   - просмотр всех заказов юзера {userId}
   /user/{userId}/order/{orderId}/                         - просмотр/изменение/удаление заказа {orderId} юзера {userId}
 
-  /booking/                                               - просмотр всей собственности, доступной для заказа юзера, поиск по ней
-  /booking/{propertyId}/                                  - просмотр собственности {propertyId} и её заказ
-  /booking/{propertyId}/review/                           - просмотр всех отзывов собственности {propertyId}
-  /booking/{propertyId}/review/{reviewId}/                - просмотр отзыва {reviewId} собственности {propertyId}
+  /user/{userId}/review/                                   - просмотр всех отзывов юзера {userId}
+  /user/{userId}/review/{reviewId}/                        - просмотр отзыва {reviewId} юзера {userId}
 
   TODO /user/{userId}/hosting/                            - просмотр входящих заказов
   TODO                                                    - регистрация пользователей
   TODO                                                    - вход в аккаунт
+
+  Эндпоинты (публичные) для поиска собственности:
+
+  /booking/                                               - просмотр всей собственности, доступной для заказа юзера, поиск по ней
+  /booking/{propertyId}/                                  - просмотр собственности {propertyId} и её заказ
+  /booking/{propertyId}/review/                           - просмотр всех отзывов собственности {propertyId}
+  /booking/{propertyId}/review/{reviewId}/                - просмотр отзыва {reviewId} собственности {propertyId}
 
   Эндпоинты для администрации:
 
