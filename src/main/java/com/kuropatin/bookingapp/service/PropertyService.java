@@ -2,22 +2,21 @@ package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
+import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PropertyService {
 
     private final PropertyRepository repository;
-
-    @Autowired
-    public PropertyService(PropertyRepository repository) {
-        this.repository = repository;
-    }
+    private final UserService userService;
 
     public List<Property> getAllPropertyOfUser(Long userId) {
         return repository.findAllPropertyOfUser(userId);
@@ -32,7 +31,9 @@ public class PropertyService {
     }
 
     public Property createProperty(Long userId, Property property) {
-        property.setUserId(userId);
+        User user = userService.getUserById(userId);
+        user.setProperty(Collections.singleton(property));
+        property.setUser(user);
         return repository.save(property);
     }
 
@@ -54,10 +55,10 @@ public class PropertyService {
             propertyToUpdate.setGuests(property.getGuests());
             propertyToUpdate.setRooms(property.getRooms());
             propertyToUpdate.setBeds(property.getBeds());
-            propertyToUpdate.setKitchen(property.isKitchen());
-            propertyToUpdate.setWasher(property.isWasher());
-            propertyToUpdate.setTv(property.isTv());
-            propertyToUpdate.setInternet(property.isInternet());
+            propertyToUpdate.setHasKitchen(property.hasKitchen());
+            propertyToUpdate.setHasWasher(property.hasWasher());
+            propertyToUpdate.setHasTv(property.hasTv());
+            propertyToUpdate.setHasInternet(property.hasInternet());
             propertyToUpdate.setPetsAllowed(property.isPetsAllowed());
             propertyToUpdate.setAvailable(property.isAvailable());
             return repository.save(propertyToUpdate);
@@ -128,22 +129,4 @@ public class PropertyService {
             throw new PropertyNotFoundException(propertyId);
         }
     }
-
-//    @Transactional
-//    public User addPropertyToUser(Long propertyId, Long userId) {
-//        User user = userService.getUserById(userId);
-//        Property property = getPropertyById(propertyId);
-//        user.addProperty(property);
-//        property.setUser(user);
-//        return user;
-//    }
-//
-//    @Transactional
-//    public User removePropertyFromUser(Long propertyId, Long userId) {
-//        User user = userService.getUserById(userId);
-//        Property property = getPropertyById(propertyId);
-//        user.removeProperty(property);
-//        property.removeUser(user);
-//        return user;
-//    }
 }
