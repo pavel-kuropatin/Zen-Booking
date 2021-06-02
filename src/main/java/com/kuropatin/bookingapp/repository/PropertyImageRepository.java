@@ -11,7 +11,7 @@ import java.util.List;
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
 
     @Query(value = "SELECT * FROM property_image WHERE approved = true AND deleted = false AND property_id = ?1", nativeQuery = true)
-    List<PropertyImage> findAllImagesOfProperty(Long propertyId);
+    List<PropertyImage> findAllPropertyImages(Long propertyId);
 
     @Query(value = "SELECT * FROM property_image WHERE approved = true AND deleted = false AND id = ?1", nativeQuery = true)
     PropertyImage findPropertyImageById(Long imageId);
