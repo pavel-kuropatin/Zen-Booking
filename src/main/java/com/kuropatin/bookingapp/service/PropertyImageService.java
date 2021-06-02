@@ -1,26 +1,25 @@
 package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.PropertyImageNotFoundException;
+import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PropertyImageService {
 
     private final PropertyImageRepository repository;
-
-    @Autowired
-    public PropertyImageService(PropertyImageRepository repository) {
-        this.repository = repository;
-    }
+    private final PropertyService propertyService;
 
     public List<PropertyImage> getAllImagesOfProperty(Long propertyId) {
-        return repository.findAllImagesOfProperty(propertyId);
+        return repository.findAllPropertyImages(propertyId);
     }
 
     public PropertyImage getPropertyImageById(Long imageId) {
@@ -32,7 +31,9 @@ public class PropertyImageService {
     }
 
     public PropertyImage create(Long userId, PropertyImage propertyImage) {
-        propertyImage.setPropertyId(userId);
+        Property property = propertyService.getPropertyById(userId);
+        property.setPropertyImages(Collections.singleton(propertyImage));
+        propertyImage.setProperty(property);
         return repository.save(propertyImage);
     }
 
