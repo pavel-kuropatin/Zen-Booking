@@ -1,13 +1,13 @@
 drop table if exists property_image;
 
 create table property_image(
-    id          bigserial                  not null constraint property_image_pk primary key,
-    property_id bigint                     not null constraint property_image_property_id_fk references property,
-    img_url     varchar(256)               not null,
-    approved    boolean      default false not null,
-    deleted     boolean      default false not null,
-    created     timestamptz(6)             not null,
-    updated     timestamptz(6)             not null
+    id          bigserial                    not null constraint property_image_pk primary key,
+    property_id bigint                       not null constraint property_image_property_id_fk references property,
+    img_url     varchar(256)                 not null,
+    approved    boolean        default false not null,
+    deleted     boolean        default false not null,
+    created     timestamptz(6)               not null,
+    updated     timestamptz(6)               not null
 );
 
 alter table property_image
@@ -35,7 +35,7 @@ create trigger updated_trigger
     for each row
     execute procedure set_timestamp_updated();
 
-insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image1', true);
-insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image2', true);
-insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image3', true);
-insert into public.property_image (property_id, img_url, approved) values (1, 'https://some-hosting/images/image4', true);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image1', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image2', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image3', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image4', true, current_timestamp, current_timestamp);

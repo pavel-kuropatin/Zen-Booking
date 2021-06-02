@@ -43,6 +43,6 @@ create trigger updated_trigger
     for each row
     execute procedure set_timestamp_updated();
 
-insert into public.admins (role, login, password, displayed_name) values ('admin',      'admin',      'admin', 'administrator');
-insert into public.admins (role, login, password, displayed_name) values ('moder', 'moderator1', 'moderator1',    'moderator1');
-insert into public.admins (role, login, password, displayed_name) values ('moder', 'moderator2', 'moderator2',    'moderator2');
+insert into public.admins (role, login, password, displayed_name, created, updated) values ('admin',      'admin',      'admin', 'administrator', current_timestamp, current_timestamp);
+insert into public.admins (role, login, password, displayed_name, created, updated) values ('moder', 'moderator1', 'moderator1',    'moderator1', current_timestamp, current_timestamp);
+insert into public.admins (role, login, password, displayed_name, created, updated) values ('moder', 'moderator2', 'moderator2',    'moderator2', current_timestamp, current_timestamp);
