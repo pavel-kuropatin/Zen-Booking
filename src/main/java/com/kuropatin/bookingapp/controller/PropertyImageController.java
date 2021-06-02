@@ -2,7 +2,7 @@ package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.service.PropertyImageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,14 +11,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/{userId}/property/{propertyId}/image")
+@RequiredArgsConstructor
 public class PropertyImageController {
 
     private final PropertyImageService service;
-
-    @Autowired
-    public PropertyImageController(PropertyImageService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public ResponseEntity<List<PropertyImage>> getAll(@PathVariable final Long propertyId) {
