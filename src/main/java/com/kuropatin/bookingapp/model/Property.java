@@ -24,7 +24,8 @@ public class Property {
     private long id;
 
     @Column(name = "type")
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PropertyType type = PropertyType.UNDEFINED;
 
     @Column(name = "name")
     private String name;
@@ -96,13 +97,17 @@ public class Property {
     private Timestamp updated;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<PropertyImage> propertyImages;
+
+    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
+    private Order order;
 
     @Override
     public String toString() {
