@@ -25,7 +25,7 @@ public class Order {
     private long id;
 
     @Column(name = "total_price")
-    private long totalPrice;
+    private int totalPrice;
 
     @Column(name = "start_date")
     private LocalDateTime startDate;
