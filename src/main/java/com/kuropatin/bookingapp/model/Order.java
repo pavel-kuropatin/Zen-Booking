@@ -1,16 +1,15 @@
 package com.kuropatin.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,8 +17,6 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "orders")
-@SQLDelete(sql = "UPDATE orders SET deleted = true WHERE id=?")
-@Where(clause = "banned = false AND deleted = false")
 public class Order {
 
     @Id
@@ -27,35 +24,39 @@ public class Order {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "user_id")
-    private long userId;
-
-    @Column(name = "property_id")
-    private long propertyId;
-
     @Column(name = "total_price")
-    private int totalPrice;
+    private long totalPrice;
 
     @Column(name = "start_date")
-    private Date startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
-    private Date endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "accepted_by_host")
-    private boolean acceptedByHost;
+    private boolean isAcceptedByHost;
 
     @Column(name = "cancelled")
-    private boolean cancelled;
+    private boolean isCancelled;
 
     @Column(name = "finished")
-    private boolean finished;
+    private boolean isFinished;
 
     @Column(name = "created")
     private boolean created;
 
     @Column(name = "updated")
     private boolean updated;
+
+    @OneToOne
+    @JoinColumn(name = "property_id")
+    @JsonBackReference
+    private Property property;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
 
     @Override
     public String toString() {
