@@ -17,14 +17,17 @@ public class Config {
 
     @Bean
     public Docket docket() {
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
                 .apis(Predicate.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
                 .build();
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("Booking Application API")
-                .description("This API can be used to create a booking application")
+        return new ApiInfoBuilder()
+                .title("Booking Application API")
+                .description("Application endpoints documentation")
                 .version("v0.0.1-SNAPSHOT")
                 .build();
     }
