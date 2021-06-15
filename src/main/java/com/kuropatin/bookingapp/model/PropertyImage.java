@@ -1,7 +1,10 @@
 package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -37,7 +40,7 @@ public class PropertyImage {
     private Timestamp updated;
 
     @ManyToOne
-    @JoinColumn(name = "property_id", nullable = false)
+    @JoinColumn(name = "property_id")
     @JsonBackReference
     private Property property;
 
