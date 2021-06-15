@@ -1,13 +1,16 @@
 package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -35,8 +38,12 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender = Gender.UNDEFINED;
+
     @Column(name = "birth_date")
-    private Date birthDate;
+    private LocalDateTime birthDate;
 
     @Column(name = "email")
     private String email;
@@ -59,9 +66,13 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Property> property;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<Order> order;
 
     @Override
     public String toString() {
