@@ -2,11 +2,15 @@ package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
+import com.kuropatin.bookingapp.model.dto.UserDto;
+import com.kuropatin.bookingapp.model.dto.AmountDto;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -31,25 +35,25 @@ public class UserService {
         }
     }
 
-    public User createUser(User user) {
+    public User createUser(UserDto userDto) {
+        User user = UserDto.transformToNewUser(userDto);
+        user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setUpdated(user.getCreated());
         return repository.save(user);
     }
 
-    public User updateUser(Long id, User user) {
+    public User updateUser(Long id, UserDto userDto) {
         User userToUpdate = getUserById(id);
-        if(user.equals(userToUpdate)) {
-            return userToUpdate;
-        } else {
-            userToUpdate.setLogin(user.getLogin());
-            userToUpdate.setPassword(user.getPassword());
-            userToUpdate.setName(user.getName());
-            userToUpdate.setSurname(user.getSurname());
-            userToUpdate.setBirthDate(user.getBirthDate());
-            userToUpdate.setEmail(user.getEmail());
-            userToUpdate.setPhone(user.getPhone());
-            userToUpdate.setPersonalAccount(user.getPersonalAccount());
-            return repository.save(userToUpdate);
-        }
+        UserDto.transformToUser(userDto, userToUpdate);
+        userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        return repository.save(userToUpdate);
+    }
+
+    public User deposit(Long id, AmountDto amountDto) {
+        User user = getUserById(id);
+        user.setBalance(user.getBalance() + amountDto.getAmount());
+        user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        return repository.save(user);
     }
 
     public String softDeleteUser(Long id) {

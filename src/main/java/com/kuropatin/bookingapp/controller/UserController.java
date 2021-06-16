@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.User;
+import com.kuropatin.bookingapp.model.dto.UserDto;
+import com.kuropatin.bookingapp.model.dto.AmountDto;
 import com.kuropatin.bookingapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,17 +29,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody final User user) {
-        return new ResponseEntity<>(service.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> create(@RequestBody final UserDto userDto) {
+        return new ResponseEntity<>(service.createUser(userDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> update(@PathVariable final Long userId, @RequestBody final User user) {
-        return new ResponseEntity<>(service.updateUser(userId, user), HttpStatus.CREATED);
+    public ResponseEntity<User> update(@PathVariable final Long userId, @RequestBody final UserDto userDto) {
+        return new ResponseEntity<>(service.updateUser(userId, userDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<String> deleteById(@PathVariable final Long userId) {
         return new ResponseEntity<>(service.softDeleteUser(userId), HttpStatus.OK);
+    }
+
+    @PutMapping("/{userId}/deposit")
+    public ResponseEntity<User> deposit(@PathVariable final Long userId, @RequestBody final AmountDto amountDto) {
+        return new ResponseEntity<>(service.deposit(userId, amountDto), HttpStatus.CREATED);
     }
 }

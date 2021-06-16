@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -43,7 +43,7 @@ public class User {
     private Gender gender = Gender.UNDEFINED;
 
     @Column(name = "birth_date")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "email")
     private String email;
@@ -51,14 +51,14 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "personal_account")
-    private long personalAccount;
+    @Column(name = "balance")
+    private int balance = 0;
 
     @Column(name = "banned")
-    private boolean isBanned;
+    private boolean isBanned = false;
 
     @Column(name = "deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Column(name = "created")
     private Timestamp created;

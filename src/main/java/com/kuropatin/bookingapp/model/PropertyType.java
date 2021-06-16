@@ -4,5 +4,5 @@ public enum PropertyType {
     HOUSE,
     APARTMENT,
     ROOM,
-    UNDEFINED
+    OTHER
 }
