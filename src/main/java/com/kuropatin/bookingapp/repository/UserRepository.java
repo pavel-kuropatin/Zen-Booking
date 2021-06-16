@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    @Query(value = "SELECT * FROM users WHERE banned = false AND deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE banned = false AND deleted = false ORDER BY id", nativeQuery = true)
     List<User> findAllUsers();
 
     @Query(value = "SELECT * FROM users WHERE banned = false AND deleted = false AND id = ?1", nativeQuery = true)
@@ -21,7 +21,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "UPDATE users SET deleted = true WHERE id = ?1", nativeQuery = true)
     void softDeleteUser(Long id);
 
-    @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false ORDER BY id", nativeQuery = true)
     List<User> findAllBannedUsers();
 
     @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false AND id = ?1", nativeQuery = true)
