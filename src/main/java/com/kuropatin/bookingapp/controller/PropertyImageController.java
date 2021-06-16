@@ -1,6 +1,7 @@
 package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.PropertyImage;
+import com.kuropatin.bookingapp.model.dto.PropertyImageDto;
 import com.kuropatin.bookingapp.service.PropertyImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,8 @@ public class PropertyImageController {
     }
 
     @PostMapping
-    public ResponseEntity<PropertyImage> create(@PathVariable final Long propertyId, @RequestBody final PropertyImage propertyImage) {
-        return new ResponseEntity<>(service.create(propertyId, propertyImage), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{imageId}")
-    public ResponseEntity<PropertyImage> update(@PathVariable final Long imageId, @RequestBody final PropertyImage propertyImage) {
-        return new ResponseEntity<>(service.update(imageId, propertyImage), HttpStatus.CREATED);
+    public ResponseEntity<PropertyImage> create(@PathVariable final Long propertyId, @RequestBody final PropertyImageDto propertyImageDto) {
+        return new ResponseEntity<>(service.create(propertyId, propertyImageDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{imageId}")

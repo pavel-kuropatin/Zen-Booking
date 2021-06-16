@@ -3,11 +3,14 @@ package com.kuropatin.bookingapp.service;
 import com.kuropatin.bookingapp.exception.PropertyImageNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyImage;
+import com.kuropatin.bookingapp.model.dto.PropertyImageDto;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,21 +33,15 @@ public class PropertyImageService {
         }
     }
 
-    public PropertyImage create(Long userId, PropertyImage propertyImage) {
+    public PropertyImage create(Long userId, PropertyImageDto propertyImageDto) {
         Property property = propertyService.getPropertyById(userId);
+        PropertyImage propertyImage = new PropertyImage();
         property.setPropertyImages(Collections.singleton(propertyImage));
         propertyImage.setProperty(property);
+        propertyImage.setImgUrl(propertyImageDto.getImgUrl());
+        propertyImage.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        propertyImage.setUpdated(property.getCreated());
         return repository.save(propertyImage);
-    }
-
-    public PropertyImage update(Long id, PropertyImage propertyImage) {
-        PropertyImage propertyImageToUpdate = getPropertyImageById(id);
-        if(propertyImage.equals(propertyImageToUpdate)) {
-            return propertyImageToUpdate;
-        } else {
-            propertyImageToUpdate.setImgUrl(propertyImage.getImgUrl());
-            return propertyImageToUpdate;
-        }
     }
 
     public String softDeletePropertyImage(Long imageId) {

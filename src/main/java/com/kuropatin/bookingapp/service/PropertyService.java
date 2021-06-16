@@ -3,11 +3,14 @@ package com.kuropatin.bookingapp.service;
 import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
+import com.kuropatin.bookingapp.model.dto.PropertyDto;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,39 +33,21 @@ public class PropertyService {
         }
     }
 
-    public Property createProperty(Long userId, Property property) {
+    public Property createProperty(Long userId, PropertyDto propertyDto) {
         User user = userService.getUserById(userId);
+        Property property = PropertyDto.transformToNewProperty(propertyDto);
         user.setProperty(Collections.singleton(property));
         property.setUser(user);
+        property.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        property.setUpdated(property.getCreated());
         return repository.save(property);
     }
 
-    public Property updateProperty(Long propertyId, Property property) {
+    public Property updateProperty(Long propertyId, PropertyDto propertyDto) {
         Property propertyToUpdate = getPropertyById(propertyId);
-        if(property.equals(propertyToUpdate)) {
-            return propertyToUpdate;
-        } else {
-            propertyToUpdate.setType(property.getType());
-            propertyToUpdate.setName(property.getName());
-            propertyToUpdate.setDescription(property.getDescription());
-            propertyToUpdate.setCountry(property.getCountry());
-            propertyToUpdate.setRegion(property.getRegion());
-            propertyToUpdate.setCity(property.getCity());
-            propertyToUpdate.setStreet(property.getStreet());
-            propertyToUpdate.setBuilding(property.getBuilding());
-            propertyToUpdate.setApartment(property.getApartment());
-            propertyToUpdate.setPrice(property.getPrice());
-            propertyToUpdate.setGuests(property.getGuests());
-            propertyToUpdate.setRooms(property.getRooms());
-            propertyToUpdate.setBeds(property.getBeds());
-            propertyToUpdate.setHasKitchen(property.hasKitchen());
-            propertyToUpdate.setHasWasher(property.hasWasher());
-            propertyToUpdate.setHasTv(property.hasTv());
-            propertyToUpdate.setHasInternet(property.hasInternet());
-            propertyToUpdate.setPetsAllowed(property.isPetsAllowed());
-            propertyToUpdate.setAvailable(property.isAvailable());
-            return repository.save(propertyToUpdate);
-        }
+        PropertyDto.transformToProperty(propertyDto, propertyToUpdate);
+        propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        return repository.save(propertyToUpdate);
     }
 
     public String softDeleteProperty(Long propertyId) {

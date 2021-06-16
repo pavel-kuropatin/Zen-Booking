@@ -2,7 +2,10 @@ package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -25,7 +28,7 @@ public class Property {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private PropertyType type = PropertyType.UNDEFINED;
+    private PropertyType type = PropertyType.OTHER;
 
     @Column(name = "name")
     private String name;
@@ -49,7 +52,7 @@ public class Property {
     private String building;
 
     @Column(name = "apartment")
-    private String apartment;
+    private String apartment = "";
 
     @Column(name = "price")
     private int price;

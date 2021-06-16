@@ -1,6 +1,7 @@
 package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.Property;
+import com.kuropatin.bookingapp.model.dto.PropertyDto;
 import com.kuropatin.bookingapp.service.PropertyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,14 +28,14 @@ public class PropertyController {
     }
 
     @PostMapping
-    public ResponseEntity<Property> create(@PathVariable final Long userId, @RequestBody final Property property) {
-        Property propertyToSave = service.createProperty(userId, property);
+    public ResponseEntity<Property> create(@PathVariable final Long userId, @RequestBody final PropertyDto propertyDto) {
+        Property propertyToSave = service.createProperty(userId, propertyDto);
         return new ResponseEntity<>(propertyToSave, HttpStatus.CREATED);
     }
 
     @PutMapping("/{propertyId}")
-    public ResponseEntity<Property> update(@PathVariable final Long propertyId, @RequestBody final Property property) {
-        return new ResponseEntity<>(service.updateProperty(propertyId, property), HttpStatus.CREATED);
+    public ResponseEntity<Property> update(@PathVariable final Long propertyId, @RequestBody final PropertyDto propertyDto) {
+        return new ResponseEntity<>(service.updateProperty(propertyId, propertyDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{propertyId}")
