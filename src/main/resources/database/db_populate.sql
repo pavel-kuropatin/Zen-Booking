@@ -1,0 +1,24 @@
+insert into public.admins (id, role, login, password, displayed_name, created, updated) values (1, 'ROLE_ADMIN', 'admin',      '12345678', 'Administrator', current_timestamp, current_timestamp);
+insert into public.admins (id, role, login, password, displayed_name, created, updated) values (2, 'ROLE_MODER', 'moderator1', '12345678', 'Moderator1',    current_timestamp, current_timestamp);
+insert into public.admins (id, role, login, password, displayed_name, created, updated) values (3, 'ROLE_MODER', 'moderator2', '12345678', 'Moderator2',    current_timestamp, current_timestamp);
+
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (1, 'user1', '12345678', 'Ivan',    'Ivanov',     'MALE',   '1967-11-01', 'ivan.i@gmail.com',    '+375441234567', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (2, 'user2', '12345678', 'Petr',    'Petrov',     'MALE',   '1988-10-11', 'dmitriy.b@gmail.com', '+375442837405', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (3, 'user3', '12345678', 'Anna',    'Karenina',   'FEMALE', '1987-08-23', 'maslenitsa@gmail.com', '+375441234875', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (4, 'user4', '12345678', 'Andrey',  'Luchkouski', 'MALE',   '1988-05-10', 'andrey.l@gmail.com',  '+375444637285', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (5, 'user5', '12345678', 'Vlad',    'Batsenka',   'MALE',   '1993-06-22', 'vlad.b@gmail.com',    '+375440182647', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (6, 'user6', '12345678', 'Dmitriy',  'Bahankou',   'MALE',   '1992-03-18', 'dima.b@gmail.com',    '+375444637285', current_timestamp, current_timestamp);
+insert into public.users (id, login, password, name, surname, gender, birth_date, email, phone, created, updated) values (7, 'user7', '12345678', 'Natalia', 'Petrova',    'FEMALE', '1970-01-01', 'natusik@gmail.com',   '+375123456789', current_timestamp, current_timestamp);
+
+insert into public.property (id, user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved, created, updated) VALUES (1, 1, 'APARTMENT', 'Apartment', 'Apartment in the middle of a nowhere', 'Belarus', 'Mogilev',         'Mogilev',   'Fatsina',            '1',  '123', 100, 5, 2, 3, true, true, true, true, false, true, true, current_timestamp, current_timestamp);
+insert into public.property (id, user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved, created, updated) VALUES (2, 1, 'APARTMENT', 'Apartment', 'Apartment in the middle of a nowhere', 'Belarus', 'Mogilev',         'Mogilev',   'Fatsina',            '1',  '111', 85,  3, 1, 2, true, true, true, true, false, true, true, current_timestamp, current_timestamp);
+insert into public.property (id, user_id, type, name, description, country, region, city, street, building, apartment, price, guests, rooms, beds, kitchen, washer, tv, internet, pets_allowed, available, approved, created, updated) VALUES (3, 3, 'APARTMENT', 'Apartment', 'Apartment in the middle of a nowhere', 'Belarus', 'Minskaya oblast', 'Soligorsk', 'Zheleznodorozhnaya', '24', '121', 100, 5, 2, 3, true, true, true, true, false, true, true, current_timestamp, current_timestamp);
+
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image.png', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (1, 'https://some-hosting/images/image.png', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (2, 'https://some-hosting/images/image.png', true, current_timestamp, current_timestamp);
+insert into public.property_image (property_id, img_url, approved, created, updated) values (3, 'https://some-hosting/images/image.png', true, current_timestamp, current_timestamp);
+
+-- orders
+
+-- review
