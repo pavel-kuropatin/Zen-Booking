@@ -9,7 +9,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,25 +29,25 @@ public class Order {
     private int totalPrice;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(name = "accepted_by_host")
-    private boolean isAcceptedByHost;
+    private boolean isAcceptedByHost = false;
 
     @Column(name = "cancelled")
-    private boolean isCancelled;
+    private boolean isCancelled = false;
 
     @Column(name = "finished")
-    private boolean isFinished;
+    private boolean isFinished = false; //TODO: add system timer to finish the order
 
     @Column(name = "created")
-    private boolean created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    private boolean updated;
+    private Timestamp updated;
 
     @OneToOne
     @JoinColumn(name = "property_id")
