@@ -26,6 +26,10 @@ public class User {
     @Column(name = "id")
     private long id;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Roles role = Roles.ROLE_USER;
+
     @Column(name = "login")
     private String login;
 
@@ -72,7 +76,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    private Set<Order> order;
+    private Set<Order> orders;
 
     @Override
     public String toString() {
