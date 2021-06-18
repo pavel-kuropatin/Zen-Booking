@@ -28,10 +28,10 @@ public class PropertyImage {
     private String imgUrl;
 
     @Column(name = "approved")
-    private boolean isApproved;
+    private boolean isApproved = false;
 
     @Column(name = "deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Column(name = "created")
     private Timestamp created;

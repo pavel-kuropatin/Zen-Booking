@@ -36,10 +36,10 @@ public class Review {
     private byte rating;
 
     @Column(name = "approved")
-    private boolean approved;
+    private boolean approved = false;
 
     @Column(name = "deleted")
-    private boolean deleted;
+    private boolean deleted = false;
 
     @Column(name = "created")
     private Timestamp created;
