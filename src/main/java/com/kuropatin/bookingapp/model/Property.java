@@ -116,20 +116,4 @@ public class Property {
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
     }
-
-    public boolean hasKitchen() {
-        return hasKitchen;
-    }
-
-    public boolean hasWasher() {
-        return hasWasher;
-    }
-
-    public boolean hasTv() {
-        return hasTv;
-    }
-
-    public boolean hasInternet() {
-        return hasInternet;
-    }
 }

@@ -37,10 +37,10 @@ public class Admin {
     private String displayedName;
 
     @Column(name = "suspended")
-    private boolean isSuspended;
+    private boolean isSuspended = false;
 
     @Column(name = "deleted")
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Column(name = "created")
     private Timestamp created;
