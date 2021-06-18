@@ -1,11 +1,12 @@
 package com.kuropatin.bookingapp.service;
 
+import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
 import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
-import com.kuropatin.bookingapp.model.dto.UserDto;
 import com.kuropatin.bookingapp.model.dto.AmountDto;
+import com.kuropatin.bookingapp.model.dto.UserDto;
 import com.kuropatin.bookingapp.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -14,14 +15,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
-
-    @Autowired
-    public UserService(UserRepository repository) {
-        this.repository = repository;
-    }
 
     public List<User> getAllUsers() {
         return repository.findAllUsers();
@@ -54,6 +51,22 @@ public class UserService {
         user.setBalance(user.getBalance() + amountDto.getAmount());
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(user);
+    }
+
+    public void pay(User user, int amount) {
+        if(user.getBalance() >= amount) {
+            user.setBalance(user.getBalance() - amount);
+            user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            repository.save(user);
+        } else {
+            throw new InsufficientMoneyAmountException();
+        }
+    }
+
+    public void payBack(User user, int amount) {
+        user.setBalance(user.getBalance() + amount);
+        user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        repository.save(user);
     }
 
     public String softDeleteUser(Long id) {
