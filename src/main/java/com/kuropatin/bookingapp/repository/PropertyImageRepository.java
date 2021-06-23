@@ -4,8 +4,8 @@ import com.kuropatin.bookingapp.model.PropertyImage;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
