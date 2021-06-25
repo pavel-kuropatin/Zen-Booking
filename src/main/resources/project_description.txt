@@ -30,10 +30,11 @@
 
   TODO: удалить {userId} из эндпоинтов, брать его из секьюрити токена
 
-  TODO: /register                                         - регистрация
-  TODO: /login                                            - логин
+  TODO: /register/                                        - регистрация
+  TODO: /login/                                           - логин
 
-  TODO: /profile/                                         - просмотр/изменение данных/удаление юзера {userId}
+  TODO: /profile/                                         - просмотр/изменение данных/удаление данных пользователя
+  TODO: /profile/deposit/                                 - добавление денег на аккаунт пользователя
 
   TODO: /hosting/property/                                - просмотр всей собственности/добавление собственности
   TODO: /hosting/property/{propertyId}/                   - просмотр/изменение/удаление собственности {propertyId}
@@ -42,22 +43,22 @@
 
   TODO: /hosting/requests/                                - просмотр всех входящих заказов
   TODO: /hosting/requests/{orderId}/                      - просмотр/принятие/отклонение заказа {orderId}
-  TODO: /hosting/requests/{orderId}/accept                - принятие входящего заказа
-  TODO: /hosting/requests/{orderId}/decline               - отклонение входящего заказа
+  TODO: /hosting/requests/{orderId}/accept/               - принятие входящего заказа
+  TODO: /hosting/requests/{orderId}/decline/              - отклонение входящего заказа
 
   TODO: /booking/                                         - поиск собственности, доступной для заказа
   TODO: /booking/{propertyId}/                            - просмотр собственности {propertyId} и её заказ
   TODO: /booking/{propertyId}/review/                     - просмотр всех отзывов о собственности {propertyId}
   TODO: /booking/{propertyId}/review/{reviewId}/          - просмотр отзыва {reviewId} о собственности {propertyId}
 
-  TODO: /order/                                           - просмотр всех заказов юзера {userId}
-  TODO: /order/{orderId}/                                 - просмотр/изменение/отмена заказа {orderId} юзера {userId}
+  TODO: /order/                                           - просмотр всех заказов пользователя {userId}
+  TODO: /order/{orderId}/                                 - просмотр/изменение/отмена заказа {orderId} пользователя {userId}
 
   TODO: /review/                                          - просмотр всех отзывов пользователя
   TODO: /review/{reviewId}/                               - просмотр отзыва {reviewId} пользователя
 
   Эндпоинты для администрации:
 
-  TODO: /login                                            - логин
+  TODO: /login/                                           - логин
 
   TODO:
