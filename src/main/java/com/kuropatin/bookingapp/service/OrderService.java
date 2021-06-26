@@ -4,10 +4,11 @@ import com.kuropatin.bookingapp.exception.OrderNotFoundException;
 import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
-import com.kuropatin.bookingapp.model.dto.OrderDto;
+import com.kuropatin.bookingapp.model.request.OrderRequest;
 import com.kuropatin.bookingapp.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
@@ -37,12 +38,13 @@ public class OrderService {
         }
     }
 
-    public Order createOrder(Long userId, Long propertyId, OrderDto orderDto) {
+    //@Transactional(rollbackForClassName = {"InsufficientMoneyAmountException"})
+    public Order createOrder(Long userId, Long propertyId, OrderRequest orderRequest) {
         User user = userService.getUserById(userId);
         Property property = propertyService.getPropertyById(propertyId);
         Order order = new Order();
-        order.setStartDate(orderDto.getStartDate());
-        order.setEndDate(orderDto.getEndDate());
+        order.setStartDate(orderRequest.getStartDate());
+        order.setEndDate(orderRequest.getEndDate());
         order.setTotalPrice(calculateTotalPrice(property.getPrice(), order.getStartDate(), order.getEndDate()));
         userService.pay(user, order.getTotalPrice());
         order.setCreated(Timestamp.valueOf(LocalDateTime.now()));
@@ -54,17 +56,19 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public Order updateOrder(Long orderId, OrderDto orderDto) {
+    //@Transactional(rollbackForClassName = {"InsufficientMoneyAmountException"})
+    public Order updateOrder(Long orderId, OrderRequest orderRequest) {
         Order orderToUpdate = getOrderById(orderId);
         userService.payBack(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
-        orderToUpdate.setStartDate(orderDto.getStartDate());
-        orderToUpdate.setEndDate(orderDto.getEndDate());
+        orderToUpdate.setStartDate(orderRequest.getStartDate());
+        orderToUpdate.setEndDate(orderRequest.getEndDate());
         orderToUpdate.setTotalPrice(calculateTotalPrice(orderToUpdate.getProperty().getPrice(), orderToUpdate.getStartDate(), orderToUpdate.getEndDate()));
         userService.pay(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
         orderToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return orderRepository.save(orderToUpdate);
     }
 
+    //@Transactional(rollbackForClassName = {"InsufficientMoneyAmountException"})
     public String cancelOrder(Long orderId) {
         if(orderRepository.existsById(orderId)) {
             //TODO: add money transfer back

@@ -1,4 +1,4 @@
-package com.kuropatin.bookingapp.model.dto;
+package com.kuropatin.bookingapp.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrderDto {
+public class OrderRequest {
 
     private LocalDate startDate;
     private LocalDate endDate;
