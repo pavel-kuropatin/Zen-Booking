@@ -32,6 +32,15 @@ public class UserService {
         }
     }
 
+    public User getUserByLogin(String login) {
+        User user = repository.findUserByLogin(login);
+        if(user != null) {
+            return user;
+        } else {
+            throw new UserNotFoundException(login);
+        }
+    }
+
     public User createUser(UserDto userDto) {
         User user = UserDto.transformToNewUser(userDto);
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
