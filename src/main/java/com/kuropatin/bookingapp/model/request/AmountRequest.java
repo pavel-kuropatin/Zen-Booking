@@ -1,4 +1,4 @@
-package com.kuropatin.bookingapp.model.dto;
+package com.kuropatin.bookingapp.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class PropertyImageDto {
+public class AmountRequest {
 
-    private String imgUrl;
+    private int amount = 0;
 }

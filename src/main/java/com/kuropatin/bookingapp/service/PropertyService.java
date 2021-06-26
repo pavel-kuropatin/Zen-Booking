@@ -3,7 +3,7 @@ package com.kuropatin.bookingapp.service;
 import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
-import com.kuropatin.bookingapp.model.dto.PropertyDto;
+import com.kuropatin.bookingapp.model.request.PropertyRequest;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,9 +33,9 @@ public class PropertyService {
         }
     }
 
-    public Property createProperty(Long userId, PropertyDto propertyDto) {
+    public Property createProperty(Long userId, PropertyRequest propertyRequest) {
         User user = userService.getUserById(userId);
-        Property property = PropertyDto.transformToNewProperty(propertyDto);
+        Property property = PropertyRequest.transformToNewProperty(propertyRequest);
         user.setProperty(Collections.singleton(property));
         property.setUser(user);
         property.setCreated(Timestamp.valueOf(LocalDateTime.now()));
@@ -43,9 +43,9 @@ public class PropertyService {
         return repository.save(property);
     }
 
-    public Property updateProperty(Long propertyId, PropertyDto propertyDto) {
+    public Property updateProperty(Long propertyId, PropertyRequest propertyRequest) {
         Property propertyToUpdate = getPropertyById(propertyId);
-        PropertyDto.transformToProperty(propertyDto, propertyToUpdate);
+        PropertyRequest.transformToProperty(propertyRequest, propertyToUpdate);
         propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(propertyToUpdate);
     }

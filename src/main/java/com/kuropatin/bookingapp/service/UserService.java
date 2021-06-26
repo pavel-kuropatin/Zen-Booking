@@ -3,8 +3,8 @@ package com.kuropatin.bookingapp.service;
 import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
 import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
-import com.kuropatin.bookingapp.model.dto.AmountDto;
-import com.kuropatin.bookingapp.model.dto.UserDto;
+import com.kuropatin.bookingapp.model.request.AmountRequest;
+import com.kuropatin.bookingapp.model.request.UserRequest;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -41,23 +41,23 @@ public class UserService {
         }
     }
 
-    public User createUser(UserDto userDto) {
-        User user = UserDto.transformToNewUser(userDto);
+    public User createUser(UserRequest userRequest) {
+        User user = UserRequest.transformToNewUser(userRequest);
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
 
-    public User updateUser(Long id, UserDto userDto) {
+    public User updateUser(Long id, UserRequest userRequest) {
         User userToUpdate = getUserById(id);
-        UserDto.transformToUser(userDto, userToUpdate);
+        UserRequest.transformToUser(userRequest, userToUpdate);
         userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(userToUpdate);
     }
 
-    public User deposit(Long id, AmountDto amountDto) {
+    public User deposit(Long id, AmountRequest amountRequest) {
         User user = getUserById(id);
-        user.setBalance(user.getBalance() + amountDto.getAmount());
+        user.setBalance(user.getBalance() + amountRequest.getAmount());
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(user);
     }
