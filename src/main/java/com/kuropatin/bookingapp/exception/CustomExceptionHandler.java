@@ -1,5 +1,6 @@
 package com.kuropatin.bookingapp.exception;
 
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -46,6 +47,11 @@ class CustomExceptionHandler {
     @ExceptionHandler(SQLException.class)
     protected ResponseEntity<Object> sqlExceptionHandler(SQLException e) {
         return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(JwtException.class)
+    protected ResponseEntity<Object> jwtExceptionHandler(JwtException e) {
+        return throwCustomException(e, HttpStatus.FORBIDDEN);
     }
 
     private ResponseEntity<Object> throwCustomException(Exception e, HttpStatus httpStatus) {

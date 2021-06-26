@@ -16,6 +16,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "SELECT * FROM users WHERE banned = false AND deleted = false AND id = ?1", nativeQuery = true)
     User findUserById(Long id);
 
+    @Query(value = "SELECT * FROM users WHERE banned = false AND deleted = false AND login = ?1", nativeQuery = true)
+    User findUserByLogin(String login);
+
     @Modifying
     @Transactional
     @Query(value = "UPDATE users SET deleted = true WHERE id = ?1", nativeQuery = true)
