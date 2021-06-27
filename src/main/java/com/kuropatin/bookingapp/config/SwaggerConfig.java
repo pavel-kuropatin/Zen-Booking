@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 @Configuration
 @EnableSwagger2
-public class Config {
+public class SwaggerConfig {
 
     @Bean
     public Docket docket() {
