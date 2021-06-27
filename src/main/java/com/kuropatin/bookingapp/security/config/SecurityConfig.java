@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/order/**").hasRole("USER")
                 .antMatchers("/review/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/moderation/**").hasRole("MODER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authenticationTokenFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class);

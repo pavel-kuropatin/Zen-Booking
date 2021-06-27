@@ -1,4 +1,4 @@
-package com.kuropatin.bookingapp.security.util;
+package com.kuropatin.bookingapp.security.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,11 +9,11 @@ import java.util.Collection;
 
 @Getter
 @Setter
-public class SecuredUser extends User {
+public class SecurityUser extends User {
 
     long id;
 
-    public SecuredUser(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public SecurityUser(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         setId(id);
     }
