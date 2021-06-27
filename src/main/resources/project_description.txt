@@ -28,48 +28,60 @@
 
   Эндпоинты для юзеров:
 
-  /register/                                              - регистрация
-  /login/                                                 - логин
-  TODO: /logout/                                          - логаут
+  /register                                               - регистрация
+  /login                                                  - логин
+  TODO: /logout                                           - логаут
 
-  /profile/                                               - просмотр/изменение данных/удаление данных пользователя
-  /profile/deposit/                                       - добавление денег на аккаунт пользователя
+  /profile                                                - просмотр/изменение данных/удаление данных пользователя
+  /profile/deposit                                        - добавление денег на аккаунт пользователя
 
-  /hosting/property/                                      - просмотр всей собственности/добавление собственности
-  /hosting/property/{propertyId}/                         - просмотр/изменение/удаление собственности {propertyId}
-  /hosting/property/{propertyId}/images/                  - просмотр всех изображений/добавление изображения
-  /hosting/property/{propertyId}/images/{imageId}/        - просмотр/изменение/удаление изображения {imageId}
-  TODO: /hosting/property/{propertyId}/reviews/           - просмотр всех отзывов о собственности {propertyId}
-  TODO: /hosting/property/{propertyId}/reviews/{reviewId}/- просмотр отзыва {reviewId} о собственности {propertyId}
+  /hosting/property                                       - просмотр всей собственности/добавление собственности
+  /hosting/property/{propertyId}                          - просмотр/изменение/удаление собственности {propertyId}
+  /hosting/property/{propertyId}/images                   - просмотр всех изображений/добавление изображения
+  /hosting/property/{propertyId}/images/{imageId}         - просмотр/изменение/удаление изображения {imageId}
+  TODO: /hosting/property/{propertyId}/reviews            - просмотр всех отзывов о собственности {propertyId}
+  TODO: /hosting/property/{propertyId}/reviews/{reviewId} - просмотр отзыва {reviewId} о собственности {propertyId}
 
-  TODO: /hosting/requests/                                - просмотр всех входящих заказов
-  TODO: /hosting/requests/{orderId}/                      - просмотр/принятие/отклонение заказа {orderId}
-  TODO: /hosting/requests/{orderId}/accept/               - принятие входящего заказа
-  TODO: /hosting/requests/{orderId}/decline/              - отклонение входящего заказа
+  TODO: /hosting/requests                                 - просмотр всех входящих заказов
+  TODO: /hosting/requests/{orderId}                       - просмотр/принятие/отклонение заказа {orderId}
+  TODO: /hosting/requests/{orderId}/accept                - принятие входящего заказа
+  TODO: /hosting/requests/{orderId}/decline               - отклонение входящего заказа
 
-  TODO: /booking/                                         - поиск собственности, доступной для заказа
-  TODO: /booking/{propertyId}/                            - просмотр собственности {propertyId} и её заказ
-  TODO: /booking/{propertyId}/images/                     - просмотр всех изображений/добавление изображения
-  TODO: /booking/{propertyId}/images/{imageId}/           - просмотр/изменение/удаление изображения {imageId}
-  TODO: /booking/{propertyId}/reviews/                    - просмотр всех отзывов о собственности {propertyId}
-  TODO: /booking/{propertyId}/reviews/{reviewId}/         - просмотр отзыва {reviewId} о собственности {propertyId}
+  TODO: /booking                                          - поиск собственности, доступной для заказа
+  TODO: /booking/{propertyId}                             - просмотр собственности {propertyId} и её заказ
+  TODO: /booking/{propertyId}/images                      - просмотр всех изображений/добавление изображения
+  TODO: /booking/{propertyId}/images/{imageId}            - просмотр/изменение/удаление изображения {imageId}
+  TODO: /booking/{propertyId}/reviews                     - просмотр всех отзывов о собственности {propertyId}
+  TODO: /booking/{propertyId}/reviews/{reviewId}          - просмотр отзыва {reviewId} о собственности {propertyId}
 
-  /orders/                                                - просмотр всех заказов пользователя {userId}
-  /orders/{orderId}/                                      - просмотр/изменение/отмена заказа {orderId} пользователя {userId}
+  /orders                                                 - просмотр всех заказов пользователя {userId}
+  /orders/{orderId}                                       - просмотр/изменение/отмена заказа {orderId} пользователя {userId}
 
-  TODO: /reviews/                                         - просмотр всех отзывов пользователя
-  TODO: /reviews/{reviewId}/                              - просмотр отзыва {reviewId} пользователя
+  TODO: /reviews                                          - просмотр всех отзывов пользователя
+  TODO: /reviews/{reviewId}                               - просмотр отзыва {reviewId} пользователя
 
   Эндпоинты для администрации:
 
-  TODO: /login/                                           - логин
-  TODO: /logout/                                          - логаут
+  TODO: /login                                            - логин
+  TODO: /logout                                           - логаут
 
-  TODO: /admin/                                           - действия для админов
+  TODO: /admin                                            - действия для админов
 
-  TODO: /moderation/users/                                - отображение всех пользователей
-  TODO: /moderation/users/{userId}/                       - отображение пользователя {userId}
-  TODO: /moderation/users/{userId}/ban/                   - забанить пользователя {userId}
-  TODO: /moderation/users/{userId}/unban/                 - разбанить пользователя {userId}
-  TODO: /moderation/banned-users/                         - отображение всех забаненных пользователей
-  TODO: /moderation/banned-users/{userId}/                - отображение забаненного пользователя {userId}
+  TODO: /moderation/users                                 - отображение всех пользователей по критериям поиска
+  /moderation/users/{userId}                              - отображение пользователя {userId}
+  /moderation/users/{userId}/property                     - отображение всей собственности пользователя {userId}
+  /moderation/users/{userId}/ban                          - забанить пользователя {userId}
+  /moderation/users/{userId}/unban                        - разбанить пользователя {userId}
+
+  TODO: /moderation/property                              - отображение всей собственности по критериям поиска
+  /moderation/property/{propertyId}                       - отображение собственности {propertyId}
+  /moderation/property/{propertyId}/images                - отображение всех изображений собственности {propertyId}
+  /moderation/property/{propertyId}/approve               - одобрить собственность {propertyId}
+  /moderation/property/{propertyId}/disapprove            - убрать одобрение собственности {propertyId}
+  /moderation/property/{propertyId}/ban                   - забанить собственность {propertyId}
+  /moderation/property/{propertyId}/unban                 - разбанить собственность {propertyId}
+
+  TODO: /moderation/property-images                       - отображение всех изображений собственности по критериям поиска
+  /moderation/property-images/{imageId}                   - отображение изображения {imageId}
+  /moderation/property-images/{imageId}/approve           - одобрить {imageId}
+  /moderation/property-images/{imageId}/disapprove        - убрать одобрение изображения {imageId}
