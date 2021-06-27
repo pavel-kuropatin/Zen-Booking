@@ -1,7 +1,7 @@
 package com.kuropatin.bookingapp.security.controller;
 
-import com.kuropatin.bookingapp.security.request.AuthRequest;
-import com.kuropatin.bookingapp.security.response.AuthResponse;
+import com.kuropatin.bookingapp.security.request.LoginRequest;
+import com.kuropatin.bookingapp.security.response.LoginResponse;
 import com.kuropatin.bookingapp.security.util.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,20 +25,16 @@ public class LoginController {
     private final UserDetailsService userDetailsService;
 
     @PostMapping
-    public ResponseEntity<AuthResponse> loginUser(@RequestBody AuthRequest authRequest) {
-
-        /*Check login and password*/
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-
-        /*Generate token with answer to user*/
         return ResponseEntity.ok(
-                AuthResponse
+                LoginResponse
                         .builder()
-                        .login(authRequest.getLogin())
-                        .token(tokenUtils.generateToken(userDetailsService.loadUserByUsername(authRequest.getLogin())))
+                        .login(loginRequest.getLogin())
+                        .token(tokenUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin())))
                         .build()
         );
     }

@@ -1,7 +1,7 @@
 package com.kuropatin.bookingapp.security.service;
 
 import com.kuropatin.bookingapp.model.User;
-import com.kuropatin.bookingapp.security.util.SecuredUser;
+import com.kuropatin.bookingapp.security.model.SecurityUser;
 import com.kuropatin.bookingapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userService.getUserByLogin(username);
-        return new SecuredUser(
+        return new SecurityUser(
                 user.getId(),
                 user.getLogin(),
                 user.getPassword(),
