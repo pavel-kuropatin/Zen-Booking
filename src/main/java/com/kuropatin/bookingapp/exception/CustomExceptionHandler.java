@@ -44,6 +44,16 @@ class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.PAYMENT_REQUIRED);
     }
 
+    @ExceptionHandler(LoginAlreadyInUseException.class)
+    protected ResponseEntity<Object> loginAlreadyInUseHandler(LoginAlreadyInUseException e) {
+        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(EmailAlreadyInUseException.class)
+    protected ResponseEntity<Object> emailAlreadyInUseHandler(EmailAlreadyInUseException e) {
+        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @ExceptionHandler(SQLException.class)
     protected ResponseEntity<Object> sqlExceptionHandler(SQLException e) {
         return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
