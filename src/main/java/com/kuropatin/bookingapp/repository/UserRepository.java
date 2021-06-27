@@ -24,6 +24,18 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "UPDATE users SET deleted = true WHERE id = ?1", nativeQuery = true)
     void softDeleteUser(Long id);
 
+    @Query(value = "SELECT EXISTS(SELECT login FROM users WHERE login = ?1)", nativeQuery = true)
+    boolean isLoginInUse(String login);
+
+    @Query(value = "SELECT EXISTS(SELECT email FROM users WHERE deleted = false AND email = ?1)", nativeQuery = true)
+    boolean isEmailInUse(String email);
+
+    @Query(value = "SELECT banned FROM users WHERE id = ?1", nativeQuery = true)
+    boolean isBanned(long id);
+
+    @Query(value = "SELECT deleted FROM users WHERE id = ?1", nativeQuery = true)
+    boolean isDeleted(long id);
+
     @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false ORDER BY id", nativeQuery = true)
     List<User> findAllBannedUsers();
 
