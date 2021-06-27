@@ -28,7 +28,7 @@
 
   Эндпоинты для юзеров:
 
-  TODO: /register/                                        - регистрация
+  /register/                                              - регистрация
   /login/                                                 - логин
   TODO: /logout/                                          - логаут
 
@@ -65,4 +65,11 @@
   TODO: /login/                                           - логин
   TODO: /logout/                                          - логаут
 
-  TODO:
+  TODO: /admin/                                           - действия для админов
+
+  TODO: /moderation/users/                                - отображение всех пользователей
+  TODO: /moderation/users/{userId}/                       - отображение пользователя {userId}
+  TODO: /moderation/users/{userId}/ban/                   - забанить пользователя {userId}
+  TODO: /moderation/users/{userId}/unban/                 - разбанить пользователя {userId}
+  TODO: /moderation/banned-users/                         - отображение всех забаненных пользователей
+  TODO: /moderation/banned-users/{userId}/                - отображение забаненного пользователя {userId}
