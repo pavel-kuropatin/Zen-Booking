@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.service;
 
+import com.kuropatin.bookingapp.exception.EmailAlreadyInUseException;
 import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
+import com.kuropatin.bookingapp.exception.LoginAlreadyInUseException;
 import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
@@ -42,6 +44,12 @@ public class UserService {
     }
 
     public User createUser(UserRequest userRequest) {
+        if(repository.isLoginInUse(userRequest.getLogin())) {
+            throw new LoginAlreadyInUseException(userRequest.getLogin());
+        }
+        if(repository.isEmailInUse(userRequest.getEmail())) {
+            throw new EmailAlreadyInUseException(userRequest.getEmail());
+        }
         User user = UserRequest.transformToNewUser(userRequest);
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(user.getCreated());
@@ -49,6 +57,12 @@ public class UserService {
     }
 
     public User updateUser(Long id, UserRequest userRequest) {
+        if(repository.isLoginInUse(userRequest.getLogin())) {
+            throw new LoginAlreadyInUseException(userRequest.getLogin());
+        }
+        if(repository.isEmailInUse(userRequest.getEmail())) {
+            throw new EmailAlreadyInUseException(userRequest.getEmail());
+        }
         User userToUpdate = getUserById(id);
         UserRequest.transformToUser(userRequest, userToUpdate);
         userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
@@ -56,6 +70,9 @@ public class UserService {
     }
 
     public User deposit(Long id, AmountRequest amountRequest) {
+        if(repository.isBanned(id) || repository.isDeleted(id)) {
+            throw new UserNotFoundException(id);
+        }
         User user = getUserById(id);
         user.setBalance(user.getBalance() + amountRequest.getAmount());
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
@@ -87,11 +104,11 @@ public class UserService {
         }
     }
 
-    public List<User> findAllBannedUsers(){
+    public List<User> getAllBannedUsers(){
         return repository.findAllBannedUsers();
     }
 
-    public User findBannedUserById(Long id){
+    public User getBannedUserById(Long id){
         if(repository.existsById(id)) {
             return repository.findBannedUserById(id);
         } else {
