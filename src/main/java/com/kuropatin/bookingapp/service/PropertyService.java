@@ -4,6 +4,7 @@ import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.PropertyRequest;
+import com.kuropatin.bookingapp.model.searchcriteria.PropertySearchCriteria;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,11 @@ public class PropertyService {
 
     private final PropertyRepository repository;
     private final UserService userService;
+
+    public List<Property> searchProperty(PropertySearchCriteria propertySearchCriteria) {
+        //TODO: implement search
+        return repository.findAllProperty();
+    }
 
     public List<Property> getAllPropertyOfUser(Long userId) {
         return repository.findAllPropertyOfUser(userId);
@@ -54,30 +60,6 @@ public class PropertyService {
         if(repository.existsById(propertyId)) {
             repository.softDeleteProperty(propertyId);
             return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
-
-    public List<Property> getAllNotApprovedProperty(){
-        return repository.findAllNotApprovedProperty();
-    }
-
-    public Property getNotApprovedPropertyById(Long propertyId){
-        if(repository.existsById(propertyId)) {
-            return repository.findNotApprovedPropertyById(propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
-
-    public List<Property> getAllBannedProperty(){
-        return repository.findAllBannedProperty();
-    }
-
-    public Property getBannedPropertyById(Long propertyId){
-        if(repository.existsById(propertyId)) {
-            return repository.findBannedPropertyById(propertyId);
         } else {
             throw new PropertyNotFoundException(propertyId);
         }

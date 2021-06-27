@@ -36,12 +36,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "SELECT deleted FROM users WHERE id = ?1", nativeQuery = true)
     boolean isDeleted(long id);
 
-    @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false ORDER BY id", nativeQuery = true)
-    List<User> findAllBannedUsers();
-
-    @Query(value = "SELECT * FROM users WHERE banned = true AND deleted = false AND id = ?1", nativeQuery = true)
-    User findBannedUserById(Long id);
-
     @Modifying
     @Transactional
     @Query(value = "UPDATE users SET banned = true WHERE id = ?1", nativeQuery = true)

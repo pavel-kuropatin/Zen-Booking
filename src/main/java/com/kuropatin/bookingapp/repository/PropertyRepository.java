@@ -10,6 +10,9 @@ import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
+    @Query(value = "SELECT * FROM property WHERE approved = true AND banned = false AND deleted = false ORDER BY id", nativeQuery = true)
+    List<Property> findAllProperty();
+
     @Query(value = "SELECT * FROM property WHERE approved = true AND banned = false AND deleted = false AND user_id = ?1 ORDER BY id", nativeQuery = true)
     List<Property> findAllPropertyOfUser(Long userId);
 
@@ -20,18 +23,6 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
     @Transactional
     @Query(value = "UPDATE property SET deleted = true WHERE id = ?1", nativeQuery = true)
     void softDeleteProperty(Long propertyId);
-
-    @Query(value = "SELECT * FROM property WHERE approved = false AND banned = false AND deleted = false ORDER BY id", nativeQuery = true)
-    List<Property> findAllNotApprovedProperty();
-
-    @Query(value = "SELECT * FROM property WHERE approved = false AND banned = false AND deleted = false AND id = ?1", nativeQuery = true)
-    Property findNotApprovedPropertyById(Long propertyId);
-
-    @Query(value = "SELECT * FROM property WHERE banned = true AND deleted = false ORDER BY id", nativeQuery = true)
-    List<Property> findAllBannedProperty();
-
-    @Query(value = "SELECT * FROM property WHERE banned = true AND deleted = false AND id = ?1", nativeQuery = true)
-    Property findBannedPropertyById(Long propertyId);
 
     @Modifying
     @Transactional

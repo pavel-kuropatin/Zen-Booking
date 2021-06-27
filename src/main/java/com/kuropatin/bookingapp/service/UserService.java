@@ -7,6 +7,7 @@ import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
 import com.kuropatin.bookingapp.model.request.UserRequest;
+import com.kuropatin.bookingapp.model.searchcriteria.UserSearchCriteria;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,8 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public List<User> getAllUsers() {
+    public List<User> searchUsers(UserSearchCriteria userSearchCriteria) {
+        //TODO: implement search
         return repository.findAllUsers();
     }
 
@@ -99,18 +101,6 @@ public class UserService {
         if(repository.existsById(id)) {
             repository.softDeleteUser(id);
             return MessageFormat.format("User with id: {0} successfully deleted", id);
-        } else {
-            throw new UserNotFoundException(id);
-        }
-    }
-
-    public List<User> getAllBannedUsers(){
-        return repository.findAllBannedUsers();
-    }
-
-    public User getBannedUserById(Long id){
-        if(repository.existsById(id)) {
-            return repository.findBannedUserById(id);
         } else {
             throw new UserNotFoundException(id);
         }
