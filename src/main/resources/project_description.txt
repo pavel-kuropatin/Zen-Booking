@@ -1,5 +1,6 @@
   Букинг:
 
+- Для использования сервиса пользователь должен зарегистрироваться.
 - Зарегистрированный пользователь может снимать жильё и/или сдавать его.
 - Съём доступен сразу после регистрации.
 - Клиенты могут снимать апартаменты на определённое число дней, бронировать, а также отказываться от брони, если дата съёма не наступила.
@@ -59,6 +60,7 @@
 
   TODO: /reviews                                          - просмотр всех отзывов пользователя
   TODO: /reviews/{reviewId}                               - просмотр отзыва {reviewId} пользователя
+  TODO: /reviews/...                                      - TODO: просмотр заказов к которым можно оставить отзыв
 
   Эндпоинты для администрации:
 
@@ -74,14 +76,8 @@
   /moderation/users/{userId}/unban                        - разбанить пользователя {userId}
 
   TODO: /moderation/property                              - отображение всей собственности по критериям поиска
-  /moderation/property/{propertyId}                       - отображение собственности {propertyId}
+  TODO: /moderation/property/{propertyId}                 - отображение/удаление собственности {propertyId}
   /moderation/property/{propertyId}/images                - отображение всех изображений собственности {propertyId}
-  /moderation/property/{propertyId}/approve               - одобрить собственность {propertyId}
-  /moderation/property/{propertyId}/disapprove            - убрать одобрение собственности {propertyId}
-  /moderation/property/{propertyId}/ban                   - забанить собственность {propertyId}
-  /moderation/property/{propertyId}/unban                 - разбанить собственность {propertyId}
 
   TODO: /moderation/property-images                       - отображение всех изображений собственности по критериям поиска
-  /moderation/property-images/{imageId}                   - отображение изображения {imageId}
-  /moderation/property-images/{imageId}/approve           - одобрить {imageId}
-  /moderation/property-images/{imageId}/disapprove        - убрать одобрение изображения {imageId}
+  /moderation/property-images/{imageId}                   - отображение/удаление изображения {imageId}

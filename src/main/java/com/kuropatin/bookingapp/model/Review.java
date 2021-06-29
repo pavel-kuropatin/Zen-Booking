@@ -35,10 +35,7 @@ public class Review {
     @Column(name = "rating")
     private byte rating;
 
-    @Column(name = "approved")
-    private boolean isApproved = false;
-
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     @Column(name = "created")

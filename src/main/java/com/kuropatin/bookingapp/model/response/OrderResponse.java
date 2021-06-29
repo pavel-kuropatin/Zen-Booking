@@ -42,7 +42,7 @@ public class OrderResponse {
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
-        orderResponse.setAcceptedByHost(order.isAcceptedByHost());
+        orderResponse.setAcceptedByHost(order.isAccepted());
         orderResponse.setCancelled(order.isCancelled());
         orderResponse.setFinished(order.isFinished());
         orderResponse.setPropertyId(order.getProperty().getId());

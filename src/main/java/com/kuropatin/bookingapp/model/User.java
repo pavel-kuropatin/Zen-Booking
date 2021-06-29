@@ -58,10 +58,10 @@ public class User {
     @Column(name = "balance")
     private int balance = 0;
 
-    @Column(name = "banned")
+    @Column(name = "is_banned")
     private boolean isBanned = false;
 
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     @Column(name = "created")

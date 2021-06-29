@@ -35,7 +35,7 @@ public class ModerationController {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/{userId}/get-all-property")
     public ResponseEntity<List<Property>> getAllPropertyOfUser(@PathVariable long userId) {
         return new ResponseEntity<>(propertyService.getAllPropertyOfUser(userId), HttpStatus.OK);
     }
@@ -60,48 +60,18 @@ public class ModerationController {
         return new ResponseEntity<>(propertyService.getPropertyById(propertyId), HttpStatus.OK);
     }
 
-    @GetMapping("/property/{propertyId}")
+    @GetMapping("/property/{propertyId}/images")
     public ResponseEntity<List<PropertyImage>> getAllImagesOfProperty(@PathVariable long propertyId) {
         return new ResponseEntity<>(propertyImageService.getAllImagesOfProperty(propertyId), HttpStatus.OK);
     }
 
-    @PutMapping("/property/{propertyId}/approve")
-    public ResponseEntity<Property> approveProperty(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyService.approveProperty(propertyId), HttpStatus.OK);
-    }
-
-    @PutMapping("/property/{propertyId}/disapprove")
-    public ResponseEntity<Property> disapproveProperty(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyService.disapproveProperty(propertyId), HttpStatus.OK);
-    }
-
-    @PutMapping("/property/{propertyId}/ban")
-    public ResponseEntity<Property> banProperty(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyService.banProperty(propertyId), HttpStatus.OK);
-    }
-
-    @PutMapping("/property/{propertyId}/unban")
-    public ResponseEntity<Property> unbanProperty(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyService.unbanProperty(propertyId), HttpStatus.OK);
-    }
-
-    @GetMapping("/property")
+    @GetMapping("/property-image")
     public ResponseEntity<List<PropertyImage>> searchPropertyImage(@RequestBody PropertyImageSearchCriteria propertyImageSearchCriteria) {
         return new ResponseEntity<>(propertyImageService.searchImages(propertyImageSearchCriteria), HttpStatus.OK);
     }
 
-    @GetMapping("/property/{propertyId}")
-    public ResponseEntity<PropertyImage> getPropertyImageById(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyImageService.getPropertyImageById(propertyId), HttpStatus.OK);
-    }
-
-    @PutMapping("/property/{propertyId}/approve")
-    public ResponseEntity<PropertyImage> approvePropertyImage(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyImageService.approvePropertyImage(propertyId), HttpStatus.OK);
-    }
-
-    @PutMapping("/property/{propertyId}/disapprove")
-    public ResponseEntity<PropertyImage> disapprovePropertyImage(@PathVariable long propertyId) {
-        return new ResponseEntity<>(propertyImageService.disapprovePropertyImage(propertyId), HttpStatus.OK);
+    @GetMapping("/property-image/{imageId}")
+    public ResponseEntity<PropertyImage> getPropertyImageById(@PathVariable long imageId) {
+        return new ResponseEntity<>(propertyImageService.getPropertyImageById(imageId), HttpStatus.OK);
     }
 }

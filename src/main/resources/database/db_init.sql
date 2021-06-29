@@ -6,8 +6,8 @@ create table admins(
     login          varchar(20)                        not null,
     password       varchar(50)                        not null,
     displayed_name varchar(20)                        not null,
-    suspended      boolean      default false         not null,
-    deleted        boolean      default false         not null,
+    is_suspended   boolean      default false         not null,
+    is_deleted     boolean      default false         not null,
     created        timestamp(6)                       not null,
     updated        timestamp(6)                       not null
 );
@@ -28,10 +28,10 @@ create index admins_displayed_name_index
     on admins (displayed_name);
 
 create index admins_suspended_index
-    on admins (suspended);
+    on admins (is_suspended);
 
 create index admins_deleted_index
-    on admins (deleted);
+    on admins (is_deleted);
 
 create table users(
     id         bigserial                        not null constraint users_pk primary key,
@@ -45,8 +45,8 @@ create table users(
     email      varchar(50)                      not null,
     phone      varchar(20)                      not null,
     balance    bigint       default 0           not null,
-    banned     boolean      default false       not null,
-    deleted    boolean      default false       not null,
+    is_banned  boolean      default false       not null,
+    is_deleted boolean      default false       not null,
     created    timestamp(6)                     not null,
     updated    timestamp(6)                     not null
 );
@@ -85,38 +85,34 @@ create index users_balance_index
     on users (balance);
 
 create index users_banned_index
-    on users (banned);
+    on users (is_banned);
 
 create index users_deleted_index
-    on users (deleted);
+    on users (is_deleted);
 
 create table property(
-    id           bigserial                  not null constraint property_pk primary key,
-    user_id      bigint                     not null constraint property_user_id_fk references users,
-    type         varchar(9)                 not null,
-    name         varchar(20)                not null,
-    description  varchar(500)               not null,
-    country      varchar(50)                not null,
-    region       varchar(50)                not null,
-    city         varchar(50)                not null,
-    street       varchar(50)                not null,
-    building     varchar(10)                not null,
-    apartment    varchar(10)  default '',
-    price        integer                    not null,
-    guests       smallint                   not null,
-    rooms        smallint                   not null,
-    beds         smallint                   not null,
-    kitchen      boolean      default false not null,
-    washer       boolean      default false not null,
-    tv           boolean      default false not null,
-    internet     boolean      default false not null,
-    pets_allowed boolean      default false not null,
-    available    boolean      default false not null,
-    approved     boolean      default false not null,
-    banned       boolean      default false not null,
-    deleted      boolean      default false not null,
-    created      timestamp(6)               not null,
-    updated      timestamp(6)               not null
+    id              bigserial                  not null constraint property_pk primary key,
+    user_id         bigint                     not null constraint property_user_id_fk references users,
+    type            varchar(9)                 not null,
+    name            varchar(20)                not null,
+    description     varchar(500)               not null,
+    country         varchar(50)                not null,
+    region          varchar(50)                not null,
+    city            varchar(50)                not null,
+    address         varchar(50)                not null,
+    price           integer                    not null,
+    guests          smallint                   not null,
+    rooms           smallint                   not null,
+    beds            smallint                   not null,
+    has_kitchen     boolean      default false not null,
+    has_washer      boolean      default false not null,
+    has_tv          boolean      default false not null,
+    has_internet    boolean      default false not null,
+    is_pets_allowed boolean      default false not null,
+    is_available    boolean      default false not null,
+    is_deleted      boolean      default false not null,
+    created         timestamp(6)               not null,
+    updated         timestamp(6)               not null
 );
 
 alter table property
@@ -143,14 +139,8 @@ create index property_region_index
 create index property_city_index
     on property (city);
 
-create index property_street_index
-    on property (street);
-
-create index property_building_index
-    on property (building);
-
-create index property_apartment_index
-    on property (apartment);
+create index property_address_index
+    on property (address);
 
 create index property_price_index
     on property (price);
@@ -165,38 +155,31 @@ create index property_beds_index
     on property (beds);
 
 create index property_kitchen_index
-    on property (kitchen);
+    on property (has_kitchen);
 
 create index property_washer_index
-    on property (washer);
+    on property (has_washer);
 
 create index property_tv_index
-    on property (tv);
+    on property (has_tv);
 
 create index property_internet_index
-    on property (internet);
+    on property (has_internet);
 
 create index property_pets_allowed_index
-    on property (pets_allowed);
+    on property (is_pets_allowed);
 
 create index property_available_index
-    on property (available);
-
-create index property_approved_index
-    on property (approved);
-
-create index property_banned_index
-    on property (banned);
+    on property (is_available);
 
 create index property_deleted_index
-    on property (deleted);
+    on property (is_deleted);
 
 create table property_image(
     id          bigserial                  not null constraint property_image_pk primary key,
     property_id bigint                     not null constraint property_image_property_id_fk references property,
     img_url     varchar(255)               not null,
-    approved    boolean      default false not null,
-    deleted     boolean      default false not null,
+    is_deleted  boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
 );
@@ -210,11 +193,8 @@ create unique index property_image_id_uindex
 create index property_image_apartment_id_index
     on property_image (property_id);
 
-create index property_image_approved_index
-    on property_image (approved);
-
 create index property_image_deleted_index
-    on property_image (deleted);
+    on property_image (is_deleted);
 
 create table orders(
     id               bigserial                  not null constraint orders_pk primary key,
@@ -223,9 +203,9 @@ create table orders(
     total_price      integer                    not null,
     start_date       date                       not null,
     end_date         date                       not null,
-    accepted_by_host boolean      default false not null,
-    cancelled        boolean      default false not null,
-    finished         boolean      default false not null,
+    is_accepted      boolean      default false not null,
+    is_cancelled     boolean      default false not null,
+    is_finished      boolean      default false not null,
     created          timestamp(6)               not null,
     updated          timestamp(6)               not null
 );
@@ -252,13 +232,13 @@ create index orders_end_date_index
     on orders (end_date);
 
 create index orders_accepted_by_host_index
-    on orders (accepted_by_host);
+    on orders (is_accepted);
 
 create index orders_apartment_cancelled_index
-    on orders (cancelled);
+    on orders (is_cancelled);
 
 create index orders_apartment_finished_index
-    on orders (finished);
+    on orders (is_finished);
 
 create table review(
     id          bigserial                  not null constraint review_pk primary key,
@@ -266,8 +246,7 @@ create table review(
     summary     varchar(100)               not null,
     description varchar(500)               not null,
     rating      smallint                   not null,
-    approved    boolean      default false not null,
-    deleted     boolean      default false not null,
+    is_deleted  boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
 );
@@ -283,9 +262,3 @@ create index review_order_id_index
 
 create index review_rating_index
     on review (rating);
-
-create index review_approved_index
-    on review (approved);
-
-create index review_deleted_index
-    on review (deleted);

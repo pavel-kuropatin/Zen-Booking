@@ -22,9 +22,7 @@ public class PropertyResponse {
     private String country;
     private String region;
     private String city;
-    private String street;
-    private String building;
-    private String apartment;
+    private String address;
     private int price;
     private short guests;
     private short rooms;
@@ -35,7 +33,6 @@ public class PropertyResponse {
     private boolean hasInternet;
     private boolean isPetsAllowed;
     private boolean isAvailable;
-    private boolean isApproved;
 
     public static PropertyResponse transformToNewPropertyResponse(Property property) {
         PropertyResponse propertyResponse = new PropertyResponse();
@@ -58,9 +55,7 @@ public class PropertyResponse {
         propertyResponse.setCountry(property.getCountry());
         propertyResponse.setRegion(property.getRegion());
         propertyResponse.setCity(property.getCity());
-        propertyResponse.setStreet(property.getStreet());
-        propertyResponse.setBuilding(property.getBuilding());
-        propertyResponse.setApartment(property.getApartment());
+        propertyResponse.setAddress(property.getAddress());
         propertyResponse.setPrice(property.getPrice());
         propertyResponse.setGuests(property.getGuests());
         propertyResponse.setRooms(property.getRooms());
@@ -71,7 +66,6 @@ public class PropertyResponse {
         propertyResponse.setHasInternet(property.isHasInternet());
         propertyResponse.setPetsAllowed(property.isPetsAllowed());
         propertyResponse.setAvailable(property.isAvailable());
-        propertyResponse.setApproved(property.isApproved());
         return propertyResponse;
     }
 }

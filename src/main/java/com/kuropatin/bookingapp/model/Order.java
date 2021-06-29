@@ -34,13 +34,13 @@ public class Order {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "accepted_by_host")
-    private boolean isAcceptedByHost = false;
+    @Column(name = "is_accepted")
+    private boolean isAccepted = false;
 
-    @Column(name = "cancelled")
+    @Column(name = "is_cancelled")
     private boolean isCancelled = false;
 
-    @Column(name = "finished")
+    @Column(name = "is_finished")
     private boolean isFinished = false; //TODO: add system timer to finish the order
 
     @Column(name = "created")

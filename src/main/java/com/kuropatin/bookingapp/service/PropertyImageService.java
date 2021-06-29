@@ -58,20 +58,4 @@ public class PropertyImageService {
             throw new PropertyImageNotFoundException(imageId);
         }
     }
-
-    public PropertyImage approvePropertyImage(Long imageId){
-        if(repository.existsById(imageId)) {
-            return repository.approvePropertyImage(imageId);
-        } else {
-            throw new PropertyImageNotFoundException(imageId);
-        }
-    }
-
-    public PropertyImage disapprovePropertyImage(Long imageId){
-        if(repository.existsById(imageId)) {
-            return repository.disapprovePropertyImage(imageId);
-        } else {
-            throw new PropertyImageNotFoundException(imageId);
-        }
-    }
 }

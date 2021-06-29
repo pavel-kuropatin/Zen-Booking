@@ -45,14 +45,8 @@ public class Property {
     @Column(name = "city")
     private String city;
 
-    @Column(name = "street")
-    private String street;
-
-    @Column(name = "building")
-    private String building;
-
-    @Column(name = "apartment")
-    private String apartment = "";
+    @Column(name = "address")
+    private String address;
 
     @Column(name = "price")
     private int price;
@@ -66,31 +60,25 @@ public class Property {
     @Column(name = "beds")
     private short beds;
 
-    @Column(name = "kitchen")
+    @Column(name = "has_kitchen")
     private boolean hasKitchen;
 
-    @Column(name = "washer")
+    @Column(name = "has_washer")
     private boolean hasWasher;
 
-    @Column(name = "tv")
+    @Column(name = "has_tv")
     private boolean hasTv;
 
-    @Column(name = "internet")
+    @Column(name = "has_internet")
     private boolean hasInternet;
 
-    @Column(name = "pets_allowed")
+    @Column(name = "is_pets_allowed")
     private boolean isPetsAllowed;
 
-    @Column(name = "available")
+    @Column(name = "is_available")
     private boolean isAvailable;
 
-    @Column(name = "approved")
-    private boolean isApproved;
-
-    @Column(name = "banned")
-    private boolean isBanned;
-
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted;
 
     @Column(name = "created")
