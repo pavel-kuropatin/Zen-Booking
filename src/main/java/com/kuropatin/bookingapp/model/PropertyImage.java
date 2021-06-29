@@ -27,10 +27,7 @@ public class PropertyImage {
     @Column(name = "img_url")
     private String imgUrl;
 
-    @Column(name = "approved")
-    private boolean isApproved = false;
-
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     @Column(name = "created")

@@ -64,36 +64,4 @@ public class PropertyService {
             throw new PropertyNotFoundException(propertyId);
         }
     }
-
-    public Property approveProperty(Long propertyId){
-        if(repository.existsById(propertyId)) {
-            return repository.approveProperty(propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
-
-    public Property disapproveProperty(Long propertyId){
-        if(repository.existsById(propertyId)) {
-            return repository.disapproveProperty(propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
-
-    public Property banProperty(Long propertyId) {
-        if(repository.existsById(propertyId)) {
-            return repository.banProperty(propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
-
-    public Property unbanProperty(Long propertyId) {
-        if(repository.existsById(propertyId)) {
-            return repository.unbanProperty(propertyId);
-        } else {
-            throw new PropertyNotFoundException(propertyId);
-        }
-    }
 }

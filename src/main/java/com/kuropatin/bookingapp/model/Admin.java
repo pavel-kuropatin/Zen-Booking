@@ -36,10 +36,10 @@ public class Admin {
     @Column(name = "displayed_name")
     private String displayedName;
 
-    @Column(name = "suspended")
+    @Column(name = "is_suspended")
     private boolean isSuspended = false;
 
-    @Column(name = "deleted")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     @Column(name = "created")

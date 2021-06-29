@@ -16,7 +16,6 @@ import java.util.List;
 public class PropertyImageResponse {
 
     private String imgUrl;
-    private boolean isApproved;
 
     public static PropertyImageResponse transformToNewPropertyImageResponse(PropertyImage propertyImage) {
         PropertyImageResponse propertyImageResponse = new PropertyImageResponse();
@@ -34,7 +33,6 @@ public class PropertyImageResponse {
 
     public static PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
         propertyImageResponse.setImgUrl(propertyImage.getImgUrl());
-        propertyImageResponse.setApproved(propertyImage.isApproved());
         return propertyImageResponse;
     }
 }

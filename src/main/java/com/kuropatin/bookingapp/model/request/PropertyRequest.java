@@ -13,15 +13,13 @@ import lombok.Setter;
 @Setter
 public class PropertyRequest {
 
-    private PropertyType type = PropertyType.OTHER;
+    private PropertyType type;
     private String name;
     private String description;
     private String country;
     private String region;
     private String city;
-    private String street;
-    private String building;
-    private String apartment = "";
+    private String address;
     private int price;
     private short guests;
     private short rooms;
@@ -46,9 +44,7 @@ public class PropertyRequest {
         property.setCountry(propertyRequest.getCountry());
         property.setRegion(propertyRequest.getRegion());
         property.setCity(propertyRequest.getCity());
-        property.setStreet(propertyRequest.getStreet());
-        property.setBuilding(propertyRequest.getBuilding());
-        property.setApartment(propertyRequest.getApartment());
+        property.setAddress(propertyRequest.getAddress());
         property.setPrice(propertyRequest.getPrice());
         property.setGuests(propertyRequest.getGuests());
         property.setRooms(propertyRequest.getRooms());
