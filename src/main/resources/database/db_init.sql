@@ -1,15 +1,15 @@
 drop table if exists review, orders, property_image, property, users, admins cascade;
 
 create table admins(
-    id             bigserial                          not null constraint admins_pk primary key,
-    role           varchar(10)  default 'ROLE_MODER'  not null,
-    login          varchar(20)                        not null,
-    password       varchar(50)                        not null,
-    displayed_name varchar(20)                        not null,
-    is_suspended   boolean      default false         not null,
-    is_deleted     boolean      default false         not null,
-    created        timestamp(6)                       not null,
-    updated        timestamp(6)                       not null
+    id             bigserial                         not null constraint admins_pk primary key,
+    role           varchar(10)  default 'ROLE_MODER' not null,
+    login          varchar(20)                       not null,
+    password       varchar(50)                       not null,
+    displayed_name varchar(20)                       not null,
+    is_suspended   boolean      default false        not null,
+    is_deleted     boolean      default false        not null,
+    created        timestamp(6)                      not null,
+    updated        timestamp(6)                      not null
 );
 
 alter table admins
@@ -27,10 +27,10 @@ create unique index admins_login_uindex
 create index admins_displayed_name_index
     on admins (displayed_name);
 
-create index admins_suspended_index
+create index admins_is_suspended_index
     on admins (is_suspended);
 
-create index admins_deleted_index
+create index admins_is_deleted_index
     on admins (is_deleted);
 
 create table users(
@@ -84,22 +84,22 @@ create index users_phone_index
 create index users_balance_index
     on users (balance);
 
-create index users_banned_index
+create index users_is_banned_index
     on users (is_banned);
 
-create index users_deleted_index
+create index users_is_deleted_index
     on users (is_deleted);
 
 create table property(
     id              bigserial                  not null constraint property_pk primary key,
     user_id         bigint                     not null constraint property_user_id_fk references users,
     type            varchar(9)                 not null,
-    name            varchar(20)                not null,
+    name            varchar(100)               not null,
     description     varchar(500)               not null,
     country         varchar(50)                not null,
     region          varchar(50)                not null,
     city            varchar(50)                not null,
-    address         varchar(50)                not null,
+    address         varchar(100)               not null,
     price           integer                    not null,
     guests          smallint                   not null,
     rooms           smallint                   not null,
@@ -154,31 +154,31 @@ create index property_rooms_index
 create index property_beds_index
     on property (beds);
 
-create index property_kitchen_index
+create index property_has_kitchen_index
     on property (has_kitchen);
 
-create index property_washer_index
+create index property_has_washer_index
     on property (has_washer);
 
-create index property_tv_index
+create index property_has_tv_index
     on property (has_tv);
 
-create index property_internet_index
+create index property_has_internet_index
     on property (has_internet);
 
-create index property_pets_allowed_index
+create index property_is_pets_allowed_index
     on property (is_pets_allowed);
 
-create index property_available_index
+create index property_is_available_index
     on property (is_available);
 
-create index property_deleted_index
+create index property_is_deleted_index
     on property (is_deleted);
 
 create table property_image(
     id          bigserial                  not null constraint property_image_pk primary key,
     property_id bigint                     not null constraint property_image_property_id_fk references property,
-    img_url     varchar(255)               not null,
+    img_url     varchar(250)               not null,
     is_deleted  boolean      default false not null,
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
@@ -197,17 +197,17 @@ create index property_image_deleted_index
     on property_image (is_deleted);
 
 create table orders(
-    id               bigserial                  not null constraint orders_pk primary key,
-    user_id          bigint                     not null constraint orders_user_id_fk references users,
-    property_id      bigint                     not null constraint orders_property_id_fk references property,
-    total_price      integer                    not null,
-    start_date       date                       not null,
-    end_date         date                       not null,
-    is_accepted      boolean      default false not null,
-    is_cancelled     boolean      default false not null,
-    is_finished      boolean      default false not null,
-    created          timestamp(6)               not null,
-    updated          timestamp(6)               not null
+    id           bigserial                  not null constraint orders_pk primary key,
+    user_id      bigint                     not null constraint orders_user_id_fk references users,
+    property_id  bigint                     not null constraint orders_property_id_fk references property,
+    total_price  integer                    not null,
+    start_date   date                       not null,
+    end_date     date                       not null,
+    is_accepted  boolean      default false not null,
+    is_cancelled boolean      default false not null,
+    is_finished  boolean      default false not null,
+    created      timestamp(6)               not null,
+    updated      timestamp(6)               not null
 );
 
 alter table orders
@@ -231,13 +231,13 @@ create index orders_start_date_index
 create index orders_end_date_index
     on orders (end_date);
 
-create index orders_accepted_by_host_index
+create index orders_is_accepted_index
     on orders (is_accepted);
 
-create index orders_apartment_cancelled_index
+create index orders_is_cancelled_index
     on orders (is_cancelled);
 
-create index orders_apartment_finished_index
+create index orders_apartment_is_finished_index
     on orders (is_finished);
 
 create table review(
@@ -262,3 +262,6 @@ create index review_order_id_index
 
 create index review_rating_index
     on review (rating);
+
+create index review_is_deleted_index
+    on review (is_deleted);

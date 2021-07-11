@@ -27,31 +27,31 @@
 - TODO: Модераторы могут просматривать историю своих действий.
 - TODO: Добавить строки чтобы было видно кто подтвердил или забанил.
 
-  Эндпоинты для юзеров:
+  Эндпоинты для юзеров ({userId} текущего юзера берётся из токена аутентификации):
 
   /register                                               - регистрация
   /login                                                  - логин
   TODO: /logout                                           - логаут
 
-  /profile                                                - просмотр/изменение данных/удаление данных пользователя
-  /profile/deposit                                        - добавление денег на аккаунт пользователя
+  /profile                                                - просмотр/изменение данных/удаление данных залогиненого пользователя
+  /profile/deposit                                        - добавление денег на аккаунт залогиненого пользователя
 
   /hosting/property                                       - просмотр всей собственности/добавление собственности
   /hosting/property/{propertyId}                          - просмотр/изменение/удаление собственности {propertyId}
-  /hosting/property/{propertyId}/images                   - просмотр всех изображений/добавление изображения
-  /hosting/property/{propertyId}/images/{imageId}         - просмотр/изменение/удаление изображения {imageId}
+  /hosting/property/{propertyId}/images                   - просмотр всех изображений/добавление изображения собственности {propertyId}
+  /hosting/property/{propertyId}/images/{imageId}         - просмотр/изменение/удаление изображения {imageId} собственности {propertyId}
   TODO: /hosting/property/{propertyId}/reviews            - просмотр всех отзывов о собственности {propertyId}
   TODO: /hosting/property/{propertyId}/reviews/{reviewId} - просмотр отзыва {reviewId} о собственности {propertyId}
 
-  TODO: /hosting/requests                                 - просмотр всех входящих заказов
-  TODO: /hosting/requests/{orderId}                       - просмотр/принятие/отклонение заказа {orderId}
-  TODO: /hosting/requests/{orderId}/accept                - принятие входящего заказа
-  TODO: /hosting/requests/{orderId}/decline               - отклонение входящего заказа
+  /hosting/requests                                       - просмотр всех входящих заказов
+  /hosting/requests/{orderId}                             - просмотр/принятие/отклонение заказа {orderId}
+  /hosting/requests/{orderId}/accept                      - принятие входящего заказа
+  /hosting/requests/{orderId}/decline                     - отклонение входящего заказа
 
   TODO: /booking                                          - поиск собственности, доступной для заказа
   TODO: /booking/{propertyId}                             - просмотр собственности {propertyId} и её заказ
-  TODO: /booking/{propertyId}/images                      - просмотр всех изображений/добавление изображения
-  TODO: /booking/{propertyId}/images/{imageId}            - просмотр/изменение/удаление изображения {imageId}
+  TODO: /booking/{propertyId}/images                      - просмотр всех изображений собственности {propertyId}
+  TODO: /booking/{propertyId}/images/{imageId}            - просмотр  изображения {imageId}
   TODO: /booking/{propertyId}/reviews                     - просмотр всех отзывов о собственности {propertyId}
   TODO: /booking/{propertyId}/reviews/{reviewId}          - просмотр отзыва {reviewId} о собственности {propertyId}
 
