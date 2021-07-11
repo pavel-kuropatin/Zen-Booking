@@ -10,14 +10,21 @@ import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
 
-    @Query(value = "SELECT * FROM property_image WHERE is_deleted = false ORDER BY id", nativeQuery = true)
-    List<PropertyImage> findAllImages();
+    @Query(value = "SELECT EXISTS(SELECT i.* FROM property_image i\n" +
+                                 "INNER JOIN property p ON i.property_id = ?3 AND p.user_id = ?2\n" +
+                                 "WHERE p.is_deleted = false AND i.is_deleted = false AND i.id = ?1)", nativeQuery = true)
+    boolean existsByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
 
-    @Query(value = "SELECT * FROM property_image WHERE is_deleted = false AND property_id = ?1 ORDER BY id", nativeQuery = true)
-    List<PropertyImage> findAllPropertyImages(Long propertyId);
+    @Query(value = "SELECT i.* FROM property_image i\n" +
+                   "INNER JOIN property p ON i.property_id = p.id AND p.user_id = ?2\n" +
+                   "WHERE p.is_deleted = false AND i.is_deleted = false AND i.property_id = ?1\n" +
+                   "ORDER BY i.id", nativeQuery = true)
+    List<PropertyImage> findAllImagesOfProperty(Long propertyId, Long userId);
 
-    @Query(value = "SELECT * FROM property_image WHERE is_deleted = false AND id = ?1", nativeQuery = true)
-    PropertyImage findPropertyImageById(Long imageId);
+    @Query(value = "SELECT i.* FROM property_image i\n" +
+                   "INNER JOIN property p ON i.property_id = ?3 AND p.user_id = ?2\n" +
+                   "WHERE p.is_deleted = false AND i.is_deleted = false AND i.id = ?1", nativeQuery = true)
+    PropertyImage findPropertyImageById(Long imageId, Long propertyId, Long userId);
 
     @Modifying
     @Transactional

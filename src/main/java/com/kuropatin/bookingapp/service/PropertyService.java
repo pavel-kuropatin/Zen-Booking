@@ -4,7 +4,6 @@ import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.PropertyRequest;
-import com.kuropatin.bookingapp.model.searchcriteria.PropertySearchCriteria;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,18 +21,13 @@ public class PropertyService {
     private final PropertyRepository repository;
     private final UserService userService;
 
-    public List<Property> searchProperty(PropertySearchCriteria propertySearchCriteria) {
-        //TODO: implement search
-        return repository.findAllProperty();
-    }
-
     public List<Property> getAllPropertyOfUser(Long userId) {
         return repository.findAllPropertyOfUser(userId);
     }
 
-    public Property getPropertyById(Long propertyId) {
-        if(repository.existsById(propertyId)) {
-            return repository.findPropertyById(propertyId);
+    public Property getPropertyByIdAndUserId(Long propertyId, Long userId) {
+        if(repository.existsByIdAndUserId(propertyId, userId)) {
+            return repository.findPropertyByIdAndOwnerId(propertyId, userId);
         } else {
             throw new PropertyNotFoundException(propertyId);
         }
@@ -49,15 +43,15 @@ public class PropertyService {
         return repository.save(property);
     }
 
-    public Property updateProperty(Long propertyId, PropertyRequest propertyRequest) {
-        Property propertyToUpdate = getPropertyById(propertyId);
+    public Property updateProperty(Long propertyId, Long userId, PropertyRequest propertyRequest) {
+        Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
         PropertyRequest.transformToProperty(propertyRequest, propertyToUpdate);
         propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(propertyToUpdate);
     }
 
-    public String softDeleteProperty(Long propertyId) {
-        if(repository.existsById(propertyId)) {
+    public String softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
+        if(repository.existsByIdAndUserId(propertyId, userId)) {
             repository.softDeleteProperty(propertyId);
             return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
         } else {
