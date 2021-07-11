@@ -54,6 +54,21 @@ class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(OrderCannotBeAcceptedException.class)
+    protected ResponseEntity<Object> orderCannotBeAcceptedHandler(OrderCannotBeAcceptedException e) {
+        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(OrderCannotBeCancelledException.class)
+    protected ResponseEntity<Object> orderCannotBeCancelledHandler(OrderCannotBeCancelledException e) {
+        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(OrderCannotBeDeclinedException.class)
+    protected ResponseEntity<Object> orderCannotBeDeclinedHandler(OrderCannotBeDeclinedException e) {
+        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @ExceptionHandler(SQLException.class)
     protected ResponseEntity<Object> sqlExceptionHandler(SQLException e) {
         return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -61,14 +76,15 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(JwtException.class)
     protected ResponseEntity<Object> jwtExceptionHandler(JwtException e) {
-        return throwCustomException(e, HttpStatus.FORBIDDEN);
+        return throwCustomException(e, HttpStatus.UNAUTHORIZED);
     }
 
     private ResponseEntity<Object> throwCustomException(Exception e, HttpStatus httpStatus) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("status", httpStatus.value());
-        body.put("error", e.getMessage());
+        body.put("status", httpStatus.value() + " " + httpStatus.getReasonPhrase());
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
         return new ResponseEntity<>(body, httpStatus);
     }
 }

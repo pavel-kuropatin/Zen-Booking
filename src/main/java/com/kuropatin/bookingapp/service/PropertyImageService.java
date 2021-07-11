@@ -4,7 +4,6 @@ import com.kuropatin.bookingapp.exception.PropertyImageNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.model.request.PropertyImageRequest;
-import com.kuropatin.bookingapp.model.searchcriteria.PropertyImageSearchCriteria;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,38 +21,33 @@ public class PropertyImageService {
     private final PropertyImageRepository repository;
     private final PropertyService propertyService;
 
-    public List<PropertyImage> searchImages(PropertyImageSearchCriteria propertyImageSearchCriteria) {
-        //TODO: implement search
-        return repository.findAllImages();
+    public List<PropertyImage> getAllImagesOfPropertyByIdAndUserId(Long propertyId, Long userId) {
+        return repository.findAllImagesOfProperty(propertyId, userId);
     }
 
-    public List<PropertyImage> getAllImagesOfProperty(Long propertyId) {
-        return repository.findAllPropertyImages(propertyId);
-    }
-
-    public PropertyImage getPropertyImageById(Long imageId) {
-        if(repository.existsById(imageId)) {
-            return repository.findPropertyImageById(imageId);
+    public PropertyImage getImageOfPropertyByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
+        if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
+            return repository.findPropertyImageById(imageId, propertyId, userId);
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }
     }
 
-    public PropertyImage create(Long userId, PropertyImageRequest propertyImageRequest) {
-        Property property = propertyService.getPropertyById(userId);
+    public PropertyImage create(Long propertyId, Long userId, PropertyImageRequest propertyImageRequest) {
+        Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
         PropertyImage propertyImage = new PropertyImage();
-        property.setPropertyImages(Collections.singleton(propertyImage));
-        propertyImage.setProperty(property);
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
         propertyImage.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         propertyImage.setUpdated(property.getCreated());
+        property.setPropertyImages(Collections.singleton(propertyImage));
+        propertyImage.setProperty(property);
         return repository.save(propertyImage);
     }
 
-    public String softDeletePropertyImage(Long imageId) {
-        if(repository.existsById(imageId)) {
+    public String softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
+        if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
             repository.softDeletePropertyImage(imageId);
-            return MessageFormat.format("Property Image with id: {0} successfully deleted", imageId);
+            return MessageFormat.format("Image with id: {0} successfully deleted", imageId);
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }

@@ -7,7 +7,6 @@ import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
 import com.kuropatin.bookingapp.model.request.UserRequest;
-import com.kuropatin.bookingapp.model.searchcriteria.UserSearchCriteria;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,18 +14,12 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository repository;
-
-    public List<User> searchUsers(UserSearchCriteria userSearchCriteria) {
-        //TODO: implement search
-        return repository.findAllUsers();
-    }
 
     public User getUserById(Long id) {
         if(repository.existsById(id)) {
@@ -91,7 +84,7 @@ public class UserService {
         }
     }
 
-    public void payBack(User user, int amount) {
+    public void transferMoney(User user, int amount) {
         user.setBalance(user.getBalance() + amount);
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         repository.save(user);

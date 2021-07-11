@@ -19,9 +19,11 @@ public class OrderResponse {
     private int totalPrice;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isAcceptedByHost;
+    private boolean isAccepted;
     private boolean isCancelled;
     private boolean isFinished;
+    private long clientId;
+    private long hostId;
     private long propertyId;
 
     public static OrderResponse transformToNewOrderResponse(Order order) {
@@ -42,9 +44,11 @@ public class OrderResponse {
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
-        orderResponse.setAcceptedByHost(order.isAccepted());
+        orderResponse.setAccepted(order.isAccepted());
         orderResponse.setCancelled(order.isCancelled());
         orderResponse.setFinished(order.isFinished());
+        orderResponse.setClientId(order.getUser().getId());
+        orderResponse.setHostId(order.getProperty().getUser().getId());
         orderResponse.setPropertyId(order.getProperty().getId());
         return orderResponse;
     }
