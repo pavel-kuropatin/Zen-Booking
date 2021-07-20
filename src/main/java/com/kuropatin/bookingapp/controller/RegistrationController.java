@@ -3,6 +3,7 @@ package com.kuropatin.bookingapp.controller;
 import com.kuropatin.bookingapp.model.request.UserRequest;
 import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class RegistrationController {
 
     private final UserService userService;
 
+    @ApiOperation(value = "User registration")
     @PostMapping
     public ResponseEntity<UserResponse> create(@RequestBody final UserRequest userRequest) {
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(userService.createUser(userRequest)), HttpStatus.CREATED);
