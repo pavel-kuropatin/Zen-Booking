@@ -3,7 +3,10 @@ package com.kuropatin.bookingapp.security.controller;
 import com.kuropatin.bookingapp.security.request.LoginRequest;
 import com.kuropatin.bookingapp.security.response.LoginResponse;
 import com.kuropatin.bookingapp.security.util.TokenUtils;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,14 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
+@Log4j2
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
 
+    @ApiOperation(value = "User login")
     @PostMapping
     public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+        log.info("User [" + loginRequest.getLogin() + "] tries to login");
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword())
         );
@@ -33,8 +39,8 @@ public class LoginController {
         return ResponseEntity.ok(
                 LoginResponse
                         .builder()
-                        .login(loginRequest.getLogin())
                         .token(tokenUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin())))
+                        .login(loginRequest.getLogin())
                         .build()
         );
     }
