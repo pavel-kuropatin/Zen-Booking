@@ -1,9 +1,6 @@
 package com.kuropatin.bookingapp.service;
 
-import com.kuropatin.bookingapp.exception.OrderCannotBeAcceptedException;
-import com.kuropatin.bookingapp.exception.OrderCannotBeCancelledException;
-import com.kuropatin.bookingapp.exception.OrderCannotBeDeclinedException;
-import com.kuropatin.bookingapp.exception.OrderNotFoundException;
+import com.kuropatin.bookingapp.exception.*;
 import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
@@ -34,14 +31,14 @@ public class OrderService {
     }
 
     public Order getOrderById(Long orderId, Long userId) {
-        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
+        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
             return orderRepository.findOrderByIdAndUserId(orderId, userId);
         } else {
             throw new OrderNotFoundException(orderId);
         }
     }
 
-    @Transactional(rollbackForClassName = {"InsufficientMoneyAmountException", "SQLException"})
+    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
     public Order createOrder(Long userId, Long propertyId, OrderRequest orderRequest) {
         User user = userService.getUserById(userId);
         Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
@@ -59,9 +56,9 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    @Transactional(rollbackForClassName = {"InsufficientMoneyAmountException", "SQLException"})
+    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
     public Order updateOrder(Long orderId, Long userId, OrderRequest orderRequest) {
-        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
+        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
             Order orderToUpdate = getOrderById(orderId, userId);
             userService.transferMoney(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
             orderToUpdate.setStartDate(orderRequest.getStartDate());
@@ -75,9 +72,9 @@ public class OrderService {
         }
     }
 
-    @Transactional(rollbackForClassName = {"SQLException"})
+    @Transactional
     public String cancelOrder(Long orderId, Long userId) {
-        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
+        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
@@ -103,7 +100,7 @@ public class OrderService {
         }
     }
 
-    @Transactional(rollbackForClassName = {"SQLException"})
+    @Transactional
     public String acceptOrder(Long orderId, Long hostId) {
         if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToAccept = orderRepository.findOrderById(orderId);
@@ -121,7 +118,7 @@ public class OrderService {
         }
     }
 
-    @Transactional(rollbackForClassName = {"SQLException"})
+    @Transactional
     public String declineOrder(Long orderId, Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToDecline = orderRepository.findOrderById(orderId);
