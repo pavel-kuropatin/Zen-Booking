@@ -9,8 +9,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.function.Predicate;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -20,15 +18,15 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(Predicate.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
+                .apis(RequestHandlerSelectors.basePackage("com.kuropatin.bookingapp"))
                 .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Booking Application API")
-                .description("Application endpoints documentation")
-                .version("v0.0.1-SNAPSHOT")
+                .description("Application API documentation")
+                .version("v0.1.0-SNAPSHOT")
                 .build();
     }
 }
