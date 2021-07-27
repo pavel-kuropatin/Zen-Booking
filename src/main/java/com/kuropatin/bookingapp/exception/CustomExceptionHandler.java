@@ -1,6 +1,6 @@
 package com.kuropatin.bookingapp.exception;
 
-import io.jsonwebtoken.JwtException;
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
+@Log4j
 class CustomExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -41,45 +42,36 @@ class CustomExceptionHandler {
 
     @ExceptionHandler(InsufficientMoneyAmountException.class)
     protected ResponseEntity<Object> insufficientMoneyAmountHandler(InsufficientMoneyAmountException e) {
-        return throwCustomException(e, HttpStatus.PAYMENT_REQUIRED);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LoginAlreadyInUseException.class)
     protected ResponseEntity<Object> loginAlreadyInUseHandler(LoginAlreadyInUseException e) {
-        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EmailAlreadyInUseException.class)
     protected ResponseEntity<Object> emailAlreadyInUseHandler(EmailAlreadyInUseException e) {
-        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OrderCannotBeAcceptedException.class)
     protected ResponseEntity<Object> orderCannotBeAcceptedHandler(OrderCannotBeAcceptedException e) {
-        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OrderCannotBeCancelledException.class)
     protected ResponseEntity<Object> orderCannotBeCancelledHandler(OrderCannotBeCancelledException e) {
-        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(OrderCannotBeDeclinedException.class)
     protected ResponseEntity<Object> orderCannotBeDeclinedHandler(OrderCannotBeDeclinedException e) {
-        return throwCustomException(e, HttpStatus.NOT_ACCEPTABLE);
-    }
-
-    @ExceptionHandler(SQLException.class)
-    protected ResponseEntity<Object> sqlExceptionHandler(SQLException e) {
-        return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(JwtException.class)
-    protected ResponseEntity<Object> jwtExceptionHandler(JwtException e) {
-        return throwCustomException(e, HttpStatus.UNAUTHORIZED);
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> throwCustomException(Exception e, HttpStatus httpStatus) {
+        log.warn(e.getClass().getSimpleName() + " occurred. " + e.getMessage());
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", httpStatus.value() + " " + httpStatus.getReasonPhrase());
