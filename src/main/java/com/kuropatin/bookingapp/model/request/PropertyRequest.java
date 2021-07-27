@@ -16,9 +16,6 @@ public class PropertyRequest {
     private PropertyType type;
     private String name;
     private String description;
-    private String country;
-    private String region;
-    private String city;
     private String address;
     private int price;
     private short guests;
@@ -41,9 +38,6 @@ public class PropertyRequest {
         property.setType(propertyRequest.getType());
         property.setName(propertyRequest.getName());
         property.setDescription(propertyRequest.getDescription());
-        property.setCountry(propertyRequest.getCountry());
-        property.setRegion(propertyRequest.getRegion());
-        property.setCity(propertyRequest.getCity());
         property.setAddress(propertyRequest.getAddress());
         property.setPrice(propertyRequest.getPrice());
         property.setGuests(propertyRequest.getGuests());

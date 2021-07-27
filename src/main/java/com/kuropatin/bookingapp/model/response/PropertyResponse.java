@@ -19,9 +19,6 @@ public class PropertyResponse {
     private PropertyType type;
     private String name;
     private String description;
-    private String country;
-    private String region;
-    private String city;
     private String address;
     private int price;
     private short guests;
@@ -52,9 +49,6 @@ public class PropertyResponse {
         propertyResponse.setType(property.getType());
         propertyResponse.setName(property.getName());
         propertyResponse.setDescription(property.getDescription());
-        propertyResponse.setCountry(property.getCountry());
-        propertyResponse.setRegion(property.getRegion());
-        propertyResponse.setCity(property.getCity());
         propertyResponse.setAddress(property.getAddress());
         propertyResponse.setPrice(property.getPrice());
         propertyResponse.setGuests(property.getGuests());
