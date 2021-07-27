@@ -31,7 +31,7 @@ public class ProfileController {
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.getUserById(userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Update info of logged")
+    @ApiOperation(value = "Update info of logged user")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     })
@@ -41,19 +41,9 @@ public class ProfileController {
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.updateUser(userId, userRequest)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Delete account of logged")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
-    @DeleteMapping
-    public ResponseEntity<String> delete() {
-        long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.softDeleteUser(userId), HttpStatus.OK);
-    }
-
     @ApiOperation(value = "Deposit money to logged user's account")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true, defaultValue = "")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     })
     @PutMapping("/deposit")
     public ResponseEntity<UserResponse> deposit(@RequestBody final AmountRequest amountRequest) {
