@@ -36,15 +36,6 @@ public class Property {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "country")
-    private String country;
-
-    @Column(name = "region")
-    private String region;
-
-    @Column(name = "city")
-    private String city;
-
     @Column(name = "address")
     private String address;
 
