@@ -10,9 +10,9 @@ import com.kuropatin.bookingapp.model.request.UserRequest;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 
 @Repository
@@ -23,14 +23,14 @@ public class UserService {
 
     public User getUserById(Long id) {
         if(repository.existsById(id)) {
-            return repository.findUserById(id);
+            return repository.findUserByIdAndIsBannedFalseAndIsDeletedFalse(id);
         } else {
             throw new UserNotFoundException(id);
         }
     }
 
     public User getUserByLogin(String login) {
-        User user = repository.findUserByLogin(login);
+        User user = repository.findUserByLoginAndIsBannedFalseAndIsDeletedFalse(login);
         if(user != null) {
             return user;
         } else {
@@ -74,6 +74,7 @@ public class UserService {
         return repository.save(user);
     }
 
+    @Transactional
     public void pay(User user, int amount) {
         if(user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
@@ -88,15 +89,6 @@ public class UserService {
         user.setBalance(user.getBalance() + amount);
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         repository.save(user);
-    }
-
-    public String softDeleteUser(Long id) {
-        if(repository.existsById(id)) {
-            repository.softDeleteUser(id);
-            return MessageFormat.format("User with id: {0} successfully deleted", id);
-        } else {
-            throw new UserNotFoundException(id);
-        }
     }
 
     public User banUser(Long id) {
