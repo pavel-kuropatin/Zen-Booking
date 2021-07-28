@@ -39,9 +39,7 @@ public class HostingController {
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Get all property of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @GetMapping(PROPERTY)
     public ResponseEntity<List<PropertyResponse>> getAllPropertyOfUser() {
         long userId = authenticationUtils.getId();
@@ -60,9 +58,7 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Create property for logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @PostMapping(PROPERTY)
     public ResponseEntity<PropertyResponse> createProperty(@RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
@@ -138,9 +134,7 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Get all order requests of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @GetMapping(REQUESTS)
     public ResponseEntity<List<OrderResponse>> getAllOrderRequests() {
         long userId = authenticationUtils.getId();

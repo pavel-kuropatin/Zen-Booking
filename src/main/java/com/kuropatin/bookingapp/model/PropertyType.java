@@ -1,8 +1,8 @@
 package com.kuropatin.bookingapp.model;
 
 public enum PropertyType {
-    HOUSE,
-    APARTMENT,
-    ROOM,
-    OTHER
+    TYPE_HOUSE,
+    TYPE_APARTMENT,
+    TYPE_ROOM,
+    TYPE_NOT_SPECIFIED
 }
