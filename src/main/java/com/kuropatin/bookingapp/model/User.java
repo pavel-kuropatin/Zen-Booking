@@ -61,9 +61,6 @@ public class User {
     @Column(name = "is_banned")
     private boolean isBanned = false;
 
-    @Column(name = "is_deleted")
-    private boolean isDeleted = false;
-
     @Column(name = "created")
     private Timestamp created;
 

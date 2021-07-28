@@ -1,6 +1,6 @@
 package com.kuropatin.bookingapp.controller;
 
-import com.kuropatin.bookingapp.model.request.UserRequest;
+import com.kuropatin.bookingapp.model.request.UserCreateRequest;
 import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,7 @@ public class RegistrationController {
 
     @ApiOperation(value = "User registration")
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody final UserRequest userRequest) {
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(userService.createUser(userRequest)), HttpStatus.CREATED);
+    public ResponseEntity<UserResponse> create(@RequestBody final UserCreateRequest userCreateRequest) {
+        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(userService.createUser(userCreateRequest)), HttpStatus.CREATED);
     }
 }

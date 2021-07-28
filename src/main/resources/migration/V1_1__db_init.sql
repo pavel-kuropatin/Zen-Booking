@@ -1,15 +1,15 @@
 drop table if exists review, orders, property_image, property, users, admins cascade;
 
 create table admins(
-                       id             bigserial                         not null constraint admins_pk primary key,
-                       role           varchar(10)  default 'ROLE_MODER' not null,
-                       login          varchar(20)                       not null,
-                       password       varchar(50)                       not null,
-                       displayed_name varchar(20)                       not null,
-                       is_suspended   boolean      default false        not null,
-                       is_deleted     boolean      default false        not null,
-                       created        timestamp(6)                      not null,
-                       updated        timestamp(6)                      not null
+    id             bigserial                         not null constraint admins_pk primary key,
+    role           varchar(10)  default 'ROLE_MODER' not null,
+    login          varchar(20)                       not null,
+    password       varchar(50)                       not null,
+    displayed_name varchar(20)                       not null,
+    is_suspended   boolean      default false        not null,
+    is_deleted     boolean      default false        not null,
+    created        timestamp(6)                      not null,
+    updated        timestamp(6)                      not null
 );
 
 alter table admins
@@ -34,21 +34,20 @@ create index admins_is_deleted_index
     on admins (is_deleted);
 
 create table users(
-                      id         bigserial                        not null constraint users_pk primary key,
-                      role       varchar(9)   default 'ROLE_USER' not null,
-                      login      varchar(20)                      not null,
-                      password   varchar(50)                      not null,
-                      name       varchar(20)                      not null,
-                      surname    varchar(20)                      not null,
-                      gender     varchar(9)                       not null,
-                      birth_date date                             not null,
-                      email      varchar(50)                      not null,
-                      phone      varchar(20)                      not null,
-                      balance    bigint       default 0           not null,
-                      is_banned  boolean      default false       not null,
-                      is_deleted boolean      default false       not null,
-                      created    timestamp(6)                     not null,
-                      updated    timestamp(6)                     not null
+    id         bigserial                        not null constraint users_pk primary key,
+    role       varchar(9)   default 'ROLE_USER' not null,
+    login      varchar(20)                      not null,
+    password   varchar(50)                      not null,
+    name       varchar(20)                      not null,
+    surname    varchar(20)                      not null,
+    gender     varchar(9)                       not null,
+    birth_date date                             not null,
+    email      varchar(50)                      not null,
+    phone      varchar(20)                      not null,
+    balance    bigint       default 0           not null,
+    is_banned  boolean      default false       not null,
+    created    timestamp(6)                     not null,
+    updated    timestamp(6)                     not null
 );
 
 alter table users
@@ -87,29 +86,26 @@ create index users_balance_index
 create index users_is_banned_index
     on users (is_banned);
 
-create index users_is_deleted_index
-    on users (is_deleted);
-
 create table property(
-                         id              bigserial                  not null constraint property_pk primary key,
-                         user_id         bigint                     not null constraint property_user_id_fk references users,
-                         type            varchar(9)                 not null,
-                         name            varchar(100)               not null,
-                         description     varchar(500)               not null,
-                         address         varchar(500)               not null,
-                         price           integer                    not null,
-                         guests          smallint                   not null,
-                         rooms           smallint                   not null,
-                         beds            smallint                   not null,
-                         has_kitchen     boolean      default false not null,
-                         has_washer      boolean      default false not null,
-                         has_tv          boolean      default false not null,
-                         has_internet    boolean      default false not null,
-                         is_pets_allowed boolean      default false not null,
-                         is_available    boolean      default false not null,
-                         is_deleted      boolean      default false not null,
-                         created         timestamp(6)               not null,
-                         updated         timestamp(6)               not null
+    id              bigserial                  not null constraint property_pk primary key,
+    user_id         bigint                     not null constraint property_user_id_fk references users,
+    type            varchar(18)                not null,
+    name            varchar(100)               not null,
+    description     varchar(500)               not null,
+    address         varchar(500)               not null,
+    price           integer                    not null,
+    guests          smallint                   not null,
+    rooms           smallint                   not null,
+    beds            smallint                   not null,
+    has_kitchen     boolean      default false not null,
+    has_washer      boolean      default false not null,
+    has_tv          boolean      default false not null,
+    has_internet    boolean      default false not null,
+    is_pets_allowed boolean      default false not null,
+    is_available    boolean      default false not null,
+    is_deleted      boolean      default false not null,
+    created         timestamp(6)               not null,
+    updated         timestamp(6)               not null
 );
 
 alter table property
@@ -164,12 +160,12 @@ create index property_is_deleted_index
     on property (is_deleted);
 
 create table property_image(
-                               id          bigserial                  not null constraint property_image_pk primary key,
-                               property_id bigint                     not null constraint property_image_property_id_fk references property,
-                               img_url     varchar(250)               not null,
-                               is_deleted  boolean      default false not null,
-                               created     timestamp(6)               not null,
-                               updated     timestamp(6)               not null
+    id          bigserial                  not null constraint property_image_pk primary key,
+    property_id bigint                     not null constraint property_image_property_id_fk references property,
+    img_url     varchar(250)               not null,
+    is_deleted  boolean      default false not null,
+    created     timestamp(6)               not null,
+    updated     timestamp(6)               not null
 );
 
 alter table property_image
@@ -185,17 +181,17 @@ create index property_image_deleted_index
     on property_image (is_deleted);
 
 create table orders(
-                       id           bigserial                  not null constraint orders_pk primary key,
-                       user_id      bigint                     not null constraint orders_user_id_fk references users,
-                       property_id  bigint                     not null constraint orders_property_id_fk references property,
-                       total_price  integer                    not null,
-                       start_date   date                       not null,
-                       end_date     date                       not null,
-                       is_accepted  boolean      default false not null,
-                       is_cancelled boolean      default false not null,
-                       is_finished  boolean      default false not null,
-                       created      timestamp(6)               not null,
-                       updated      timestamp(6)               not null
+    id           bigserial                  not null constraint orders_pk primary key,
+    user_id      bigint                     not null constraint orders_user_id_fk references users,
+    property_id  bigint                     not null constraint orders_property_id_fk references property,
+    total_price  integer                    not null,
+    start_date   date                       not null,
+    end_date     date                       not null,
+    is_accepted  boolean      default false not null,
+    is_cancelled boolean      default false not null,
+    is_finished  boolean      default false not null,
+    created      timestamp(6)               not null,
+    updated      timestamp(6)               not null
 );
 
 alter table orders
@@ -229,14 +225,14 @@ create index orders_apartment_is_finished_index
     on orders (is_finished);
 
 create table review(
-                       id          bigserial                  not null constraint review_pk primary key,
-                       order_id    bigint                     not null constraint review_order_id_fk references orders,
-                       summary     varchar(100)               not null,
-                       description varchar(500)               not null,
-                       rating      smallint                   not null,
-                       is_deleted  boolean      default false not null,
-                       created     timestamp(6)               not null,
-                       updated     timestamp(6)               not null
+    id          bigserial                  not null constraint review_pk primary key,
+    order_id    bigint                     not null constraint review_order_id_fk references orders,
+    summary     varchar(100)               not null,
+    description varchar(500)               not null,
+    rating      smallint                   not null,
+    is_deleted  boolean      default false not null,
+    created     timestamp(6)               not null,
+    updated     timestamp(6)               not null
 );
 
 alter table review

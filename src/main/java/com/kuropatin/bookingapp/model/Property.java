@@ -28,7 +28,7 @@ public class Property {
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private PropertyType type = PropertyType.OTHER;
+    private PropertyType type = PropertyType.TYPE_NOT_SPECIFIED;
 
     @Column(name = "name")
     private String name;

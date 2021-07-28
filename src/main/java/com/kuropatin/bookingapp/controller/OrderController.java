@@ -17,16 +17,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
-@ApiOperation(value = "Controller for operations with orders of logged user")
 public class OrderController {
 
     private final OrderService service;
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Get list of all orders of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAll() {
         long userId = authenticationUtils.getId();
@@ -60,7 +57,7 @@ public class OrderController {
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
             @ApiImplicitParam(name = "orderId", dataTypeClass = Integer.class, paramType = "path", value = "orderId", required = true, defaultValue = "1")
     })
-    @DeleteMapping("/{orderId}")
+    @PutMapping("/{orderId}/cancel")
     public ResponseEntity<String> cancel(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.cancelOrder(orderId, userId), HttpStatus.OK);

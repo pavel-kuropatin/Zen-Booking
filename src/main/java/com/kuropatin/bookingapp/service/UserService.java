@@ -6,7 +6,8 @@ import com.kuropatin.bookingapp.exception.LoginAlreadyInUseException;
 import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
-import com.kuropatin.bookingapp.model.request.UserRequest;
+import com.kuropatin.bookingapp.model.request.UserCreateRequest;
+import com.kuropatin.bookingapp.model.request.UserEditRequest;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,14 +24,14 @@ public class UserService {
 
     public User getUserById(Long id) {
         if(repository.existsById(id)) {
-            return repository.findUserByIdAndIsBannedFalseAndIsDeletedFalse(id);
+            return repository.findUserByIdAndIsBannedFalse(id);
         } else {
             throw new UserNotFoundException(id);
         }
     }
 
     public User getUserByLogin(String login) {
-        User user = repository.findUserByLoginAndIsBannedFalseAndIsDeletedFalse(login);
+        User user = repository.findUserByLoginAndIsBannedFalse(login);
         if(user != null) {
             return user;
         } else {
@@ -38,34 +39,31 @@ public class UserService {
         }
     }
 
-    public User createUser(UserRequest userRequest) {
-        if(repository.isLoginInUse(userRequest.getLogin())) {
-            throw new LoginAlreadyInUseException(userRequest.getLogin());
+    public User createUser(UserCreateRequest userCreateRequest) {
+        if(repository.isLoginInUse(userCreateRequest.getLogin())) {
+            throw new LoginAlreadyInUseException(userCreateRequest.getLogin());
         }
-        if(repository.isEmailInUse(userRequest.getEmail())) {
-            throw new EmailAlreadyInUseException(userRequest.getEmail());
+        if(repository.isEmailInUse(userCreateRequest.getEmail())) {
+            throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
-        User user = UserRequest.transformToNewUser(userRequest);
+        User user = UserCreateRequest.transformToNewUser(userCreateRequest);
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
 
-    public User updateUser(Long id, UserRequest userRequest) {
-        if(repository.isLoginInUse(userRequest.getLogin())) {
-            throw new LoginAlreadyInUseException(userRequest.getLogin());
-        }
-        if(repository.isEmailInUse(userRequest.getEmail())) {
-            throw new EmailAlreadyInUseException(userRequest.getEmail());
-        }
+    public User updateUser(Long id, UserEditRequest userEditRequest) {
         User userToUpdate = getUserById(id);
-        UserRequest.transformToUser(userRequest, userToUpdate);
+        if(!userToUpdate.getEmail().equals(userEditRequest.getEmail()) && repository.isEmailInUse(userEditRequest.getEmail())) {
+            throw new EmailAlreadyInUseException(userEditRequest.getEmail());
+        }
+        UserEditRequest.transformToUser(userEditRequest, userToUpdate);
         userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(userToUpdate);
     }
 
     public User deposit(Long id, AmountRequest amountRequest) {
-        if(repository.isBanned(id) || repository.isDeleted(id)) {
+        if(repository.isBanned(id)) {
             throw new UserNotFoundException(id);
         }
         User user = getUserById(id);

@@ -1,12 +1,11 @@
 package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.request.AmountRequest;
-import com.kuropatin.bookingapp.model.request.UserRequest;
+import com.kuropatin.bookingapp.model.request.UserEditRequest;
 import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,9 +21,7 @@ public class ProfileController {
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Get info of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @GetMapping
     public ResponseEntity<UserResponse> getUserInfo() {
         long userId = authenticationUtils.getId();
@@ -32,19 +29,15 @@ public class ProfileController {
     }
 
     @ApiOperation(value = "Update info of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @PutMapping
-    public ResponseEntity<UserResponse> updateUserInfo(@RequestBody final UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUserInfo(@RequestBody final UserEditRequest userEditRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.updateUser(userId, userRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deposit money to logged user's account")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
-    })
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @PutMapping("/deposit")
     public ResponseEntity<UserResponse> deposit(@RequestBody final AmountRequest amountRequest) {
         long userId = authenticationUtils.getId();
