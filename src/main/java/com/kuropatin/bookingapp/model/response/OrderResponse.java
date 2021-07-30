@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class OrderResponse {
 
+    private long id;
     private int totalPrice;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -41,6 +42,7 @@ public class OrderResponse {
     }
 
     public static OrderResponse transformToOrderResponse(Order order, OrderResponse orderResponse) {
+        order.setId(order.getId());
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());

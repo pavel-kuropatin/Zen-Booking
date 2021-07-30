@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 public class UserResponse {
 
+    private long id;
     private String name;
     private String surname;
     private Gender gender;
@@ -30,6 +31,7 @@ public class UserResponse {
     }
 
     public static UserResponse transformToUserResponse(User user, UserResponse userResponse) {
+        userResponse.setId(user.getId());
         userResponse.setName(user.getName());
         userResponse.setSurname(user.getSurname());
         userResponse.setGender(user.getGender());
