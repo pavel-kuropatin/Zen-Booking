@@ -42,7 +42,7 @@ public class OrderResponse {
     }
 
     public static OrderResponse transformToOrderResponse(Order order, OrderResponse orderResponse) {
-        order.setId(order.getId());
+        orderResponse.setId(order.getId());
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
