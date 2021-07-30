@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
@@ -20,6 +21,17 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
                    "INNER JOIN Property p on p.id = o.property.id AND o.id = ?1 AND p.user.id = ?2 " +
                    "WHERE o.isFinished = false")
     boolean existsByIdAndHostId(Long orderId, Long hostId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
+                   "FROM Property p " +
+                   "WHERE p.id NOT IN (SELECT DISTINCT o.property.id FROM Order o " +
+                                      "WHERE o.isFinished = false " +
+                                      "AND (?1 BETWEEN o.startDate AND o.endDate " +
+                                           "OR ?2 BETWEEN o.startDate AND o.endDate " +
+                                           "OR o.startDate BETWEEN ?1 AND ?2 " +
+                                           "OR o.endDate BETWEEN ?1 AND ?2))"
+    )
+    boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate);
 
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.user.id = ?1 ORDER BY o.id")
     List<Order> findAllOrdersOfUser(Long userId);

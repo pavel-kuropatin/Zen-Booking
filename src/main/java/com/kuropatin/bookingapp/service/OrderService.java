@@ -38,28 +38,41 @@ public class OrderService {
         }
     }
 
-    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
-    public Order createOrder(Long userId, Long propertyId, OrderRequest orderRequest) {
-        User user = userService.getUserById(userId);
-        Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
-        Order order = new Order();
-        order.setStartDate(orderRequest.getStartDate());
-        order.setEndDate(orderRequest.getEndDate());
-        order.setTotalPrice(calculateTotalPrice(property.getPrice(), order.getStartDate(), order.getEndDate()));
-        userService.pay(user, order.getTotalPrice());
-        order.setCreated(Timestamp.valueOf(LocalDateTime.now()));
-        order.setUpdated(order.getCreated());
-        order.setUser(user);
-        order.setProperty(property);
-        user.setOrders(Collections.singleton(order));
-        property.setOrder(order);
-        return orderRepository.save(order);
+    @Transactional(rollbackFor = {
+            UserNotFoundException.class,
+            PropertyNotFoundException.class,
+            InsufficientMoneyAmountException.class
+    })
+    public Order createOrder(Long clientId, Long propertyId, OrderRequest orderRequest) {
+        if(orderRepository.canPropertyBeOrdered(orderRequest.getStartDate(), orderRequest.getEndDate())) {
+            User client = userService.getUserById(clientId);
+            Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
+            Order order = new Order();
+            order.setStartDate(orderRequest.getStartDate());
+            order.setEndDate(orderRequest.getEndDate());
+            order.setTotalPrice(calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate()));
+            userService.pay(client, order.getTotalPrice());
+            order.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            order.setUpdated(order.getCreated());
+            order.setUser(client);
+            order.setProperty(propertyToOrder);
+            client.setOrders(Collections.singleton(order));
+            propertyToOrder.setOrder(order);
+            return orderRepository.save(order);
+        } else {
+            throw new PropertyCannotBeOrderedException(propertyId);
+        }
     }
 
-    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
-    public Order updateOrder(Long orderId, Long userId, OrderRequest orderRequest) {
-        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
-            Order orderToUpdate = getOrderById(orderId, userId);
+    @Transactional(rollbackFor = {
+            OrderNotFoundException.class,
+            UserNotFoundException.class,
+            InsufficientMoneyAmountException.class
+    })
+    public Order updateOrder(Long orderId, Long clientId, OrderRequest orderRequest) {
+        //TODO: add checking if order can be updated
+        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, clientId)) {
+            Order orderToUpdate = getOrderById(orderId, clientId);
             userService.transferMoney(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
             orderToUpdate.setStartDate(orderRequest.getStartDate());
             orderToUpdate.setEndDate(orderRequest.getEndDate());

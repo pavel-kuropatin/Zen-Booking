@@ -1,10 +1,7 @@
 package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -55,6 +52,7 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @EqualsAndHashCode.Exclude
     @Column(name = "balance")
     private int balance = 0;
 
@@ -67,11 +65,11 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
     @JsonManagedReference
     private Set<Property> property;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
     @JsonManagedReference
     private Set<Order> orders;
 

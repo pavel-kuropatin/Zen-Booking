@@ -72,7 +72,7 @@ public class UserService {
         return repository.save(user);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
     public void pay(User user, int amount) {
         if(user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
@@ -83,6 +83,7 @@ public class UserService {
         }
     }
 
+    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
     public void transferMoney(User user, int amount) {
         user.setBalance(user.getBalance() + amount);
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));

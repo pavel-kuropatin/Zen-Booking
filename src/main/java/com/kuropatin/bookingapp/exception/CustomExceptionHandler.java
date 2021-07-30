@@ -1,18 +1,15 @@
 package com.kuropatin.bookingapp.exception;
 
-import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @ControllerAdvice
-@Log4j
 class CustomExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -70,8 +67,12 @@ class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> throwCustomException(Exception e, HttpStatus httpStatus) {
-        log.warn(e.getClass().getSimpleName() + " occurred. " + e.getMessage());
+    @ExceptionHandler(PropertyCannotBeOrderedException.class)
+    protected ResponseEntity<Object> orderCannotBeProcessedHandler(PropertyCannotBeOrderedException e) {
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<Object> throwCustomException(RuntimeException e, HttpStatus httpStatus) {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", httpStatus.value() + " " + httpStatus.getReasonPhrase());

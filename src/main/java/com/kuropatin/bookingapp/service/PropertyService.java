@@ -33,6 +33,14 @@ public class PropertyService {
         }
     }
 
+    public Property getPropertyById(Long propertyId, Long userId) {
+        if(repository.existsByIdAndNotUserId(propertyId, userId)) {
+            return repository.findPropertyByIdAndNotOwnerId(propertyId, userId);
+        } else {
+            throw new PropertyNotFoundException(propertyId);
+        }
+    }
+
     public Property createProperty(Long userId, PropertyRequest propertyRequest) {
         User user = userService.getUserById(userId);
         Property property = PropertyRequest.transformToNewProperty(propertyRequest);
