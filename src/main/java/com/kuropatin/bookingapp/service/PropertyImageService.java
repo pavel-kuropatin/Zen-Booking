@@ -22,12 +22,24 @@ public class PropertyImageService {
     private final PropertyService propertyService;
 
     public List<PropertyImage> getAllImagesOfPropertyByIdAndUserId(Long propertyId, Long userId) {
-        return repository.findAllImagesOfProperty(propertyId, userId);
+        return repository.findAllImagesOfPropertyOfUser(propertyId, userId);
+    }
+
+    public List<PropertyImage> getAllImagesOfPropertyById(Long propertyId) {
+        return repository.findAllImagesOfProperty(propertyId);
     }
 
     public PropertyImage getImageOfPropertyByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            return repository.findPropertyImageById(imageId, propertyId, userId);
+            return repository.findPropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId);
+        } else {
+            throw new PropertyImageNotFoundException(imageId);
+        }
+    }
+
+    public PropertyImage getImageOfPropertyByIdAndPropertyId(Long imageId, Long propertyId) {
+        if(repository.existsByIdAndPropertyId(imageId, propertyId)) {
+            return repository.findPropertyImageByIdAndPropertyId(imageId, propertyId);
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }

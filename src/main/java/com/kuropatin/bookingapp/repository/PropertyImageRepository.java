@@ -15,20 +15,37 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
 
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM PropertyImage i " +
-                   "INNER JOIN Property p ON i.property.id = ?3 AND p.user.id = ?2 " +
+                   "INNER JOIN Property p ON i.property.id = ?2 AND p.user.id = ?3 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     boolean existsByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
+
+    @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM PropertyImage i " +
+            "INNER JOIN Property p ON i.property.id = ?2 " +
+            "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
+    boolean existsByIdAndPropertyId(Long imageId, Long propertyId);
 
     @Query(value = "SELECT i FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = p.id AND p.user.id = ?2 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.property.id = ?1 " +
                    "ORDER BY i.id")
-    List<PropertyImage> findAllImagesOfProperty(Long propertyId, Long userId);
+    List<PropertyImage> findAllImagesOfPropertyOfUser(Long propertyId, Long userId);
 
     @Query(value = "SELECT i FROM PropertyImage i " +
-                   "INNER JOIN Property p ON i.property.id = ?3 AND p.user.id = ?2 " +
+                   "INNER JOIN Property p ON i.property.id = p.id " +
+                   "WHERE p.isDeleted = false AND i.isDeleted = false AND i.property.id = ?1 " +
+                   "ORDER BY i.id")
+    List<PropertyImage> findAllImagesOfProperty(Long propertyId);
+
+    @Query(value = "SELECT i FROM PropertyImage i " +
+                   "INNER JOIN Property p ON i.property.id = ?2 AND p.user.id = ?3 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
-    PropertyImage findPropertyImageById(Long imageId, Long propertyId, Long userId);
+    PropertyImage findPropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
+
+    @Query(value = "SELECT i FROM PropertyImage i " +
+                   "INNER JOIN Property p ON i.property.id = ?2 " +
+                   "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
+    PropertyImage findPropertyImageByIdAndPropertyId(Long imageId, Long propertyId);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
