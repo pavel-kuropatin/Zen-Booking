@@ -34,8 +34,7 @@ public class SearchRepositoryImpl implements SearchRepository {
         criteriaSubquery.select(subqueryRoot.get(Order_.property).get(Property_.id));
         criteriaSubquery.where(subqueryPredicate);
         criteriaSubquery.distinct(true);
-        TypedQuery<Long> typedSubquery = entityManager.createQuery(criteriaSubquery);
-        List<Long> subquery = typedSubquery.getResultList();
+        List<Long> subquery = entityManager.createQuery(criteriaSubquery).getResultList();
 
         CriteriaQuery<Property> criteriaQuery = criteriaBuilder.createQuery(Property.class);
         Root<Property> root = criteriaQuery.from(Property.class);
@@ -72,7 +71,7 @@ public class SearchRepositoryImpl implements SearchRepository {
             predicates.add(criteriaBuilder.equal(rootType, searchCriteria.getType()));
         }
         if(Objects.nonNull(searchCriteria.getAddress())) {
-            predicates.add(criteriaBuilder.like(rootAddress, StringUtils.join("%", searchCriteria.getAddress(), "%")));
+            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(rootAddress), StringUtils.join("%", searchCriteria.getAddress().toLowerCase(), "%")));
         }
         predicates.add(criteriaBuilder.between(rootPrice, searchCriteria.getPriceMin(), searchCriteria.getPriceMax()));
         predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootGuests, searchCriteria.getGuests()));
@@ -100,19 +99,32 @@ public class SearchRepositoryImpl implements SearchRepository {
     }
 
     private Predicate getSubqueryPredicate(PropertySearchCriteria searchCriteria, Root<Order> root) {
-        Expression<Boolean> orderIsAccepted = root.get(Order_.isAccepted);
         Expression<Boolean> orderIsFinished = root.get(Order_.isFinished);
-        LocalDate searchCriteriaStartDate = searchCriteria.getStartDate();
-        LocalDate searchCriteriaEndDate = searchCriteria.getEndDate();
         Expression<LocalDate> orderStartDate = root.get(Order_.startDate);
         Expression<LocalDate> orderEndDate = root.get(Order_.endDate);
+        LocalDate startDate = searchCriteria.getStartDate();
+        LocalDate endDate = searchCriteria.getEndDate();
 
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.equal(orderIsAccepted, false));
         predicates.add(criteriaBuilder.equal(orderIsFinished, false));
-        predicates.add(criteriaBuilder.or(criteriaBuilder.between(orderStartDate, searchCriteriaStartDate, searchCriteriaEndDate)));
-        predicates.add(criteriaBuilder.or(criteriaBuilder.between(orderEndDate, searchCriteriaStartDate, searchCriteriaEndDate)));
-        //TODO: add reverse check
+
+        Predicate exp1 = criteriaBuilder.greaterThanOrEqualTo(orderStartDate, startDate);
+        Predicate exp2 = criteriaBuilder.lessThanOrEqualTo(orderStartDate, endDate);
+        Predicate and1 = criteriaBuilder.and(exp1, exp2);
+
+        Predicate exp3 = criteriaBuilder.greaterThanOrEqualTo(orderEndDate, startDate);
+        Predicate exp4 = criteriaBuilder.lessThanOrEqualTo(orderEndDate, endDate);
+        Predicate and2 = criteriaBuilder.and(exp3, exp4);
+
+        Predicate exp5 = criteriaBuilder.lessThanOrEqualTo(orderStartDate, startDate);
+        Predicate exp6 = criteriaBuilder.greaterThanOrEqualTo(orderEndDate, startDate);
+        Predicate and3 = criteriaBuilder.and(exp5, exp6);
+
+        Predicate exp7 = criteriaBuilder.lessThanOrEqualTo(orderStartDate, endDate);
+        Predicate exp8 = criteriaBuilder.greaterThanOrEqualTo(orderEndDate, endDate);
+        Predicate and4 = criteriaBuilder.and(exp7, exp8);
+
+        predicates.add(criteriaBuilder.and(criteriaBuilder.or(and1, and2, and3, and4)));
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
