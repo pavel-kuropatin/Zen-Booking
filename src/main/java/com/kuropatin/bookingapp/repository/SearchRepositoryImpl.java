@@ -27,25 +27,27 @@ public class SearchRepositoryImpl implements SearchRepository {
 
     @Override
     public List<Property> searchByCriteria(Long userId, PropertySearchCriteria searchCriteria) {
+        CriteriaQuery<Long> criteriaSubquery = criteriaBuilder.createQuery(Long.class);
+        Root<Order> subqueryRoot = criteriaSubquery.from(Order.class);
+
+        Predicate subqueryPredicate = getSubqueryPredicate(searchCriteria, subqueryRoot);
+        criteriaSubquery.select(subqueryRoot.get(Order_.property).get(Property_.id));
+        criteriaSubquery.where(subqueryPredicate);
+        criteriaSubquery.distinct(true);
+        TypedQuery<Long> typedSubquery = entityManager.createQuery(criteriaSubquery);
+        List<Long> subquery = typedSubquery.getResultList();
+
         CriteriaQuery<Property> criteriaQuery = criteriaBuilder.createQuery(Property.class);
         Root<Property> root = criteriaQuery.from(Property.class);
-//        Root<Order> orderRoot = criteriaQuery.from(Order.class);
-//        Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
 
-//        Predicate subqueryPredicate = getSubqueryPredicate(searchCriteria, orderRoot);
-//        subquery.where(subqueryPredicate);
-//        subquery.select(orderRoot.get(Order_.id));
-//        subquery.distinct(true);
-
-        Predicate queryPredicate = getQueryPredicate(userId, searchCriteria, root);//, orderRoot, subquery);
-        criteriaQuery.where(queryPredicate);
-
+        Predicate predicate = getQueryPredicate(userId, searchCriteria, root, subquery);
+        criteriaQuery.select(root);
+        criteriaQuery.where(predicate);
         TypedQuery<Property> typedQuery = entityManager.createQuery(criteriaQuery);
-        //TODO: check date in subquery
         return typedQuery.getResultList();
     }
 
-    private Predicate getQueryPredicate(Long userId, PropertySearchCriteria searchCriteria, Root<Property> root) {//, Root<Order> orderRoot, Subquery<Long> subquery) {
+    private Predicate getQueryPredicate(Long userId, PropertySearchCriteria searchCriteria, Root<Property> root, List<Long> subquery) {
         Expression<Boolean> rootIsDeleted = root.get(Property_.isDeleted);
         Expression<Long> rootUserId = root.get(Property_.user).get(User_.id);
         Expression<Boolean> rootIsAvailable = root.get(Property_.isAvailable);
@@ -60,7 +62,7 @@ public class SearchRepositoryImpl implements SearchRepository {
         Expression<Boolean> rootHasTv = root.get(Property_.hasTv);
         Expression<Boolean> rootHasInternet = root.get(Property_.hasInternet);
         Expression<Boolean> rootIsPetsAllowed = root.get(Property_.isPetsAllowed);
-//        Expression<Long> orderId = orderRoot.get(Order_.id);
+        Expression<Long> orderId = root.get(Property_.id);
 
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.equal(rootIsDeleted, false));
@@ -91,7 +93,9 @@ public class SearchRepositoryImpl implements SearchRepository {
         if(searchCriteria.isPetsAllowed()) {
             predicates.add(criteriaBuilder.equal(rootIsPetsAllowed, searchCriteria.isHasInternet()));
         }
-//        predicates.add(criteriaBuilder.not(orderId.in(subquery)));
+        if(!subquery.isEmpty()) {
+            predicates.add(criteriaBuilder.not(orderId.in(subquery)));
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
@@ -108,7 +112,7 @@ public class SearchRepositoryImpl implements SearchRepository {
         predicates.add(criteriaBuilder.equal(orderIsFinished, false));
         predicates.add(criteriaBuilder.or(criteriaBuilder.between(orderStartDate, searchCriteriaStartDate, searchCriteriaEndDate)));
         predicates.add(criteriaBuilder.or(criteriaBuilder.between(orderEndDate, searchCriteriaStartDate, searchCriteriaEndDate)));
-
+        //TODO: add reverse check
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 }
