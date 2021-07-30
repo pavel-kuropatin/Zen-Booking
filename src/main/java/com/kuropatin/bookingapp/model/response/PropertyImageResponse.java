@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 public class PropertyImageResponse {
 
+    private long id;
     private String imgUrl;
 
     public static PropertyImageResponse transformToNewPropertyImageResponse(PropertyImage propertyImage) {
@@ -32,6 +33,7 @@ public class PropertyImageResponse {
     }
 
     public static PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
+        propertyImageResponse.setId(propertyImage.getId());
         propertyImageResponse.setImgUrl(propertyImage.getImgUrl());
         return propertyImageResponse;
     }

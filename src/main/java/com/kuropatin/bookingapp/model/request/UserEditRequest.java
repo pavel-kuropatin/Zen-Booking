@@ -22,12 +22,6 @@ public class UserEditRequest {
     private String email;
     private String phone;
 
-    public static User transformToNewUser(UserEditRequest userCreateRequest) {
-        User user = new User();
-        transformToUser(userCreateRequest, user);
-        return user;
-    }
-
     public static User transformToUser(UserEditRequest userCreateRequest, User user) {
         user.setName(userCreateRequest.getName());
         user.setSurname(userCreateRequest.getSurname());

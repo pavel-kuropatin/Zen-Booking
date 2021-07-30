@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 public class PropertyResponse {
 
+    private long id;
     private PropertyType type;
     private String name;
     private String description;
@@ -46,6 +47,7 @@ public class PropertyResponse {
     }
 
     public static PropertyResponse transformToPropertyResponse(Property property, PropertyResponse propertyResponse) {
+        propertyResponse.setId(property.getId());
         propertyResponse.setType(property.getType());
         propertyResponse.setName(property.getName());
         propertyResponse.setDescription(property.getDescription());
