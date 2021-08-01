@@ -85,7 +85,10 @@ public class OrderService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {
+            OrderNotFoundException.class,
+            UserNotFoundException.class
+    })
     public String cancelOrder(Long orderId, Long userId) {
         if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
             Order orderToCancel = getOrderById(orderId, userId);
@@ -113,7 +116,10 @@ public class OrderService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {
+            OrderNotFoundException.class,
+            UserNotFoundException.class
+    })
     public String acceptOrder(Long orderId, Long hostId) {
         if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToAccept = orderRepository.findOrderById(orderId);
@@ -131,7 +137,10 @@ public class OrderService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {
+            OrderNotFoundException.class,
+            UserNotFoundException.class
+    })
     public String declineOrder(Long orderId, Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToDecline = orderRepository.findOrderById(orderId);
