@@ -17,7 +17,7 @@
     <description>IT-Academy graduation project</description>
 
     <properties>
-        <java.version>11</java.version>
+<!--        <java.version>11</java.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>Pavel-Kuropatin_Booking-App</sonar.projectKey>
         <sonar.organization>pavel-kuropatin</sonar.organization>
