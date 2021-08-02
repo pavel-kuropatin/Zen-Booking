@@ -12,9 +12,6 @@ create table admins(
     updated        timestamp(6)                      not null
 );
 
-alter table admins
-    owner to username;
-
 create unique index admins_id_uindex
     on admins (id);
 
@@ -49,9 +46,6 @@ create table users(
     created    timestamp(6)                     not null,
     updated    timestamp(6)                     not null
 );
-
-alter table users
-    owner to username;
 
 create unique index users_id_uindex
     on users (id);
@@ -107,9 +101,6 @@ create table property(
     created         timestamp(6)               not null,
     updated         timestamp(6)               not null
 );
-
-alter table property
-    owner to username;
 
 create unique index property_id_uindex
     on property (id);
@@ -168,9 +159,6 @@ create table property_image(
     updated     timestamp(6)               not null
 );
 
-alter table property_image
-    owner to username;
-
 create unique index property_image_id_uindex
     on property_image (id);
 
@@ -193,9 +181,6 @@ create table orders(
     created      timestamp(6)               not null,
     updated      timestamp(6)               not null
 );
-
-alter table orders
-    owner to username;
 
 create unique index orders_id_uindex
     on orders (id);
@@ -234,9 +219,6 @@ create table review(
     created     timestamp(6)               not null,
     updated     timestamp(6)               not null
 );
-
-alter table review
-    owner to username;
 
 create unique index review_id_uindex
     on review (id);
