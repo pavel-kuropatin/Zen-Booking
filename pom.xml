@@ -17,7 +17,6 @@
     <description>IT-Academy graduation project</description>
 
     <properties>
-<!--        <java.version>11</java.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>Pavel-Kuropatin_Booking-App</sonar.projectKey>
         <sonar.organization>pavel-kuropatin</sonar.organization>
@@ -117,7 +116,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <source>11</source>
+                            <source>1.8</source>
                             <target>1.8</target>
                         </configuration>
                     </plugin>
