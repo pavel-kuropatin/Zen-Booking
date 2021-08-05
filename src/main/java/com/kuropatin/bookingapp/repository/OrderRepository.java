@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.repository;
 
+import com.kuropatin.bookingapp.config.CacheConfig;
 import com.kuropatin.bookingapp.model.Order;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,6 +16,7 @@ import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
+    @Cacheable(CacheConfig.ORDER)
     boolean existsByIdAndUserIdAndIsFinishedFalse(Long orderId, Long userId);
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
@@ -33,12 +36,15 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     )
     boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate);
 
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.user.id = ?1 ORDER BY o.id")
     List<Order> findAllOrdersOfUser(Long userId);
 
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.id = ?1")
     Order findOrderById(Long orderId);
 
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.id = ?1 AND o.user.id = ?2")
     Order findOrderByIdAndUserId(Long orderId, Long userId);
 
@@ -47,12 +53,14 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "UPDATE orders SET is_cancelled = true, is_finished = true WHERE id = ?1", nativeQuery = true)
     void cancelOrder(Long orderId);
 
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o.* FROM orders o " +
                    "INNER JOIN property p on p.id = o.property_id AND p.user_id = ?1 " +
                    "WHERE o.is_cancelled = false AND o.is_finished = false " +
                    "ORDER BY o.start_date", nativeQuery = true)
     List<Order> findAllOrderRequests(Long userId);
 
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o.* FROM orders o " +
                    "INNER JOIN property p on p.id = o.property_id AND o.id = ?1 AND p.user_id = ?2 " +
                    "WHERE o.is_cancelled = false AND o.is_finished = false " +
