@@ -24,6 +24,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookingController {
 
+    private final String booking = "/booking";
+    private final String bookingPropertyId = "/booking/{propertyId}";
+    private final String bookingPropertyIdImages = "/booking/{propertyId}/images";
+    private final String bookingPropertyIdImagesImageId = "/booking/{propertyId}/images/{imageId}";
+
     private final SearchService searchService;
     private final PropertyService propertyService;
     private final OrderService orderService;
@@ -32,7 +37,7 @@ public class BookingController {
 
     @ApiOperation(value = "Search property that available to order")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
-    @PostMapping("/booking")
+    @PostMapping(booking)
     public ResponseEntity<List<PropertyResponse>> searchProperty(@RequestBody final PropertySearchCriteria searchCriteria) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
@@ -40,7 +45,7 @@ public class BookingController {
 
     @ApiOperation(value = "Show founded property by {propertyId}")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
-    @GetMapping("/booking/{propertyId}")
+    @GetMapping(bookingPropertyId)
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
@@ -48,7 +53,7 @@ public class BookingController {
 
     @ApiOperation(value = "Order founded property")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
-    @PostMapping("/booking/{propertyId}")
+    @PostMapping(bookingPropertyId)
     public ResponseEntity<OrderResponse> orderProperty(@RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(OrderResponse.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
@@ -59,7 +64,7 @@ public class BookingController {
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
     })
-    @GetMapping("/booking/{propertyId}/images")
+    @GetMapping(bookingPropertyIdImages)
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         return new ResponseEntity<>(PropertyImageResponse.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
     }
@@ -70,7 +75,7 @@ public class BookingController {
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1"),
             @ApiImplicitParam(name = "imageId", dataTypeClass = Integer.class, paramType = "path", value = "imageId", required = true, defaultValue = "1")
     })
-    @GetMapping("/booking/{propertyId}/images/{imageId}")
+    @GetMapping(bookingPropertyIdImagesImageId)
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         return new ResponseEntity<>(PropertyImageResponse.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyId(imageId, propertyId)), HttpStatus.OK);
     }
