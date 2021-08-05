@@ -52,7 +52,6 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
-    @EqualsAndHashCode.Exclude
     @Column(name = "balance")
     private int balance = 0;
 
@@ -65,11 +64,11 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Property> property;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)//, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Order> orders;
 
