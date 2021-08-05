@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.repository;
 
+import com.kuropatin.bookingapp.config.CacheConfig;
 import com.kuropatin.bookingapp.model.PropertyImage;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,35 +15,41 @@ import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = ?2 AND p.user.id = ?3 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     boolean existsByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
             "FROM PropertyImage i " +
             "INNER JOIN Property p ON i.property.id = ?2 " +
             "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     boolean existsByIdAndPropertyId(Long imageId, Long propertyId);
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT i FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = p.id AND p.user.id = ?2 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.property.id = ?1 " +
                    "ORDER BY i.id")
     List<PropertyImage> findAllImagesOfPropertyOfUser(Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT i FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = p.id " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.property.id = ?1 " +
                    "ORDER BY i.id")
     List<PropertyImage> findAllImagesOfProperty(Long propertyId);
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT i FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = ?2 AND p.user.id = ?3 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     PropertyImage findPropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY_IMAGE)
     @Query(value = "SELECT i FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = ?2 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")

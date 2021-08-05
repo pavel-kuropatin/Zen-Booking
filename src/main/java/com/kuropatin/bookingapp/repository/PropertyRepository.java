@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.repository;
 
+import com.kuropatin.bookingapp.config.CacheConfig;
 import com.kuropatin.bookingapp.model.Property;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,20 +15,25 @@ import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
+    @Cacheable(CacheConfig.PROPERTY)
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     boolean existsByIdAndUserId(Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY)
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     boolean existsByIdAndNotUserId(Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY)
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.user.id = ?1 ORDER BY p.id")
     List<Property> findAllPropertyOfUser(Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY)
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     Property findPropertyByIdAndOwnerId(Long propertyId, Long userId);
 
+    @Cacheable(CacheConfig.PROPERTY)
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     Property findPropertyByIdAndNotOwnerId(Long propertyId, Long userId);
 
