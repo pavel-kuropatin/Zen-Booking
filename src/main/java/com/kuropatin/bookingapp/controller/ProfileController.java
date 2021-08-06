@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/profile")
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class ProfileController {
     @ApiOperation(value = "Update info of logged user")
     @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @PutMapping
-    public ResponseEntity<UserResponse> updateUserInfo(@RequestBody final UserEditRequest userEditRequest) {
+    public ResponseEntity<UserResponse> updateUserInfo(@Valid @RequestBody final UserEditRequest userEditRequest) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
     }
@@ -39,7 +41,7 @@ public class ProfileController {
     @ApiOperation(value = "Deposit money to logged user's account")
     @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @PutMapping("/deposit")
-    public ResponseEntity<UserResponse> deposit(@RequestBody final AmountRequest amountRequest) {
+    public ResponseEntity<UserResponse> deposit(@Valid @RequestBody final AmountRequest amountRequest) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.CREATED);
     }

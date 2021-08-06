@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,7 @@ public class HostingController {
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
     })
-    @GetMapping("/hosting/property/{propertyId}")
+    @GetMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.getPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
@@ -51,7 +52,7 @@ public class HostingController {
     @ApiOperation(value = "Create property for logged user")
     @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
     @PostMapping("/property")
-    public ResponseEntity<PropertyResponse> createProperty(@RequestBody final PropertyRequest propertyRequest) {
+    public ResponseEntity<PropertyResponse> createProperty(@Valid @RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.createProperty(userId, propertyRequest)), HttpStatus.CREATED);
     }
@@ -62,7 +63,7 @@ public class HostingController {
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
     })
     @PutMapping("/property/{propertyId}")
-    public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @RequestBody final PropertyRequest propertyRequest) {
+    public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.updateProperty(propertyId, userId, propertyRequest)), HttpStatus.OK);
     }
@@ -107,7 +108,7 @@ public class HostingController {
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
     })
     @PostMapping("/property/{propertyId}/images")
-    public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @RequestBody final PropertyImageRequest propertyImageRequest) {
+    public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyImageResponse.transformToNewPropertyImageResponse(propertyImageService.create(propertyId, userId, propertyImageRequest)), HttpStatus.CREATED);
     }
