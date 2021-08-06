@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class BookingController {
     @ApiOperation(value = "Search property that available to order")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
     @PostMapping
-    public ResponseEntity<List<PropertyResponse>> searchProperty(@RequestBody final PropertySearchCriteria searchCriteria) {
+    public ResponseEntity<List<PropertyResponse>> searchProperty(@Valid @RequestBody final PropertySearchCriteria searchCriteria) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(PropertyResponse.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
     }
@@ -50,7 +51,7 @@ public class BookingController {
     @ApiOperation(value = "Order founded property")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
     @PostMapping("/{propertyId}")
-    public ResponseEntity<OrderResponse> orderProperty(@RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
+    public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(OrderResponse.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
     }

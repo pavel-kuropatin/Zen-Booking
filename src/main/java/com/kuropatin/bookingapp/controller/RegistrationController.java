@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class RegistrationController {
 
     @ApiOperation(value = "User registration")
     @PostMapping
-    public ResponseEntity<UserResponse> create(@RequestBody final UserCreateRequest userCreateRequest) {
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody final UserCreateRequest userCreateRequest) {
         return new ResponseEntity<>(UserResponse.transformToNewUserResponse(userService.createUser(userCreateRequest)), HttpStatus.CREATED);
     }
 }
