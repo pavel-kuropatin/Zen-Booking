@@ -66,27 +66,6 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class,
-            InsufficientMoneyAmountException.class
-    })
-    public Order updateOrder(Long orderId, Long clientId, OrderRequest orderRequest) {
-        //TODO: add checking if order can be updated
-        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, clientId)) {
-            Order orderToUpdate = getOrderById(orderId, clientId);
-            userService.transferMoney(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
-            orderToUpdate.setStartDate(orderRequest.getStartDate());
-            orderToUpdate.setEndDate(orderRequest.getEndDate());
-            orderToUpdate.setTotalPrice(calculateTotalPrice(orderToUpdate.getProperty().getPrice(), orderToUpdate.getStartDate(), orderToUpdate.getEndDate()));
-            userService.pay(orderToUpdate.getUser(), orderToUpdate.getTotalPrice());
-            orderToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-            return orderRepository.save(orderToUpdate);
-        } else {
-            throw new OrderNotFoundException(orderId);
-        }
-    }
-
-    @Transactional(rollbackFor = {
-            OrderNotFoundException.class,
             UserNotFoundException.class
     })
     public String cancelOrder(Long orderId, Long userId) {
