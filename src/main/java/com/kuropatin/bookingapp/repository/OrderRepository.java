@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    @Cacheable(CacheConfig.ORDER)
+    @Cacheable(CacheConfig.BOOLEAN)
     boolean existsByIdAndUserIdAndIsFinishedFalse(Long orderId, Long userId);
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
