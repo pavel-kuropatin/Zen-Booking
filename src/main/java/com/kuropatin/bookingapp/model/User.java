@@ -14,6 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {
+        "property", "orders"
+})
 @Entity
 @Table(name = "users")
 public class User {
