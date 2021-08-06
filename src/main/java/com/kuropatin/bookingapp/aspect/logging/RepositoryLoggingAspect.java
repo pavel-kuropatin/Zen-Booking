@@ -1,6 +1,6 @@
 package com.kuropatin.bookingapp.aspect.logging;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,9 +9,8 @@ import org.springframework.util.StopWatch;
 
 @Component
 @Aspect
+@Log4j2
 public class RepositoryLoggingAspect {
-
-    private static final Logger log = Logger.getLogger(RepositoryLoggingAspect.class);
 
     @Around("execution(* com.kuropatin.bookingapp.repository.*.*(..))")
     public Object logAroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
