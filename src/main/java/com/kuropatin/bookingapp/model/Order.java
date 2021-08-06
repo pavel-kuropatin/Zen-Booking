@@ -1,10 +1,7 @@
 package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -16,6 +13,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(exclude = {
+        "property", "user"
+})
 @Entity
 @Table(name = "orders")
 public class Order {
