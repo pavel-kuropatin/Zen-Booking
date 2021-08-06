@@ -17,10 +17,11 @@ public class CacheConfig {
     public static final String PROPERTY_IMAGE = "propertyImage";
     public static final String PROPERTY = "property";
     public static final String USER = "users";
+    public static final String BOOLEAN = "boolean";
 
     @Bean
     public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager(ORDER, PROPERTY_IMAGE, PROPERTY, USER);
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager(ORDER, PROPERTY_IMAGE, PROPERTY, USER, BOOLEAN);
         cacheManager.setCaffeine(cacheProperties());
         return cacheManager;
     }

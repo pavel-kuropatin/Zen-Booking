@@ -15,12 +15,12 @@ import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
-    @Cacheable(CacheConfig.PROPERTY)
+    @Cacheable(CacheConfig.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     boolean existsByIdAndUserId(Long propertyId, Long userId);
 
-    @Cacheable(CacheConfig.PROPERTY)
+    @Cacheable(CacheConfig.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     boolean existsByIdAndNotUserId(Long propertyId, Long userId);
