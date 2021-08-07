@@ -24,7 +24,6 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <jwt.version>0.9.1</jwt.version>
         <swagger.version>3.0.0</swagger.version>
-        <log4j.version>1.2.17</log4j.version>
     </properties>
 
     <dependencies>
@@ -83,11 +82,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-boot-starter</artifactId>
             <version>${swagger.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>${log4j.version}</version>
         </dependency>
     </dependencies>
 
