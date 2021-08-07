@@ -1,57 +1,72 @@
 package com.kuropatin.bookingapp.model.request;
 
 import com.kuropatin.bookingapp.model.PropertyType;
+import com.kuropatin.bookingapp.validation.DatePresentOrFuture;
+import com.kuropatin.bookingapp.validation.IntegerInRange;
+import com.kuropatin.bookingapp.validation.ShortInRange;
+import com.kuropatin.bookingapp.validation.ValueOfEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class PropertySearchCriteria {
 
-    private PropertyType type = PropertyType.TYPE_NOT_SPECIFIED;
+    @NotBlank(message = "Enter property type")
+    @ValueOfEnum(enumClass = PropertyType.class, message = "Allowed types are HOUSE, APARTMENT, ROOM, NOT_SPECIFIED")
+    private String type;
 
+    @NotNull(message = "Enter address (can be blank)")
     @Size(max = 500, message = "Address should be between 500 characters or less")
     private String address;
 
-    @Positive(message = "Min price should be a positive number")
-    @Max(value = 1000, message = "Min price is 1000")
-    private int priceMin = 0;
+    @IntegerInRange(min = 1, max = 1000, message = "Minimum price should be between 1 and 1000")
+    private String priceMin;
 
-    @Positive(message = "Max price should be a positive number")
-    @Max(value = 1000, message = "Max price is 1000")
-    private int priceMax = 1000;
+    @IntegerInRange(min = 1, max = 1000, message = "Maximum price should be between 1 and 1000")
+    private String priceMax;
 
-    @Positive(message = "Number of guests should be a positive number")
-    @Max(value = 10, message = "Max number of guests is 10")
-    private short guests = 1;
+    @ShortInRange(min = 1, max = 10, message = "Number of guests should be between 1 and 10")
+    private String guests;
 
-    @Positive(message = "Number of rooms should be a positive number")
-    @Max(value = 10, message = "Max number of rooms value is 10")
-    private short rooms = 1;
+    @ShortInRange(min = 1, max = 10, message = "Number of rooms should be between 1 and 10")
+    private String rooms;
 
-    @Positive(message = "Number of beds should be a positive number")
-    @Max(value = 10, message = "Max number of beds is 10")
-    private short beds = 10;
+    @ShortInRange(min = 1, max = 10, message = "Number of beds should be between 1 and 10")
+    private String beds;
 
-    private boolean hasKitchen = false;
-    private boolean hasWasher = false;
-    private boolean hasTv = false;
-    private boolean hasInternet = false;
-    private boolean isPetsAllowed = false;
+    @NotBlank(message = "Enter if property has kitchen")
+    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    private String hasKitchen;
 
-    @FutureOrPresent(message = "Date should be future or present")
-    private LocalDate startDate;
+    @NotBlank(message = "Enter if property has washer")
+    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    private String hasWasher;
 
-    @FutureOrPresent(message = "Date should be future or present")
-    private LocalDate endDate;
+    @NotBlank(message = "Enter if property has TV")
+    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    private String hasTv;
+
+    @NotBlank(message = "Enter if property has internet")
+    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    private String hasInternet;
+
+    @NotBlank(message = "Enter if pets allowed")
+    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    private String isPetsAllowed;
+
+    @NotBlank(message = "Enter start date")
+    @DatePresentOrFuture
+    private String startDate;
+
+    @NotBlank(message = "Enter end date")
+    @DatePresentOrFuture
+    private String endDate;
 }

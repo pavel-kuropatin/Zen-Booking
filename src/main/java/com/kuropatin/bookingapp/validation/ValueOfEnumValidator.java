@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, Enum<?>> {
+public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, CharSequence> {
 
     private Set<String> acceptedValues;
 
@@ -18,7 +18,7 @@ public class ValueOfEnumValidator implements ConstraintValidator<ValueOfEnum, En
     }
 
     @Override
-    public boolean isValid(Enum<?> value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(CharSequence value, ConstraintValidatorContext constraintValidatorContext) {
         if (value == null) {
             return false;
         }
