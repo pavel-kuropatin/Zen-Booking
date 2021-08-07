@@ -31,7 +31,6 @@ Application deployed on Heroku and can be accessed via Swagger UI by [this link]
 ### Known issues
 1. JWT exception can't be handled to send informative message to front side.
 2. PostgreSQL credentials is publicly exposed. Need to secure it and redeploy app.
-3. Passwords should be encoded with BCryptPasswordEncoder.
 
 ### TODO
 1. Fix known issues.
