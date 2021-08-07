@@ -1,7 +1,9 @@
 package com.kuropatin.bookingapp.security.service;
 
+import com.kuropatin.bookingapp.model.Admin;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.security.model.SecurityUser;
+import com.kuropatin.bookingapp.service.AdminService;
 import com.kuropatin.bookingapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,15 +17,26 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
+    private final AdminService adminService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userService.getUserByLogin(username);
-        return new SecurityUser(
-                user.getId(),
-                user.getLogin(),
-                user.getPassword(),
-                AuthorityUtils.createAuthorityList(String.valueOf(user.getRole()))
-        );
+        if(userService.existsByLogin(username)) {
+            User user = userService.getUserByLogin(username);
+            return new SecurityUser(
+                    user.getId(),
+                    user.getLogin(),
+                    user.getPassword(),
+                    AuthorityUtils.createAuthorityList(String.valueOf(user.getRole()))
+            );
+        } else {
+            Admin admin = adminService.getAdminByLogin(username);
+            return new SecurityUser(
+                    admin.getId(),
+                    admin.getLogin(),
+                    admin.getPassword(),
+                    AuthorityUtils.createAuthorityList(String.valueOf(admin.getRole()))
+            );
+        }
     }
 }
