@@ -10,6 +10,7 @@ import com.kuropatin.bookingapp.model.request.UserCreateRequest;
 import com.kuropatin.bookingapp.model.request.UserEditRequest;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 public class UserService {
 
     private final UserRepository repository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public boolean existsByLogin(String login) {
         return repository.existsByLoginAndIsBannedFalse(login);
@@ -50,6 +52,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
         User user = UserCreateRequest.transformToNewUser(userCreateRequest);
+        user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(user.getCreated());
         return repository.save(user);
