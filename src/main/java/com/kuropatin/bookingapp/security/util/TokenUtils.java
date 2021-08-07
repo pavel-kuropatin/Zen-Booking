@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.Claims.SUBJECT;
-import static java.util.Calendar.MILLISECOND;
+import static java.util.Calendar.SECOND;
 
 @Component
 @RequiredArgsConstructor
@@ -27,14 +27,6 @@ public class TokenUtils {
         return getClaimsFromToken(token).getSubject();
     }
 
-    public Date getCreatedDateFromToken(String token) {
-        return (Date) getClaimsFromToken(token).get(CREATED);
-    }
-
-    public Date getExpirationDateFromToken(String token) {
-        return getClaimsFromToken(token).getExpiration();
-    }
-
     private Claims getClaimsFromToken(String token) {
         return Jwts
                 .parser()
@@ -43,23 +35,25 @@ public class TokenUtils {
                 .getBody();
     }
 
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(SUBJECT, userDetails.getUsername());
+        claims.put(CREATED, generateCurrentDate());
+        claims.put(ROLES, getEncryptedRoles(userDetails));
+        return generateToken(claims);
+    }
+
     private Date generateCurrentDate() {
         return new Date();
     }
 
-    private Date generateExpirationDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(MILLISECOND, jwtTokenConfig.getExpiration());
-        return calendar.getTime();
-    }
-
-    private boolean isTokenExpired(String token) {
-        final Date expiration = this.getExpirationDateFromToken(token);
-        return expiration.before(this.generateCurrentDate());
-    }
-
-    private boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-        return (lastPasswordReset != null && created.before(lastPasswordReset));
+    private List<String> getEncryptedRoles(UserDetails userDetails) {
+        return userDetails.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(s -> s.replace("ROLE_", ""))
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
     }
 
     private String generateToken(Map<String, Object> claims) {
@@ -71,39 +65,10 @@ public class TokenUtils {
                 .compact();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put(SUBJECT, userDetails.getUsername());
-        claims.put(CREATED, generateCurrentDate());
-        claims.put(ROLES, getEncryptedRoles(userDetails));
-        return generateToken(claims);
-    }
-
-    private List<String> getEncryptedRoles(UserDetails userDetails) {
-        return userDetails.getAuthorities().
-                stream()
-                .map(GrantedAuthority::getAuthority)
-                .map(s -> s.replace("ROLE_", ""))
-                .map(String::toLowerCase)
-                .collect(Collectors.toList());
-    }
-
-    public boolean canTokenBeRefreshed(String token, Date lastPasswordReset) {
-        final Date created = this.getCreatedDateFromToken(token);
-        return !(this.isCreatedBeforeLastPasswordReset(created, lastPasswordReset))
-                && !(this.isTokenExpired(token));
-    }
-
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            final Claims claims = this.getClaimsFromToken(token);
-            claims.put(CREATED, this.generateCurrentDate());
-            refreshedToken = this.generateToken(claims);
-        } catch (Exception e) {
-            refreshedToken = null;
-        }
-        return refreshedToken;
+    private Date generateExpirationDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(SECOND, jwtTokenConfig.getExpiration());
+        return calendar.getTime();
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
