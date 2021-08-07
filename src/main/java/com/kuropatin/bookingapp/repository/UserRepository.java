@@ -14,6 +14,8 @@ import java.sql.SQLException;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
+    boolean existsByLoginAndIsBannedFalse(String login);
+
     @Cacheable(CacheConfig.USER)
     User findUserByIdAndIsBannedFalse(Long id);
 

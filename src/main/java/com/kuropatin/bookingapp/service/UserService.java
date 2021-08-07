@@ -22,6 +22,10 @@ public class UserService {
 
     private final UserRepository repository;
 
+    public boolean existsByLogin(String login) {
+        return repository.existsByLoginAndIsBannedFalse(login);
+    }
+
     public User getUserById(Long id) {
         if(repository.existsById(id)) {
             return repository.findUserByIdAndIsBannedFalse(id);
@@ -31,9 +35,8 @@ public class UserService {
     }
 
     public User getUserByLogin(String login) {
-        User user = repository.findUserByLoginAndIsBannedFalse(login);
-        if(user != null) {
-            return user;
+        if(existsByLogin(login)) {
+            return repository.findUserByLoginAndIsBannedFalse(login);
         } else {
             throw new UserNotFoundException(login);
         }
