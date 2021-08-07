@@ -73,7 +73,7 @@ public class UserService {
             throw new UserNotFoundException(id);
         }
         User user = getUserById(id);
-        user.setBalance(user.getBalance() + amountRequest.getAmount());
+        user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(user);
     }

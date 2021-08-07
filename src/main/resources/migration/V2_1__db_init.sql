@@ -83,7 +83,7 @@ create index users_is_banned_index
 create table property(
     id              bigserial                  not null constraint property_pk primary key,
     user_id         bigint                     not null constraint property_user_id_fk references users,
-    type            varchar(18)                not null,
+    type            varchar(13)                not null,
     name            varchar(100)               not null,
     description     varchar(500)               not null,
     address         varchar(500)               not null,

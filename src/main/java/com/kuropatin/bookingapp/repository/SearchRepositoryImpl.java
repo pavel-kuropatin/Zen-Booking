@@ -67,30 +67,30 @@ public class SearchRepositoryImpl implements SearchRepository {
         predicates.add(criteriaBuilder.equal(rootIsDeleted, false));
         predicates.add(criteriaBuilder.notEqual(rootUserId, userId));
         predicates.add(criteriaBuilder.equal(rootIsAvailable, true));
-        if(Objects.nonNull(searchCriteria.getType()) && !searchCriteria.getType().equals(PropertyType.TYPE_NOT_SPECIFIED)) {
-            predicates.add(criteriaBuilder.equal(rootType, searchCriteria.getType()));
+        if(Objects.nonNull(searchCriteria.getType()) && !PropertyType.valueOf(searchCriteria.getType()).equals(PropertyType.NOT_SPECIFIED)) {
+            predicates.add(criteriaBuilder.equal(rootType, PropertyType.valueOf(searchCriteria.getType())));
         }
         if(Objects.nonNull(searchCriteria.getAddress())) {
             predicates.add(criteriaBuilder.like(criteriaBuilder.lower(rootAddress), StringUtils.join("%", searchCriteria.getAddress().toLowerCase(), "%")));
         }
-        predicates.add(criteriaBuilder.between(rootPrice, searchCriteria.getPriceMin(), searchCriteria.getPriceMax()));
-        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootGuests, searchCriteria.getGuests()));
-        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootRooms, searchCriteria.getRooms()));
-        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootBeds, searchCriteria.getBeds()));
-        if(searchCriteria.isHasKitchen()) {
-            predicates.add(criteriaBuilder.equal(rootHasKitchen, searchCriteria.isHasKitchen()));
+        predicates.add(criteriaBuilder.between(rootPrice, Integer.valueOf(searchCriteria.getPriceMin()), Integer.valueOf(searchCriteria.getPriceMax())));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootGuests, Short.valueOf(searchCriteria.getGuests())));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootRooms, Short.valueOf(searchCriteria.getRooms())));
+        predicates.add(criteriaBuilder.greaterThanOrEqualTo(rootBeds, Short.valueOf(searchCriteria.getBeds())));
+        if(Boolean.parseBoolean(searchCriteria.getHasKitchen())) {
+            predicates.add(criteriaBuilder.equal(rootHasKitchen, Boolean.parseBoolean(searchCriteria.getHasKitchen())));
         }
-        if(searchCriteria.isHasWasher()) {
-            predicates.add(criteriaBuilder.equal(rootHasWasher, searchCriteria.isHasWasher()));
+        if(Boolean.parseBoolean(searchCriteria.getHasWasher())) {
+            predicates.add(criteriaBuilder.equal(rootHasWasher, Boolean.parseBoolean(searchCriteria.getHasWasher())));
         }
-        if(searchCriteria.isHasTv()) {
-            predicates.add(criteriaBuilder.equal(rootHasTv, searchCriteria.isHasTv()));
+        if(Boolean.parseBoolean(searchCriteria.getHasTv())) {
+            predicates.add(criteriaBuilder.equal(rootHasTv, Boolean.parseBoolean(searchCriteria.getHasTv())));
         }
-        if(searchCriteria.isHasInternet()) {
-            predicates.add(criteriaBuilder.equal(rootHasInternet, searchCriteria.isHasInternet()));
+        if(Boolean.parseBoolean(searchCriteria.getHasInternet())) {
+            predicates.add(criteriaBuilder.equal(rootHasInternet, Boolean.parseBoolean(searchCriteria.getHasInternet())));
         }
-        if(searchCriteria.isPetsAllowed()) {
-            predicates.add(criteriaBuilder.equal(rootIsPetsAllowed, searchCriteria.isHasInternet()));
+        if(Boolean.parseBoolean(searchCriteria.getIsPetsAllowed())) {
+            predicates.add(criteriaBuilder.equal(rootIsPetsAllowed, Boolean.parseBoolean(searchCriteria.getIsPetsAllowed())));
         }
         if(!subquery.isEmpty()) {
             predicates.add(criteriaBuilder.not(orderId.in(subquery)));
@@ -102,8 +102,8 @@ public class SearchRepositoryImpl implements SearchRepository {
         Expression<Boolean> orderIsFinished = root.get(Order_.isFinished);
         Expression<LocalDate> orderStartDate = root.get(Order_.startDate);
         Expression<LocalDate> orderEndDate = root.get(Order_.endDate);
-        LocalDate startDate = searchCriteria.getStartDate();
-        LocalDate endDate = searchCriteria.getEndDate();
+        LocalDate startDate = LocalDate.parse(searchCriteria.getStartDate());
+        LocalDate endDate = LocalDate.parse(searchCriteria.getEndDate());
 
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.equal(orderIsFinished, false));

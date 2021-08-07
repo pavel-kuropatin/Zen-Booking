@@ -2,53 +2,52 @@ package com.kuropatin.bookingapp.model.request;
 
 import com.kuropatin.bookingapp.model.Gender;
 import com.kuropatin.bookingapp.model.User;
+import com.kuropatin.bookingapp.validation.AgeXPlus;
 import com.kuropatin.bookingapp.validation.ValueOfEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class UserCreateRequest {
 
-    @NotEmpty(message = "Enter login")
     @NotBlank(message = "Enter login")
     @Size(min = 2, max = 20, message = "Login should be between 2 and 20 characters")
     private String login;
 
-    @NotEmpty(message = "Enter password")
     @NotBlank(message = "Enter password")
     @Size(min = 8, max = 20, message = "Password should be between 8 and 20 characters")
     private String password;
 
-    @NotEmpty(message = "Enter name")
     @NotBlank(message = "Enter name")
     @Size(min = 2, max = 20, message = "Name should be between 2 and 20 characters")
     private String name;
 
-    @NotEmpty(message = "Enter surname")
     @NotBlank(message = "Enter surname")
     @Size(min = 2, max = 20, message = "Surname should be between 2 and 20 characters")
     private String surname;
 
-    @ValueOfEnum(enumClass = Gender.class, message = "Specify gender")
-    private Gender gender;
+    @NotBlank(message = "Specify gender")
+    @ValueOfEnum(enumClass = Gender.class, message = "Allowed genders are MALE, FEMALE, UNDEFINED")
+    private String gender;
 
-    @Past(message = "Birth date should be valid")
-    private LocalDate birthDate;
+    @NotBlank(message = "Enter birth date")
+    @AgeXPlus(minAge = 18, message = "Age should be 18+")
+    private String birthDate;
 
+    @NotBlank(message = "Enter email")
     @Email(message = "Email should be valid")
     @Size(max = 50, message = "Email should be 50 characters or less")
     private String email;
 
-    @NotEmpty(message = "Enter phone number")
     @NotBlank(message = "Enter phone number")
     @Size(max = 20, message = "Phone number should be less than 20 characters")
     @Pattern(regexp = "^[+]\\d+$", message = "Phone number should start with + and contain only numbers")
@@ -65,8 +64,8 @@ public class UserCreateRequest {
         user.setPassword(userCreateRequest.getPassword());
         user.setName(userCreateRequest.getName());
         user.setSurname(userCreateRequest.getSurname());
-        user.setGender(userCreateRequest.getGender());
-        user.setBirthDate(userCreateRequest.getBirthDate());
+        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
+        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
         user.setEmail(userCreateRequest.getEmail());
         user.setPhone(userCreateRequest.getPhone());
         return user;
