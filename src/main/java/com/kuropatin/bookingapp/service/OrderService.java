@@ -26,8 +26,16 @@ public class OrderService {
     private final UserService userService;
     private final PropertyService propertyService;
 
-    public List<Order> getAllOrders(Long userId) {
-        return orderRepository.findAllOrdersOfUser(userId);
+    public List<Order> getActiveOrders(Long userId) {
+        return orderRepository.findAllActiveOrdersOfUser(userId);
+    }
+
+    public List<Order> getCancelledOrders(Long userId) {
+        return orderRepository.findAllCancelledOrdersOfUser(userId);
+    }
+
+    public List<Order> getFinishedOrders(Long userId) {
+        return orderRepository.findAllFinishedOrdersOfUser(userId);
     }
 
     public Order getOrderById(Long orderId, Long userId) {

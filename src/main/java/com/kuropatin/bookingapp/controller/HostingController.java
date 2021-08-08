@@ -9,6 +9,7 @@ import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.OrderService;
 import com.kuropatin.bookingapp.service.PropertyImageService;
 import com.kuropatin.bookingapp.service.PropertyService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/hosting")
 @RequiredArgsConstructor
+@Api(value = "Hosting Controller", tags = "User Hosting - actions for managing user property and requests")
 public class HostingController {
 
     private final PropertyService propertyService;
@@ -31,7 +33,7 @@ public class HostingController {
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Get all property of logged user")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @GetMapping("/property")
     public ResponseEntity<List<PropertyResponse>> getAllPropertyOfUser() {
         long userId = authenticationUtils.getId();
@@ -40,8 +42,8 @@ public class HostingController {
 
     @ApiOperation(value = "Get property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     })
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
@@ -50,7 +52,7 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Create property for logged user")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @PostMapping("/property")
     public ResponseEntity<PropertyResponse> createProperty(@Valid @RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
@@ -59,8 +61,8 @@ public class HostingController {
 
     @ApiOperation(value = "Update property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     })
     @PutMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyRequest propertyRequest) {
@@ -70,8 +72,8 @@ public class HostingController {
 
     @ApiOperation(value = "Delete property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     })
     @DeleteMapping("/property/{propertyId}")
     public ResponseEntity<String> deletePropertyById(@PathVariable final Long propertyId) {
@@ -81,8 +83,8 @@ public class HostingController {
 
     @ApiOperation(value = "Get all images of property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     })
     @GetMapping("/property/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
@@ -92,9 +94,9 @@ public class HostingController {
 
     @ApiOperation(value = "Get image with id {imageId} of property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "imageId", dataTypeClass = Integer.class, paramType = "path", value = "imageId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
+            @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
     })
     @GetMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
@@ -104,8 +106,8 @@ public class HostingController {
 
     @ApiOperation(value = "Create image of property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     })
     @PostMapping("/property/{propertyId}/images")
     public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
@@ -115,9 +117,9 @@ public class HostingController {
 
     @ApiOperation(value = "Delete image with id {imageId} of property with id {propertyId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1"),
-            @ApiImplicitParam(name = "imageId", dataTypeClass = Integer.class, paramType = "path", value = "imageId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
+            @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
     })
     @DeleteMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<String> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
@@ -126,7 +128,7 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Get all order requests of logged user")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token")
+    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @GetMapping("/requests")
     public ResponseEntity<List<OrderResponse>> getAllOrderRequests() {
         long userId = authenticationUtils.getId();
@@ -135,8 +137,8 @@ public class HostingController {
 
     @ApiOperation(value = "Get order request with id {orderId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "orderId", dataTypeClass = Integer.class, paramType = "path", value = "orderId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     })
     @GetMapping("/requests/{orderId}")
     public ResponseEntity<OrderResponse> getOrderRequestById(@PathVariable final Long orderId) {
@@ -146,8 +148,8 @@ public class HostingController {
 
     @ApiOperation(value = "Accept order request with id {orderId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "orderId", dataTypeClass = Integer.class, paramType = "path", value = "orderId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     })
     @PutMapping("/requests/{orderId}/accept")
     public ResponseEntity<String> acceptOrder(@PathVariable final Long orderId) {
@@ -157,8 +159,8 @@ public class HostingController {
 
     @ApiOperation(value = "Decline order request with id {orderId} of logged user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
-            @ApiImplicitParam(name = "orderId", dataTypeClass = Integer.class, paramType = "path", value = "orderId", required = true, defaultValue = "1")
+            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
+            @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     })
     @PutMapping("/requests/{orderId}/decline")
     public ResponseEntity<String> declineOrder(@PathVariable final Long orderId) {

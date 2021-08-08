@@ -38,7 +38,15 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.user.id = ?1 ORDER BY o.id")
-    List<Order> findAllOrdersOfUser(Long userId);
+    List<Order> findAllActiveOrdersOfUser(Long userId);
+
+    @Cacheable(CacheConfig.ORDER)
+    @Query(value = "SELECT o FROM Order o WHERE (o.isAccepted = false OR o.isCancelled = true) AND o.isFinished = true AND o.user.id = ?1 ORDER BY o.id")
+    List<Order> findAllCancelledOrdersOfUser(Long userId);
+
+    @Cacheable(CacheConfig.ORDER)
+    @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = true AND o.isCancelled = false AND o.isFinished = true AND o.user.id = ?1 ORDER BY o.id")
+    List<Order> findAllFinishedOrdersOfUser(Long userId);
 
     @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.id = ?1")
