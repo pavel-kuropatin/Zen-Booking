@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
@@ -25,9 +27,9 @@ public class LoginController {
     private final TokenUtils tokenUtils;
     private final UserDetailsService userDetailsService;
 
-    @ApiOperation(value = "User login")
+    @ApiOperation(value = "Login page")
     @PostMapping
-    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword())
         );
