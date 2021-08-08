@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <modules>
+        <module>common</module>
+        <module>web</module>
+    </modules>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -12,12 +18,14 @@
     <groupId>com.kuropatin</groupId>
     <artifactId>Booking-App</artifactId>
     <version>0.1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <name>Booking-App</name>
     <description>IT-Academy graduation project</description>
     <url>https://booking-app-pk.herokuapp.com/swagger-ui/</url>
 
     <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>Pavel-Kuropatin_Booking-App</sonar.projectKey>
         <sonar.organization>pavel-kuropatin</sonar.organization>
@@ -111,7 +119,7 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <source>1.8</source>
+                            <source>11</source>
                             <target>1.8</target>
                         </configuration>
                     </plugin>
