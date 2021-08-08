@@ -1,7 +1,7 @@
 package com.kuropatin.bookingapp.repository;
 
-import com.kuropatin.bookingapp.config.CacheConfig;
 import com.kuropatin.bookingapp.model.User;
+import com.kuropatin.bookingapp.util.CacheNames;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,23 +16,23 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     boolean existsByLoginAndIsBannedFalse(String login);
 
-    @Cacheable(CacheConfig.USER)
+    @Cacheable(CacheNames.USER)
     User findUserByIdAndIsBannedFalse(Long id);
 
-    @Cacheable(CacheConfig.USER)
+    @Cacheable(CacheNames.USER)
     User findUserByLoginAndIsBannedFalse(String login);
 
-    @Cacheable(CacheConfig.BOOLEAN)
+    @Cacheable(CacheNames.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(u.login) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.login = ?1")
     boolean isLoginInUse(String login);
 
-    @Cacheable(CacheConfig.BOOLEAN)
+    @Cacheable(CacheNames.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(u.email) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.email = ?1")
     boolean isEmailInUse(String email);
 
-    @Cacheable(CacheConfig.BOOLEAN)
+    @Cacheable(CacheNames.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(u.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.isBanned = true AND u.id = ?1")
     boolean isBanned(long id);
