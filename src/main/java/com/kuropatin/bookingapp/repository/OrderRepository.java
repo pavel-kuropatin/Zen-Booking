@@ -1,7 +1,7 @@
 package com.kuropatin.bookingapp.repository;
 
+import com.kuropatin.bookingapp.config.CacheConfig;
 import com.kuropatin.bookingapp.model.Order;
-import com.kuropatin.bookingapp.util.CacheNames;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    @Cacheable(CacheNames.BOOLEAN)
+    @Cacheable(CacheConfig.BOOLEAN)
     boolean existsByIdAndUserIdAndIsFinishedFalse(Long orderId, Long userId);
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
@@ -36,23 +36,23 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     )
     boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.user.id = ?1 ORDER BY o.id")
     List<Order> findAllActiveOrdersOfUser(Long userId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE (o.isAccepted = false OR o.isCancelled = true) AND o.isFinished = true AND o.user.id = ?1 ORDER BY o.id")
     List<Order> findAllCancelledOrdersOfUser(Long userId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = true AND o.isCancelled = false AND o.isFinished = true AND o.user.id = ?1 ORDER BY o.id")
     List<Order> findAllFinishedOrdersOfUser(Long userId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.id = ?1")
     Order findOrderById(Long orderId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o FROM Order o WHERE o.isFinished = false AND o.id = ?1 AND o.user.id = ?2")
     Order findOrderByIdAndUserId(Long orderId, Long userId);
 
@@ -61,14 +61,14 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "UPDATE orders SET is_cancelled = true, is_finished = true WHERE id = ?1", nativeQuery = true)
     void cancelOrder(Long orderId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o.* FROM orders o " +
                    "INNER JOIN property p on p.id = o.property_id AND p.user_id = ?1 " +
                    "WHERE o.is_cancelled = false AND o.is_finished = false " +
                    "ORDER BY o.start_date", nativeQuery = true)
     List<Order> findAllOrderRequests(Long userId);
 
-    @Cacheable(CacheNames.ORDER)
+    @Cacheable(CacheConfig.ORDER)
     @Query(value = "SELECT o.* FROM orders o " +
                    "INNER JOIN property p on p.id = o.property_id AND o.id = ?1 AND p.user_id = ?2 " +
                    "WHERE o.is_cancelled = false AND o.is_finished = false " +
