@@ -13,7 +13,7 @@ public class ServiceExceptionLoggingAspect {
 
     @AfterThrowing(pointcut = "execution(* com.kuropatin.bookingapp.service.*.*(..))", throwing = "exception")
     public void afterThrowingPointcut(JoinPoint joinPoint, Throwable exception) {
-        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
+        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getName() + "." + joinPoint.getSignature().getName();
         String exceptionDescription = exception.getClass().getSimpleName() + ": " + exception.getMessage();
         log.warn(baseMethod + " throws " + exceptionDescription);
     }
