@@ -14,7 +14,7 @@ public class RepositoryLoggingAspect {
 
     @Around("execution(* com.kuropatin.bookingapp.repository.*.*(..))")
     public Object logAroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
-        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getName() + "." + joinPoint.getSignature().getName();
+        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
         log.trace(baseMethod + " started");
         StopWatch timer = new StopWatch();
         timer.start();
