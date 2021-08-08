@@ -40,7 +40,7 @@ public class BookingController {
         return new ResponseEntity<>(PropertyResponse.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Show founded property by {propertyId}")
+    @ApiOperation(value = "Show found property by {propertyId}")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
     @GetMapping("/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
@@ -48,7 +48,7 @@ public class BookingController {
         return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Order founded property")
+    @ApiOperation(value = "Order found property")
     @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header")
     @PostMapping("/{propertyId}")
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
@@ -56,7 +56,7 @@ public class BookingController {
         return new ResponseEntity<>(OrderResponse.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get all images of founded property")
+    @ApiOperation(value = "Get all images of found property")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1")
@@ -66,7 +66,7 @@ public class BookingController {
         return new ResponseEntity<>(PropertyImageResponse.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get image with id {imageId} of founded property")
+    @ApiOperation(value = "Get image with id {imageId} of found property")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token"),
             @ApiImplicitParam(name = "propertyId", dataTypeClass = Integer.class, paramType = "path", value = "propertyId", required = true, defaultValue = "1"),
