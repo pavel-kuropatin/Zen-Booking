@@ -3,6 +3,7 @@ package com.kuropatin.bookingapp.security.controller;
 import com.kuropatin.bookingapp.security.request.LoginRequest;
 import com.kuropatin.bookingapp.security.response.LoginResponse;
 import com.kuropatin.bookingapp.security.util.TokenUtils;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
+@Api(value = "Login Controller - login page", tags = "Registration and Login")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;

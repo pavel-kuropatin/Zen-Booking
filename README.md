@@ -9,7 +9,7 @@ Application deployed on Heroku and can be accessed via Swagger UI by [this link]
 1. There is roles for Admins, Moderators and Users based on Spring Security.
 2. Users should be registered and logged in to use this application.
 3. Users can rent a property (_Clients_) or host a property when renting it out (_Hosts_).
-4. Clients can rent an apartment for a certain number of days, as well as cancel the order if the date of the lease has not come.
+4. Clients can rent an apartment for a certain number of days, as well as cancel the order if the date of the rental period has not come.
 5. Hosts can add their property and earn money by renting it out.
 6. Hosts should accept order for renting it out and can decline order if they need.
 7. Hosts can remove their property from listing without deleting it.
@@ -33,5 +33,6 @@ Application deployed on Heroku and can be accessed via Swagger UI by [this link]
 
 ### TODO
 1. Fix known issues.
-2. Add tests.
-3. Further improvement of application functionality.
+2. Further improvement of Swagger UI documentation.
+3. Add tests.
+4. Further improvement of application functionality.
