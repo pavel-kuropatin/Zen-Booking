@@ -1,4 +1,12 @@
 # Booking-App
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=ncloc)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=security_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=code_smells)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=bugs)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
 
 ### Project description
 This is a booking application made as part of training at IT-Academy.
