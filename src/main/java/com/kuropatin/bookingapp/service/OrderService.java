@@ -30,16 +30,16 @@ public class OrderService {
         return orderRepository.findAllActiveOrdersOfUser(userId);
     }
 
-    public List<Order> getCancelledOrders(Long userId) {
-        return orderRepository.findAllCancelledOrdersOfUser(userId);
-    }
-
-    public List<Order> getFinishedOrders(Long userId) {
+    public List<Order> getOrderHistory(Long userId) {
         return orderRepository.findAllFinishedOrdersOfUser(userId);
     }
 
+    public List<Order> getOrdersToAddReview(Long userId) {
+        return orderRepository.findOrdersToAddReview(userId);
+    }
+
     public Order getOrderById(Long orderId, Long userId) {
-        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
+        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
             return orderRepository.findOrderByIdAndUserId(orderId, userId);
         } else {
             throw new OrderNotFoundException(orderId);
@@ -52,7 +52,7 @@ public class OrderService {
             InsufficientMoneyAmountException.class
     })
     public Order createOrder(Long clientId, Long propertyId, OrderRequest orderRequest) {
-        if(orderRepository.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()))) {
+        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()))) {
             User client = userService.getUserById(clientId);
             Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
             Order order = new Order();
@@ -74,14 +74,15 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String cancelOrder(Long orderId, Long userId) {
-        if(orderRepository.existsByIdAndUserIdAndIsFinishedFalse(orderId, userId)) {
+        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
-                orderRepository.cancelOrder(orderId);
+                orderRepository.cancelOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully cancelled", orderId);
             } else {
                 throw new OrderCannotBeCancelledException(orderId);
@@ -105,7 +106,8 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String acceptOrder(Long orderId, Long hostId) {
         if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
@@ -113,8 +115,7 @@ public class OrderService {
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 User host = userService.getUserById(hostId);
                 userService.transferMoney(host, orderToAccept.getTotalPrice());
-                orderRepository.acceptOrder(orderId);
-                orderRepository.acceptOrder(orderId);
+                orderRepository.acceptOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully accepted", orderId);
             } else {
                 throw new OrderCannotBeAcceptedException(orderId);
@@ -126,15 +127,15 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String declineOrder(Long orderId, Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice());
-                orderRepository.acceptOrder(orderId);
-                orderRepository.declineOrder(orderId);
+                orderRepository.declineOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully declined", orderId);
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);

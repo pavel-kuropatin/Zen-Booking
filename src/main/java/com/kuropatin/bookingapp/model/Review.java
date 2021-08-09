@@ -1,5 +1,6 @@
 package com.kuropatin.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,6 @@ public class Review {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "order_id")
-    private long orderId;
-
     @Column(name = "summary")
     private String summary;
 
@@ -43,6 +41,11 @@ public class Review {
 
     @Column(name = "updated")
     private Timestamp updated;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    @JsonBackReference
+    private Order order;
 
     @Override
     public String toString() {

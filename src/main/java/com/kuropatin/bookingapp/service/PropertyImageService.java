@@ -58,7 +58,7 @@ public class PropertyImageService {
 
     public String softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            repository.softDeletePropertyImage(imageId);
+            repository.softDeletePropertyImage(imageId, Timestamp.valueOf(LocalDateTime.now()));
             return MessageFormat.format("Image with id: {0} successfully deleted", imageId);
         } else {
             throw new PropertyImageNotFoundException(imageId);

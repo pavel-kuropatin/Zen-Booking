@@ -30,7 +30,7 @@ public class UserResponse {
         return userResponse;
     }
 
-    public static UserResponse transformToUserResponse(User user, UserResponse userResponse) {
+    private static UserResponse transformToUserResponse(User user, UserResponse userResponse) {
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
         userResponse.setSurname(user.getSurname());

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,10 @@ public class PropertyService {
 
     private final PropertyRepository repository;
     private final UserService userService;
+
+    public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate) {
+        return repository.canPropertyBeOrdered(startDate, endDate);
+    }
 
     public List<Property> getAllPropertyOfUser(Long userId) {
         return repository.findAllPropertyOfUser(userId);
@@ -60,7 +65,7 @@ public class PropertyService {
 
     public String softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            repository.softDeleteProperty(propertyId);
+            repository.softDeleteProperty(propertyId, Timestamp.valueOf(LocalDateTime.now()));
             return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
         } else {
             throw new PropertyNotFoundException(propertyId);
