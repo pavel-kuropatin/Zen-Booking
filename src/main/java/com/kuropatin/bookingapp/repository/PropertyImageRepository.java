@@ -16,14 +16,14 @@ import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndPropertyIdAndUserId'+#imageId+#propertyId+#userId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsPropertyImageByIdAndPropertyIdAndUserId'+#imageId+#propertyId+#userId")
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = ?2 AND p.user.id = ?3 " +
                    "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     boolean existsByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndPropertyId'+#imageId+#propertyId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsPropertyImageByIdAndPropertyId'+#imageId+#propertyId")
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM PropertyImage i " +
                    "INNER JOIN Property p ON i.property.id = ?2 " +

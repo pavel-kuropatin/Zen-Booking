@@ -17,12 +17,12 @@ import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndUserId'+#propertyId+#userId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsPropertyByIdAndUserId'+#propertyId+#userId")
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     boolean existsByIdAndUserId(Long propertyId, Long userId);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndNotUserId'+#propertyId+#userId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsPropertyByIdAndNotUserId'+#propertyId+#userId")
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     boolean existsByIdAndNotUserId(Long propertyId, Long userId);
@@ -46,7 +46,7 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     Property findPropertyByIdAndOwnerId(Long propertyId, Long userId);
 
-    @Cacheable(value = CacheNames.PROPERTY, key = "'existsByIdAndNotUserId'+#propertyId+#userId")
+    @Cacheable(value = CacheNames.PROPERTY, key = "'findPropertyByIdAndNotOwnerId'+#propertyId+#userId")
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     Property findPropertyByIdAndNotOwnerId(Long propertyId, Long userId);
 
