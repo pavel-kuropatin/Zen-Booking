@@ -81,7 +81,7 @@ public class OrderService {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
-                orderRepository.cancelOrder(orderId);
+                orderRepository.cancelOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully cancelled", orderId);
             } else {
                 throw new OrderCannotBeCancelledException(orderId);
@@ -113,8 +113,7 @@ public class OrderService {
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 User host = userService.getUserById(hostId);
                 userService.transferMoney(host, orderToAccept.getTotalPrice());
-                orderRepository.acceptOrder(orderId);
-                orderRepository.acceptOrder(orderId);
+                orderRepository.acceptOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully accepted", orderId);
             } else {
                 throw new OrderCannotBeAcceptedException(orderId);
@@ -133,8 +132,7 @@ public class OrderService {
             Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice());
-                orderRepository.acceptOrder(orderId);
-                orderRepository.declineOrder(orderId);
+                orderRepository.declineOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
                 return MessageFormat.format("Order with id: {0} successfully declined", orderId);
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);

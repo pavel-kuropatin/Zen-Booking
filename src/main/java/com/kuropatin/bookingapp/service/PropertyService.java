@@ -60,7 +60,7 @@ public class PropertyService {
 
     public String softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            repository.softDeleteProperty(propertyId);
+            repository.softDeleteProperty(propertyId, Timestamp.valueOf(LocalDateTime.now()));
             return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
         } else {
             throw new PropertyNotFoundException(propertyId);
