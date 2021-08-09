@@ -32,7 +32,7 @@ public class PropertyImageResponse {
         return propertyImageResponseList;
     }
 
-    public static PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
+    private static PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
         propertyImageResponse.setId(propertyImage.getId());
         propertyImageResponse.setImgUrl(propertyImage.getImgUrl());
         return propertyImageResponse;

@@ -11,7 +11,7 @@
 
 ### Project description
 This is a booking application made as part of training at IT-Academy.
-Application deployed on Heroku and can be accessed via Swagger UI by [this link](https://booking-app-pk.herokuapp.com/swagger-ui/)
+Application is deployed on Heroku and can be accessed via Swagger UI by [this link](https://booking-app-pk.herokuapp.com/swagger-ui/)
 
 ### Application features
 

@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/login")
 @RequiredArgsConstructor
-@Api(value = "Login Controller - login page", tags = "Registration and Login")
+@Api(value = "Login Controller", tags = "Registration and Login", description = "Login for registered user")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;

@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/hosting")
 @RequiredArgsConstructor
-@Api(value = "Hosting Controller", tags = "User Hosting - actions for managing user property and requests")
+@Api(value = "Hosting Controller", tags = "User Hosting", description = "Actions for managing user property and requests")
 public class HostingController {
 
     private final PropertyService propertyService;

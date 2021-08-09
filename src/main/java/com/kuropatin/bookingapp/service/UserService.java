@@ -1,9 +1,6 @@
 package com.kuropatin.bookingapp.service;
 
-import com.kuropatin.bookingapp.exception.EmailAlreadyInUseException;
-import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
-import com.kuropatin.bookingapp.exception.LoginAlreadyInUseException;
-import com.kuropatin.bookingapp.exception.UserNotFoundException;
+import com.kuropatin.bookingapp.exception.*;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
 import com.kuropatin.bookingapp.model.request.UserCreateRequest;
@@ -78,27 +75,43 @@ public class UserService {
         return repository.save(user);
     }
 
-    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
+    @Transactional(rollbackFor = {
+            InsufficientMoneyAmountException.class,
+            MoneyAmountExceededException.class
+    })
     public void pay(User user, int amount) {
         if(user.getBalance() >= amount) {
-            user.setBalance(user.getBalance() - amount);
-            user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-            repository.save(user);
+            long checkOverflow = (long) user.getBalance() + (long) amount;
+            if (checkOverflow > Integer.MAX_VALUE) {
+                throw new MoneyAmountExceededException();
+            } else {
+                user.setBalance(user.getBalance() - amount);
+                user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+                repository.save(user);
+            }
         } else {
             throw new InsufficientMoneyAmountException();
         }
     }
 
-    @Transactional(rollbackFor = {InsufficientMoneyAmountException.class})
+    @Transactional(rollbackFor = {
+            InsufficientMoneyAmountException.class,
+            MoneyAmountExceededException.class
+    })
     public void transferMoney(User user, int amount) {
-        user.setBalance(user.getBalance() + amount);
-        user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
-        repository.save(user);
+        long checkOverflow = (long) user.getBalance() + (long) amount;
+        if (checkOverflow > Integer.MAX_VALUE) {
+            throw new MoneyAmountExceededException();
+        } else {
+            user.setBalance(user.getBalance() + amount);
+            user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            repository.save(user);
+        }
     }
 
     public User banUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.banUser(id);
+            return repository.banUser(id, Timestamp.valueOf(LocalDateTime.now()));
         } else {
             throw new UserNotFoundException(id);
         }
@@ -106,7 +119,7 @@ public class UserService {
 
     public User unbanUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.unbanUser(id);
+            return repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now()));
         } else {
             throw new UserNotFoundException(id);
         }

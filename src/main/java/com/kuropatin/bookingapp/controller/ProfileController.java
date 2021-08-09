@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/profile")
 @RequiredArgsConstructor
-@Api(value = "Profile Controller", tags = "User Profile - actions for user profile")
+@Api(value = "Profile Controller", tags = "User Profile", description = "Actions for user profile")
 public class ProfileController {
 
     private final UserService service;

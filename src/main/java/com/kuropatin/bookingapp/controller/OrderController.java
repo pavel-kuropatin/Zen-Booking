@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
-@Api(value = "Order Controller", tags = "User Orders - actions for user orders")
+@Api(value = "Order Controller", tags = "User Orders", description = "Actions for user orders")
 public class OrderController {
 
     private final OrderService service;
@@ -31,20 +31,12 @@ public class OrderController {
         return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(service.getActiveOrders(userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list of all cancelled and declined orders of logged user")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
-    @GetMapping("/cancelled")
-    public ResponseEntity<List<OrderResponse>> getAllCancelled() {
-        long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(service.getCancelledOrders(userId)), HttpStatus.OK);
-    }
-
     @ApiOperation(value = "Get list of all finished orders of logged user")
     @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
-    @GetMapping("/finished")
+    @GetMapping("/history")
     public ResponseEntity<List<OrderResponse>> getAllFinished() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(service.getFinishedOrders(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(service.getOrderHistory(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get order with id {orderId} of logged user")
