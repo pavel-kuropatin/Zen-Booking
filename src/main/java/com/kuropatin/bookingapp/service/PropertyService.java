@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,10 @@ public class PropertyService {
 
     private final PropertyRepository repository;
     private final UserService userService;
+
+    public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate) {
+        return repository.canPropertyBeOrdered(startDate, endDate);
+    }
 
     public List<Property> getAllPropertyOfUser(Long userId) {
         return repository.findAllPropertyOfUser(userId);

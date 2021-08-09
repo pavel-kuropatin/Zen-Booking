@@ -46,7 +46,7 @@ public class PropertyResponse {
         return propertyResponseList;
     }
 
-    public static PropertyResponse transformToPropertyResponse(Property property, PropertyResponse propertyResponse) {
+    private static PropertyResponse transformToPropertyResponse(Property property, PropertyResponse propertyResponse) {
         propertyResponse.setId(property.getId());
         propertyResponse.setType(property.getType());
         propertyResponse.setName(property.getName());

@@ -12,29 +12,41 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
 
-    @Cacheable(CacheNames.BOOLEAN)
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndUserId'+#propertyId+#userId")
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     boolean existsByIdAndUserId(Long propertyId, Long userId);
 
-    @Cacheable(CacheNames.BOOLEAN)
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndNotUserId'+#propertyId+#userId")
     @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     boolean existsByIdAndNotUserId(Long propertyId, Long userId);
 
-    @Cacheable(CacheNames.PROPERTY)
+    @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM Property p " +
+            "WHERE p.id NOT IN (SELECT DISTINCT o.property.id FROM Order o " +
+            "WHERE o.isFinished = false " +
+            "AND (?1 BETWEEN o.startDate AND o.endDate " +
+            "OR ?2 BETWEEN o.startDate AND o.endDate " +
+            "OR o.startDate BETWEEN ?1 AND ?2 " +
+            "OR o.endDate BETWEEN ?1 AND ?2))"
+    )
+    boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate);
+
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'findAllPropertyOfUser'+#userId")
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.user.id = ?1 ORDER BY p.id")
     List<Property> findAllPropertyOfUser(Long userId);
 
-    @Cacheable(CacheNames.PROPERTY)
+    @Cacheable(value = CacheNames.PROPERTY, key = "'existsByIdAndNotUserId'+#propertyId+#userId")
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
     Property findPropertyByIdAndOwnerId(Long propertyId, Long userId);
 
-    @Cacheable(CacheNames.PROPERTY)
+    @Cacheable(value = CacheNames.PROPERTY, key = "'existsByIdAndNotUserId'+#propertyId+#userId")
     @Query(value = "SELECT p FROM Property p WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id <> ?2")
     Property findPropertyByIdAndNotOwnerId(Long propertyId, Long userId);
 

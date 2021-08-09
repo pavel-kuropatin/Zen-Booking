@@ -1,6 +1,7 @@
 package com.kuropatin.bookingapp.model.response;
 
 import com.kuropatin.bookingapp.model.Order;
+import com.kuropatin.bookingapp.model.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class OrderResponse {
     private long clientId;
     private long hostId;
     private long propertyId;
+    private String status; //TODO: add status
 
     public static OrderResponse transformToNewOrderResponse(Order order) {
         OrderResponse orderResponse = new OrderResponse();
@@ -41,7 +43,7 @@ public class OrderResponse {
         return orderResponseList;
     }
 
-    public static OrderResponse transformToOrderResponse(Order order, OrderResponse orderResponse) {
+    private static OrderResponse transformToOrderResponse(Order order, OrderResponse orderResponse) {
         orderResponse.setId(order.getId());
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
@@ -52,6 +54,19 @@ public class OrderResponse {
         orderResponse.setClientId(order.getUser().getId());
         orderResponse.setHostId(order.getProperty().getUser().getId());
         orderResponse.setPropertyId(order.getProperty().getId());
+        if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED);
+        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED);
+        } else if(!orderResponse.isAccepted() && orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.CANCELLED);
+        } else if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.DECLINED);
+        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.FINISHED);
+        } else {
+            orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN);
+        }
         return orderResponse;
     }
 }
