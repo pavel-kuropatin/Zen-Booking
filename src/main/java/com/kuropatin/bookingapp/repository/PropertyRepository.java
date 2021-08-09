@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PropertyRepository extends CrudRepository<Property, Long> {
@@ -39,6 +40,6 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE property SET is_available = false, is_deleted = true WHERE id = ?1", nativeQuery = true)
-    void softDeleteProperty(Long propertyId);
+    @Query(value = "UPDATE Property p SET p.isAvailable = false, p.isDeleted = true, p.updated = ?2 WHERE p.id = ?1")
+    void softDeleteProperty(Long propertyId, Timestamp updated);
 }

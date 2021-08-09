@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
@@ -39,11 +40,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE User u SET u.isBanned = true WHERE u.id = ?1")
-    User banUser(Long id);
+    @Query(value = "UPDATE User u SET u.isBanned = true, u.updated = ?2 WHERE u.id = ?1")
+    User banUser(Long id, Timestamp updated);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE User u SET u.isBanned = false WHERE u.id = ?1")
-    User unbanUser(Long id);
+    @Query(value = "UPDATE User u SET u.isBanned = false, u.updated = ?2 WHERE u.id = ?1")
+    User unbanUser(Long id, Timestamp updated);
 }

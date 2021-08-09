@@ -98,7 +98,7 @@ public class UserService {
 
     public User banUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.banUser(id);
+            return repository.banUser(id, Timestamp.valueOf(LocalDateTime.now()));
         } else {
             throw new UserNotFoundException(id);
         }
@@ -106,7 +106,7 @@ public class UserService {
 
     public User unbanUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.unbanUser(id);
+            return repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now()));
         } else {
             throw new UserNotFoundException(id);
         }

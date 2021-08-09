@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -58,8 +59,8 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE orders SET is_cancelled = true, is_finished = true WHERE id = ?1", nativeQuery = true)
-    void cancelOrder(Long orderId);
+    @Query(value = "UPDATE Order o SET o.isCancelled = true, o.isFinished = true, o.updated = ?2 WHERE o.id = ?1")
+    void cancelOrder(Long orderId, Timestamp updated);
 
     @Cacheable(CacheNames.ORDER)
     @Query(value = "SELECT o.* FROM orders o " +
@@ -77,11 +78,11 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE Order o SET o.isAccepted = true WHERE o.id = ?1")
-    void acceptOrder(Long orderId);
+    @Query(value = "UPDATE Order o SET o.isAccepted = true, o.updated = ?2 WHERE o.id = ?1")
+    void acceptOrder(Long orderId, Timestamp updated);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE Order o SET o.isAccepted = false, o.isFinished = true WHERE o.id = ?1")
-    void declineOrder(Long orderId);
+    @Query(value = "UPDATE Order o SET o.isAccepted = false, o.isFinished = true, o.updated = ?2 WHERE o.id = ?1")
+    void declineOrder(Long orderId, Timestamp updated);
 }

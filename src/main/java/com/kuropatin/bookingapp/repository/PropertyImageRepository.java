@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface PropertyImageRepository extends CrudRepository<PropertyImage, Long> {
@@ -24,9 +25,9 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
 
     @Cacheable(CacheNames.BOOLEAN)
     @Query(value = "SELECT CASE WHEN COUNT(i.id) > 0 THEN TRUE ELSE FALSE END " +
-            "FROM PropertyImage i " +
-            "INNER JOIN Property p ON i.property.id = ?2 " +
-            "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
+                   "FROM PropertyImage i " +
+                   "INNER JOIN Property p ON i.property.id = ?2 " +
+                   "WHERE p.isDeleted = false AND i.isDeleted = false AND i.id = ?1")
     boolean existsByIdAndPropertyId(Long imageId, Long propertyId);
 
     @Cacheable(CacheNames.PROPERTY_IMAGE)
@@ -57,6 +58,6 @@ public interface PropertyImageRepository extends CrudRepository<PropertyImage, L
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
-    @Query(value = "UPDATE PropertyImage pi SET pi.isDeleted = true WHERE pi.id = ?1")
-    void softDeletePropertyImage(Long imageId);
+    @Query(value = "UPDATE PropertyImage pi SET pi.isDeleted = true, pi.updated = ?2 WHERE pi.id = ?1")
+    void softDeletePropertyImage(Long imageId, Timestamp updated);
 }
