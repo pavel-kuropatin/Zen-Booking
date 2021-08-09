@@ -6,6 +6,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -28,12 +29,13 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Booking Application API")
-                .description("Application API documentation.\n" +
+                .description("API documentation.\n" +
                         "DISCLAIMER: " +
                         "Data security is not guaranteed. " +
                         "When using the application, do not enter any real personal information. " +
                         "You enter any personal information at your own risk.")
                 .version("v0.1.0-SNAPSHOT")
+                .contact(new Contact("Pavel Kuropatin", "https://www.linkedin.com/in/pavel-kurapatsin/", "kuropatin.pv@gmail.com"))
                 .build();
     }
 }

@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/booking")
 @RequiredArgsConstructor
-@Api(value = "Booking Controller", tags = "Booking - searching and browsing property for order")
+@Api(value = "Booking Controller", tags = "Booking", description = "Searching and browsing property for order")
 public class BookingController {
 
     private final SearchService searchService;

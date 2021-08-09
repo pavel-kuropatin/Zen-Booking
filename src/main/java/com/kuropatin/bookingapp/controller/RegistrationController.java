@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/register")
 @RequiredArgsConstructor
-@Api(value = "Registration Controller - registration of new user", tags = "Registration and Login")
+@Api(value = "Registration Controller", tags = "Registration and Login", description = "New user registration")
 public class RegistrationController {
 
     private final UserService userService;

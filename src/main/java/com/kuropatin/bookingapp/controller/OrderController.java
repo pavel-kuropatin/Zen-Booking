@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
-@Api(value = "Order Controller", tags = "User Orders - actions for user orders")
+@Api(value = "Order Controller", tags = "User Orders", description = "Actions for user orders")
 public class OrderController {
 
     private final OrderService service;
