@@ -16,10 +16,10 @@ import java.util.List;
 
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndUserId'+#orderId+#userId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsOrderByIdAndUserId'+#orderId+#userId")
     boolean existsByIdAndUserId(Long orderId, Long userId);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByIdAndHostId'+#orderId+#hostId")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsOrderByIdAndHostId'+#orderId+#hostId")
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Order o " +
                    "INNER JOIN Property p on p.id = o.property.id AND o.id = ?1 AND p.user.id = ?2 " +

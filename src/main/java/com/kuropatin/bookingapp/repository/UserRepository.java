@@ -15,26 +15,26 @@ import java.sql.Timestamp;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByLoginAndIsBannedFalse'+#login")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsUserByLoginAndIsBannedFalse'+#login")
     boolean existsByLoginAndIsBannedFalse(String login);
 
-    @Cacheable(value = CacheNames.USER, key = "'existsByLoginAndIsBannedFalse'+#id")
+    @Cacheable(value = CacheNames.USER, key = "'findUserByIdAndIsBannedFalse'+#id")
     User findUserByIdAndIsBannedFalse(Long id);
 
-    @Cacheable(value = CacheNames.USER, key = "'existsByLoginAndIsBannedFalse'+#login")
+    @Cacheable(value = CacheNames.USER, key = "'findUserByLoginAndIsBannedFalse'+#login")
     User findUserByLoginAndIsBannedFalse(String login);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByLoginAndIsBannedFalse'+#login")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'isLoginInUse'+#login")
     @Query(value = "SELECT CASE WHEN COUNT(u.login) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.login = ?1")
     boolean isLoginInUse(String login);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByLoginAndIsBannedFalse'+#email")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'isEmailInUse'+#email")
     @Query(value = "SELECT CASE WHEN COUNT(u.email) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.email = ?1")
     boolean isEmailInUse(String email);
 
-    @Cacheable(value = CacheNames.BOOLEAN, key = "'existsByLoginAndIsBannedFalse'+#id")
+    @Cacheable(value = CacheNames.BOOLEAN, key = "'isUserBanned'+#id")
     @Query(value = "SELECT CASE WHEN COUNT(u.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u WHERE u.isBanned = true AND u.id = ?1")
     boolean isBanned(long id);
