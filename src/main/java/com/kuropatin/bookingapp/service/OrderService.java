@@ -74,7 +74,8 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String cancelOrder(Long orderId, Long userId) {
         if(orderRepository.existsByIdAndUserId(orderId, userId)) {
@@ -105,7 +106,8 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String acceptOrder(Long orderId, Long hostId) {
         if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
@@ -125,7 +127,8 @@ public class OrderService {
 
     @Transactional(rollbackFor = {
             OrderNotFoundException.class,
-            UserNotFoundException.class
+            UserNotFoundException.class,
+            MoneyAmountExceededException.class
     })
     public String declineOrder(Long orderId, Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {

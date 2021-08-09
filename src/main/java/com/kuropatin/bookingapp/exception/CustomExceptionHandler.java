@@ -38,12 +38,17 @@ class CustomExceptionHandler {
     }
 
     @ExceptionHandler(ReviewCannotBeAddedException.class)
-    protected ResponseEntity<Object> ReviewCannotBeAddedHandler(ReviewCannotBeAddedException e) {
+    protected ResponseEntity<Object> reviewCannotBeAddedHandler(ReviewCannotBeAddedException e) {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(InsufficientMoneyAmountException.class)
     protected ResponseEntity<Object> insufficientMoneyAmountHandler(InsufficientMoneyAmountException e) {
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(MoneyAmountExceededException.class)
+    protected ResponseEntity<Object> moneyAmountExceededHandler(MoneyAmountExceededException e) {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
