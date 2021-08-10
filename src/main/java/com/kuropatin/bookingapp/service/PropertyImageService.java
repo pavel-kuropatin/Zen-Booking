@@ -4,6 +4,7 @@ import com.kuropatin.bookingapp.exception.PropertyImageNotFoundException;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.model.request.PropertyImageRequest;
+import com.kuropatin.bookingapp.model.response.PropertyImageResponse;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,5 +65,25 @@ public class PropertyImageService {
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }
+    }
+
+    public PropertyImageResponse transformToNewPropertyImageResponse(PropertyImage propertyImage) {
+        PropertyImageResponse propertyImageResponse = new PropertyImageResponse();
+        transformToPropertyImageResponse(propertyImage, propertyImageResponse);
+        return propertyImageResponse;
+    }
+
+    public List<PropertyImageResponse> transformToListPropertyImageResponse(List<PropertyImage> propertyImages) {
+        List<PropertyImageResponse> propertyImageResponseList = new ArrayList<>();
+        for(PropertyImage propertyImage : propertyImages) {
+            propertyImageResponseList.add(transformToNewPropertyImageResponse(propertyImage));
+        }
+        return propertyImageResponseList;
+    }
+
+    private PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
+        propertyImageResponse.setId(propertyImage.getId());
+        propertyImageResponse.setImgUrl(propertyImage.getImgUrl());
+        return propertyImageResponse;
     }
 }
