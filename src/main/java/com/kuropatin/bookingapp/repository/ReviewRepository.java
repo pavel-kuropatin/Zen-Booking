@@ -44,7 +44,8 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Cacheable(value = CacheNames.REVIEW, key = "'findReviewOfUserById'+#reviewId+#userId")
     @Query(value = "SELECT r " +
                    "FROM Review r " +
-                   "WHERE r.isDeleted = false AND r.id = ?1 AND r.order.user.id = ?2 ORDER BY r.id DESC")
+                   "WHERE r.isDeleted = false AND r.id = ?1 AND r.order.user.id = ?2 " +
+                   "ORDER BY r.id DESC")
     Review findReviewOfUserById(Long reviewId, Long userId);
 
     @Cacheable(value = CacheNames.REVIEW, key = "'findReviewById'+#reviewId")
