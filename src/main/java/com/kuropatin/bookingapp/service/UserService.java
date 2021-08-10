@@ -1,10 +1,12 @@
 package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.*;
+import com.kuropatin.bookingapp.model.Gender;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
 import com.kuropatin.bookingapp.model.request.UserCreateRequest;
 import com.kuropatin.bookingapp.model.request.UserEditRequest;
+import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Repository
@@ -48,7 +51,7 @@ public class UserService {
         if(repository.isEmailInUse(userCreateRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
-        User user = UserCreateRequest.transformToNewUser(userCreateRequest);
+        User user = transformToNewUser(userCreateRequest);
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(user.getCreated());
@@ -60,7 +63,7 @@ public class UserService {
         if(!userToUpdate.getEmail().equals(userEditRequest.getEmail()) && repository.isEmailInUse(userEditRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
-        UserEditRequest.transformToUser(userEditRequest, userToUpdate);
+        transformToUser(userEditRequest, userToUpdate);
         userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return repository.save(userToUpdate);
     }
@@ -123,5 +126,51 @@ public class UserService {
         } else {
             throw new UserNotFoundException(id);
         }
+    }
+
+    public static User transformToUser(UserEditRequest userCreateRequest, User user) {
+        user.setName(userCreateRequest.getName());
+        user.setSurname(userCreateRequest.getSurname());
+        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
+        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
+        user.setEmail(userCreateRequest.getEmail());
+        user.setPhone(userCreateRequest.getPhone());
+        return user;
+    }
+
+    public static User transformToNewUser(UserCreateRequest userCreateRequest) {
+        User user = new User();
+        transformToUser(userCreateRequest, user);
+        return user;
+    }
+
+    public static User transformToUser(UserCreateRequest userCreateRequest, User user) {
+        user.setLogin(userCreateRequest.getLogin());
+        user.setPassword(userCreateRequest.getPassword());
+        user.setName(userCreateRequest.getName());
+        user.setSurname(userCreateRequest.getSurname());
+        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
+        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
+        user.setEmail(userCreateRequest.getEmail());
+        user.setPhone(userCreateRequest.getPhone());
+        return user;
+    }
+
+    public UserResponse transformToNewUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        transformToUserResponse(user, userResponse);
+        return userResponse;
+    }
+
+    private UserResponse transformToUserResponse(User user, UserResponse userResponse) {
+        userResponse.setId(user.getId());
+        userResponse.setName(user.getName());
+        userResponse.setSurname(user.getSurname());
+        userResponse.setGender(user.getGender());
+        userResponse.setBirthDate(user.getBirthDate());
+        userResponse.setEmail(user.getEmail());
+        userResponse.setPhone(user.getPhone());
+        userResponse.setBalance(user.getBalance());
+        return userResponse;
     }
 }

@@ -2,9 +2,11 @@ package com.kuropatin.bookingapp.service;
 
 import com.kuropatin.bookingapp.exception.*;
 import com.kuropatin.bookingapp.model.Order;
+import com.kuropatin.bookingapp.model.OrderStatus;
 import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.OrderRequest;
+import com.kuropatin.bookingapp.model.response.OrderResponse;
 import com.kuropatin.bookingapp.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -148,5 +151,46 @@ public class OrderService {
     private int calculateTotalPrice(int price, LocalDate startDate, LocalDate endDate) {
         int days = 1 + Period.between(startDate, endDate).getDays();
         return price * days;
+    }
+
+    public OrderResponse transformToNewOrderResponse(Order order) {
+        OrderResponse orderResponse = new OrderResponse();
+        transformToOrderResponse(order, orderResponse);
+        return orderResponse;
+    }
+
+    public List<OrderResponse> transformToListOrderResponse(List<Order> orders) {
+        List<OrderResponse> orderResponseList = new ArrayList<>();
+        for(Order order : orders) {
+            orderResponseList.add(transformToNewOrderResponse(order));
+        }
+        return orderResponseList;
+    }
+
+    private OrderResponse transformToOrderResponse(Order order, OrderResponse orderResponse) {
+        orderResponse.setId(order.getId());
+        orderResponse.setTotalPrice(order.getTotalPrice());
+        orderResponse.setStartDate(order.getStartDate());
+        orderResponse.setEndDate(order.getEndDate());
+        orderResponse.setAccepted(order.isAccepted());
+        orderResponse.setCancelled(order.isCancelled());
+        orderResponse.setFinished(order.isFinished());
+        orderResponse.setClientId(order.getUser().getId());
+        orderResponse.setHostId(order.getProperty().getUser().getId());
+        orderResponse.setPropertyId(order.getProperty().getId());
+        if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED);
+        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED);
+        } else if(!orderResponse.isAccepted() && orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.CANCELLED);
+        } else if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.DECLINED);
+        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+            orderResponse.setStatus(OrderStatus.FINISHED);
+        } else {
+            orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN);
+        }
+        return orderResponse;
     }
 }
