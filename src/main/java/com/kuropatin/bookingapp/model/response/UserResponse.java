@@ -1,7 +1,6 @@
 package com.kuropatin.bookingapp.model.response;
 
 import com.kuropatin.bookingapp.model.Gender;
-import com.kuropatin.bookingapp.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,22 +22,4 @@ public class UserResponse {
     private String email;
     private String phone;
     private int balance;
-
-    public static UserResponse transformToNewUserResponse(User user) {
-        UserResponse userResponse = new UserResponse();
-        transformToUserResponse(user, userResponse);
-        return userResponse;
-    }
-
-    private static UserResponse transformToUserResponse(User user, UserResponse userResponse) {
-        userResponse.setId(user.getId());
-        userResponse.setName(user.getName());
-        userResponse.setSurname(user.getSurname());
-        userResponse.setGender(user.getGender());
-        userResponse.setBirthDate(user.getBirthDate());
-        userResponse.setEmail(user.getEmail());
-        userResponse.setPhone(user.getPhone());
-        userResponse.setBalance(user.getBalance());
-        return userResponse;
-    }
 }

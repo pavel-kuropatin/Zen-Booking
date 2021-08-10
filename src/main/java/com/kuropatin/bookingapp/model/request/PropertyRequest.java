@@ -1,6 +1,5 @@
 package com.kuropatin.bookingapp.model.request;
 
-import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyType;
 import com.kuropatin.bookingapp.validation.IntegerInRange;
 import com.kuropatin.bookingapp.validation.ShortInRange;
@@ -9,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -67,28 +68,4 @@ public class PropertyRequest {
     @NotBlank(message = "Enter if property available for booking")
     @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
     private String isAvailable;
-
-    public static Property transformToNewProperty(PropertyRequest propertyRequest) {
-        Property property = new Property();
-        transformToProperty(propertyRequest, property);
-        return property;
-    }
-
-    public static Property transformToProperty(PropertyRequest propertyRequest, Property property) {
-        property.setType(PropertyType.valueOf(propertyRequest.getType()));
-        property.setName(propertyRequest.getName());
-        property.setDescription(propertyRequest.getDescription());
-        property.setAddress(propertyRequest.getAddress());
-        property.setPrice(Integer.parseInt(propertyRequest.getPrice()));
-        property.setGuests(Short.parseShort(propertyRequest.getGuests()));
-        property.setRooms(Short.parseShort(propertyRequest.getRooms()));
-        property.setBeds(Short.parseShort(propertyRequest.getBeds()));
-        property.setHasKitchen(Boolean.parseBoolean(propertyRequest.getHasKitchen()));
-        property.setHasWasher(Boolean.parseBoolean(propertyRequest.getHasWasher()));
-        property.setHasTv(Boolean.parseBoolean(propertyRequest.getHasTv()));
-        property.setHasInternet(Boolean.parseBoolean(propertyRequest.getHasInternet()));
-        property.setPetsAllowed(Boolean.parseBoolean(propertyRequest.getIsPetsAllowed()));
-        property.setAvailable(Boolean.parseBoolean(propertyRequest.getIsAvailable()));
-        return property;
-    }
 }

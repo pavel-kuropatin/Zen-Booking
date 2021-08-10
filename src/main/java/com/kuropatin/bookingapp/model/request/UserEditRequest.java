@@ -1,7 +1,6 @@
 package com.kuropatin.bookingapp.model.request;
 
 import com.kuropatin.bookingapp.model.Gender;
-import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.validation.AgeXPlus;
 import com.kuropatin.bookingapp.validation.ValueOfEnum;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,14 +42,4 @@ public class UserEditRequest {
     @Size(max = 20, message = "Phone number should be 20 characters or less")
     @Pattern(regexp = "^[+]\\d+$", message = "Phone number should start with + and contain only numbers")
     private String phone;
-
-    public static User transformToUser(UserEditRequest userCreateRequest, User user) {
-        user.setName(userCreateRequest.getName());
-        user.setSurname(userCreateRequest.getSurname());
-        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
-        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
-        user.setEmail(userCreateRequest.getEmail());
-        user.setPhone(userCreateRequest.getPhone());
-        return user;
-    }
 }
