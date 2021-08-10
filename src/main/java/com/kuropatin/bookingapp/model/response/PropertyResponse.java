@@ -27,5 +27,5 @@ public class PropertyResponse {
     private boolean hasInternet;
     private boolean isPetsAllowed;
     private boolean isAvailable;
-    private double rating = 0;
+    private String rating;
 }
