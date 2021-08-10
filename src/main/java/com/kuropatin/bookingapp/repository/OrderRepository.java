@@ -57,19 +57,19 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     Order findOrderByIdAndUserId(Long orderId, Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findAllOrderRequests'+#userId")
-    @Query(value = "SELECT o.* " +
-                   "FROM orders o " +
-                   "INNER JOIN property p on p.id = o.property_id AND p.user_id = ?1 " +
-                   "WHERE o.is_cancelled = false AND o.is_finished = false " +
-                   "ORDER BY o.start_date", nativeQuery = true)
+    @Query(value = "SELECT o " +
+                   "FROM Order o " +
+                   "INNER JOIN Property p on p.id = o.property.id AND p.user.id = ?1 " +
+                   "WHERE o.isCancelled = false AND o.isFinished = false " +
+                   "ORDER BY o.startDate")
     List<Order> findAllOrderRequests(Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findOrderRequestByIdAndHostId'+#orderId+#userId")
-    @Query(value = "SELECT o.* " +
-                   "FROM orders o " +
-                   "INNER JOIN property p on p.id = o.property_id AND o.id = ?1 AND p.user_id = ?2 " +
-                   "WHERE o.is_cancelled = false AND o.is_finished = false " +
-                   "ORDER BY o.start_date", nativeQuery = true)
+    @Query(value = "SELECT o " +
+                   "FROM Order o " +
+                   "INNER JOIN Property p on p.id = o.property.id AND o.id = ?1 AND p.user.id = ?2 " +
+                   "WHERE o.isCancelled = false AND o.isFinished = false " +
+                   "ORDER BY o.startDate")
     Order findOrderRequestByIdAndHostId(Long orderId, Long userId);
 
     @Modifying
