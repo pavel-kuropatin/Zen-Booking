@@ -27,6 +27,12 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
                    "WHERE o.id = ?1 AND o.user.id = ?2 AND o.isFinished = true AND o.isAccepted = true AND o.isCancelled = false")
     boolean canReviewBeAdded(Long orderId, Long userId);
 
+    @Cacheable(value = CacheNames.DOUBLE, key = "'getRatingOfProperty'+#propertyId")
+    @Query(value = "SELECT AVG(r.rating) " +
+                   "FROM Review r " +
+                   "WHERE r.order.property.id = ?1 AND r.isDeleted = false")
+    double getRatingOfProperty(Long propertyId);
+
     @Cacheable(value = CacheNames.REVIEW, key = "'findAllReviewsOfUser'+#userId")
     @Query(value = "SELECT r " +
                    "FROM Review r " +
