@@ -38,6 +38,9 @@ public class ReviewService {
         return repository.findReviewById(reviewId);
     }
 
+    public double getRatingOfProperty(Long propertyId) {
+        return Math.round(repository.getRatingOfProperty(propertyId) * 10) / 10.0;
+    }
 
     public Review createReview(ReviewRequest reviewRequest, Long userId, Long orderId) {
         if(repository.canReviewBeAdded(orderId, userId)) {
