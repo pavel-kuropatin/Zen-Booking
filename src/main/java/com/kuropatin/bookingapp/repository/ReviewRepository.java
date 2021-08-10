@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReviewRepository extends CrudRepository<Review, Long> {
 
@@ -31,7 +32,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
     @Query(value = "SELECT AVG(r.rating) " +
                    "FROM Review r " +
                    "WHERE r.order.property.id = ?1 AND r.isDeleted = false")
-    double getRatingOfProperty(Long propertyId);
+    Optional<Double> getRatingOfProperty(Long propertyId);
 
     @Cacheable(value = CacheNames.REVIEW, key = "'findAllReviewsOfUser'+#userId")
     @Query(value = "SELECT r " +

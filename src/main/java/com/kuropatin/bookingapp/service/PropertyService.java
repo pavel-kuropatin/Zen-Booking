@@ -7,6 +7,7 @@ import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.PropertyRequest;
 import com.kuropatin.bookingapp.model.response.PropertyResponse;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
+import com.kuropatin.bookingapp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +18,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class PropertyService {
 
     private final PropertyRepository repository;
+    private final ReviewRepository reviewRepository;
     private final UserService userService;
-    private final ReviewService reviewService;
 
     public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate) {
         return repository.canPropertyBeOrdered(startDate, endDate);
@@ -74,6 +76,11 @@ public class PropertyService {
         } else {
             throw new PropertyNotFoundException(propertyId);
         }
+    }
+
+    public String getRatingOfProperty(Long propertyId) {
+        Optional<Double> rating = reviewRepository.getRatingOfProperty(propertyId);
+        return rating.map(aDouble -> String.valueOf(Math.round(aDouble * 10) / 10.0)).orElse("n/a");
     }
 
     public Property transformToNewProperty(PropertyRequest propertyRequest) {
@@ -130,7 +137,7 @@ public class PropertyService {
         propertyResponse.setHasInternet(property.isHasInternet());
         propertyResponse.setPetsAllowed(property.isPetsAllowed());
         propertyResponse.setAvailable(property.isAvailable());
-        propertyResponse.setRating(reviewService.getRatingOfProperty(property.getId()));
+        propertyResponse.setRating(getRatingOfProperty(property.getId()));
         return propertyResponse;
     }
 }
