@@ -29,7 +29,7 @@ public class ProfileController {
     @GetMapping
     public ResponseEntity<UserResponse> getUserInfo() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.getUserById(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(service.transformToNewUserResponse(service.getUserById(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Update info of logged user")
@@ -37,7 +37,7 @@ public class ProfileController {
     @PutMapping
     public ResponseEntity<UserResponse> updateUserInfo(@Valid @RequestBody final UserEditRequest userEditRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(service.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Deposit money to logged user's account")
@@ -45,6 +45,6 @@ public class ProfileController {
     @PutMapping("/deposit")
     public ResponseEntity<UserResponse> deposit(@Valid @RequestBody final AmountRequest amountRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.CREATED);
     }
 }

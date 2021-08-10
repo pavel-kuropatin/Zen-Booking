@@ -33,7 +33,7 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> getAllReviewsOfUser() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(ReviewResponse.transformToListReviewResponse(reviewService.getAllReviewsOfUser(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.transformToListReviewResponse(reviewService.getAllReviewsOfUser(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get review of logged user by id {reviewId}")
@@ -44,7 +44,7 @@ public class ReviewController {
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponse> getReviewOfUserById(@PathVariable final Long reviewId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(ReviewResponse.transformToNewReviewResponse(reviewService.getReviewOfUserById(reviewId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.getReviewOfUserById(reviewId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get a list of orders to add a review")
@@ -52,7 +52,7 @@ public class ReviewController {
     @GetMapping("/available-for-review")
     public ResponseEntity<List<OrderResponse>> getOrdersToAddReview() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(orderService.getOrdersToAddReview(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getOrdersToAddReview(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add review")
@@ -63,7 +63,7 @@ public class ReviewController {
     @PostMapping("/available-for-review/{orderId}/add")
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(ReviewResponse.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.OK);
     }
 
     //For moderators

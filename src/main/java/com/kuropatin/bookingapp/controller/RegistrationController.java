@@ -26,6 +26,6 @@ public class RegistrationController {
     @ApiOperation(value = "User registration page")
     @PostMapping
     public ResponseEntity<UserResponse> create(@Valid @RequestBody final UserCreateRequest userCreateRequest) {
-        return new ResponseEntity<>(UserResponse.transformToNewUserResponse(userService.createUser(userCreateRequest)), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.transformToNewUserResponse(userService.createUser(userCreateRequest)), HttpStatus.CREATED);
     }
 }

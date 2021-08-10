@@ -37,7 +37,7 @@ public class HostingController {
     @GetMapping("/property")
     public ResponseEntity<List<PropertyResponse>> getAllPropertyOfUser() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToListPropertyResponse(propertyService.getAllPropertyOfUser(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyService.transformToListPropertyResponse(propertyService.getAllPropertyOfUser(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get property with id {propertyId} of logged user")
@@ -48,7 +48,7 @@ public class HostingController {
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.getPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create property for logged user")
@@ -56,7 +56,7 @@ public class HostingController {
     @PostMapping("/property")
     public ResponseEntity<PropertyResponse> createProperty(@Valid @RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.createProperty(userId, propertyRequest)), HttpStatus.CREATED);
+        return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.createProperty(userId, propertyRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Update property with id {propertyId} of logged user")
@@ -67,7 +67,7 @@ public class HostingController {
     @PutMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyRequest propertyRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.updateProperty(propertyId, userId, propertyRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.updateProperty(propertyId, userId, propertyRequest)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete property with id {propertyId} of logged user")
@@ -89,7 +89,7 @@ public class HostingController {
     @GetMapping("/property/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyImageResponse.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get image with id {imageId} of property with id {propertyId} of logged user")
@@ -101,7 +101,7 @@ public class HostingController {
     @GetMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyImageResponse.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyIdAndUserId(imageId, propertyId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyIdAndUserId(imageId, propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create image of property with id {propertyId} of logged user")
@@ -112,7 +112,7 @@ public class HostingController {
     @PostMapping("/property/{propertyId}/images")
     public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyImageResponse.transformToNewPropertyImageResponse(propertyImageService.create(propertyId, userId, propertyImageRequest)), HttpStatus.CREATED);
+        return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.create(propertyId, userId, propertyImageRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete image with id {imageId} of property with id {propertyId} of logged user")
@@ -132,7 +132,7 @@ public class HostingController {
     @GetMapping("/requests")
     public ResponseEntity<List<OrderResponse>> getAllOrderRequests() {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToListOrderResponse(orderService.getAllOrderRequestsOfUser(userId)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getAllOrderRequestsOfUser(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get order request with id {orderId} of logged user")
@@ -143,7 +143,7 @@ public class HostingController {
     @GetMapping("/requests/{orderId}")
     public ResponseEntity<OrderResponse> getOrderRequestById(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToNewOrderResponse(orderService.getOrderRequestByIdAndUserId(orderId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.getOrderRequestByIdAndUserId(orderId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Accept order request with id {orderId} of logged user")

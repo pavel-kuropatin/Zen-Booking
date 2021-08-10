@@ -39,7 +39,7 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<List<PropertyResponse>> searchProperty(@Valid @RequestBody final PropertySearchCriteria searchCriteria) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyService.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Browse found property with id {propertyId}")
@@ -47,7 +47,7 @@ public class BookingController {
     @GetMapping("/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(PropertyResponse.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Order found property")
@@ -55,7 +55,7 @@ public class BookingController {
     @PostMapping("/{propertyId}")
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(OrderResponse.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Browse all images of found property")
@@ -65,7 +65,7 @@ public class BookingController {
     })
     @GetMapping("/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
-        return new ResponseEntity<>(PropertyImageResponse.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Browse image with id {imageId} of found property")
@@ -76,6 +76,6 @@ public class BookingController {
     })
     @GetMapping("/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
-        return new ResponseEntity<>(PropertyImageResponse.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyId(imageId, propertyId)), HttpStatus.OK);
+        return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyId(imageId, propertyId)), HttpStatus.OK);
     }
 }

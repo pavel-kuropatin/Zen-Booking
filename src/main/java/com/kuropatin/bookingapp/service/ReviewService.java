@@ -5,6 +5,7 @@ import com.kuropatin.bookingapp.exception.ReviewNotFoundException;
 import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.Review;
 import com.kuropatin.bookingapp.model.request.ReviewRequest;
+import com.kuropatin.bookingapp.model.response.ReviewResponse;
 import com.kuropatin.bookingapp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,11 +40,10 @@ public class ReviewService {
         return repository.findReviewById(reviewId);
     }
 
-
     public Review createReview(ReviewRequest reviewRequest, Long userId, Long orderId) {
         if(repository.canReviewBeAdded(orderId, userId)) {
             Order order = orderService.getOrderById(orderId, userId);
-            Review review = ReviewRequest.transformToNewReview(reviewRequest);
+            Review review = transformToNewReview(reviewRequest);
             order.setReviews(Collections.singleton(review));
             review.setOrder(order);
             review.setCreated(Timestamp.valueOf(LocalDateTime.now()));
@@ -60,5 +61,41 @@ public class ReviewService {
         } else {
             throw new ReviewNotFoundException(reviewId);
         }
+    }
+
+    public static Review transformToNewReview(ReviewRequest reviewRequest) {
+        Review review = new Review();
+        transformToReview(reviewRequest, review);
+        return review;
+    }
+
+    public static Review transformToReview(ReviewRequest reviewRequest, Review review) {
+        review.setSummary(reviewRequest.getSummary());
+        review.setDescription(reviewRequest.getDescription());
+        review.setRating(Byte.parseByte(reviewRequest.getRating()));
+        return review;
+    }
+
+    public ReviewResponse transformToNewReviewResponse(Review review) {
+        ReviewResponse reviewResponse = new ReviewResponse();
+        transformToReviewResponse(review, reviewResponse);
+        return reviewResponse;
+    }
+
+    public List<ReviewResponse> transformToListReviewResponse(List<Review> reviews) {
+        List<ReviewResponse> reviewResponseList = new ArrayList<>();
+        for(Review review : reviews) {
+            reviewResponseList.add(transformToNewReviewResponse(review));
+        }
+        return reviewResponseList;
+    }
+
+    private ReviewResponse transformToReviewResponse(Review review, ReviewResponse reviewResponse) {
+        reviewResponse.setId(review.getId());
+        reviewResponse.setPropertyId(review.getOrder().getProperty().getId());
+        reviewResponse.setSummary(review.getSummary());
+        reviewResponse.setDescription(review.getDescription());
+        reviewResponse.setRating(review.getRating());
+        return reviewResponse;
     }
 }
