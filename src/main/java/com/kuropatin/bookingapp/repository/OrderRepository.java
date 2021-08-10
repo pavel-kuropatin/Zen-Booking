@@ -44,7 +44,10 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "SELECT o " +
                    "FROM Order o " +
                    "WHERE o.isAccepted = true AND o.isCancelled = false AND o.isFinished = true AND o.user.id = ?1 " +
-                   "ORDER BY o.id")
+                   "AND o.id NOT IN(SELECT r.order.id " +
+                                   "FROM Review r " +
+                                   "WHERE r.isDeleted = false AND r.order.user.id = ?1)" +
+                   "ORDER BY o.id DESC")
     List<Order> findOrdersToAddReview(Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findOrderById'+#orderId")
