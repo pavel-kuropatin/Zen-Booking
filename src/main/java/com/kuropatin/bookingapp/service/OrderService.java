@@ -17,6 +17,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -63,7 +64,7 @@ public class OrderService {
             order.setEndDate(LocalDate.parse(orderRequest.getEndDate()));
             order.setTotalPrice(calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate()));
             userService.pay(client, order.getTotalPrice());
-            order.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            order.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             order.setUpdated(order.getCreated());
             order.setUser(client);
             order.setProperty(propertyToOrder);
@@ -85,7 +86,7 @@ public class OrderService {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
-                orderRepository.cancelOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
+                orderRepository.cancelOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
                 return MessageFormat.format("Order with id: {0} successfully cancelled", orderId);
             } else {
                 throw new OrderCannotBeCancelledException(orderId);
@@ -118,7 +119,7 @@ public class OrderService {
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 User host = userService.getUserById(hostId);
                 userService.transferMoney(host, orderToAccept.getTotalPrice());
-                orderRepository.acceptOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
+                orderRepository.acceptOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
                 return MessageFormat.format("Order with id: {0} successfully accepted", orderId);
             } else {
                 throw new OrderCannotBeAcceptedException(orderId);
@@ -138,7 +139,7 @@ public class OrderService {
             Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice());
-                orderRepository.declineOrder(orderId, Timestamp.valueOf(LocalDateTime.now()));
+                orderRepository.declineOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
                 return MessageFormat.format("Order with id: {0} successfully declined", orderId);
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);
@@ -192,5 +193,22 @@ public class OrderService {
             orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN);
         }
         return orderResponse;
+    }
+
+    public List<Order> getOrdersToAutoAccept() {
+        return orderRepository.findOrdersToAutoAccept();
+    }
+
+    public List<Order> getOrdersToAutoFinish() {
+        return orderRepository.findOrdersToAutoFinish();
+    }
+
+    public void autoFinishOrder(Long id) {
+        if(orderRepository.existsById(id)) {
+            Timestamp updated = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            orderRepository.finishOrder(id, updated);
+        } else {
+            throw new OrderNotFoundException(MessageFormat.format("Order with id: {0} cannot be finished automatically", id));
+        }
     }
 }
