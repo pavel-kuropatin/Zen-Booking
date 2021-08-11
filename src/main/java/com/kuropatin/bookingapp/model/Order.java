@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {
-        "property", "user"
+        "property", "user", "reviews"
 })
 @Entity
 @Table(name = "orders")

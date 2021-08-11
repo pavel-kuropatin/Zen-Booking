@@ -31,12 +31,12 @@ public interface PropertyRepository extends CrudRepository<Property, Long> {
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN FALSE ELSE TRUE END " +
                    "FROM Order o " +
-                   "WHERE o.isFinished = false " +
+                   "WHERE o.isFinished = false AND o.property.id = ?3 " +
                    "AND (?1 BETWEEN o.startDate AND o.endDate " +
                         "OR ?2 BETWEEN o.startDate AND o.endDate " +
                         "OR o.startDate BETWEEN ?1 AND ?2 " +
                         "OR o.endDate BETWEEN ?1 AND ?2)")
-    boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate);
+    boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate, Long propertyId);
 
     @Cacheable(value = CacheNames.BOOLEAN, key = "'findAllPropertyOfUser'+#userId")
     @Query(value = "SELECT p " +
