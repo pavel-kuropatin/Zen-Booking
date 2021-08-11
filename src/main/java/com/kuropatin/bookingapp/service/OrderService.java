@@ -56,7 +56,7 @@ public class OrderService {
             InsufficientMoneyAmountException.class
     })
     public Order createOrder(Long clientId, Long propertyId, OrderRequest orderRequest) {
-        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()))) {
+        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()), propertyId)) {
             User client = userService.getUserById(clientId);
             Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
             Order order = new Order();
