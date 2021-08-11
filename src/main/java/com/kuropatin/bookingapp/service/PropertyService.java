@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ public class PropertyService {
         Property property = transformToNewProperty(propertyRequest);
         user.setProperty(Collections.singleton(property));
         property.setUser(user);
-        property.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        property.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         property.setUpdated(property.getCreated());
         return repository.save(property);
     }
@@ -65,13 +66,13 @@ public class PropertyService {
     public Property updateProperty(Long propertyId, Long userId, PropertyRequest propertyRequest) {
         Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
         transformToProperty(propertyRequest, propertyToUpdate);
-        propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         return repository.save(propertyToUpdate);
     }
 
     public String softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            repository.softDeleteProperty(propertyId, Timestamp.valueOf(LocalDateTime.now()));
+            repository.softDeleteProperty(propertyId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
         } else {
             throw new PropertyNotFoundException(propertyId);
