@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -46,7 +47,7 @@ public class ReviewService {
             Review review = transformToNewReview(reviewRequest);
             order.setReviews(Collections.singleton(review));
             review.setOrder(order);
-            review.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+            review.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             review.setUpdated(review.getCreated());
             return repository.save(review);
         } else {
@@ -56,7 +57,7 @@ public class ReviewService {
 
     public String softDeleteReview(Long reviewId) {
         if(repository.existsById(reviewId)) {
-            repository.softDeleteReview(reviewId, Timestamp.valueOf(LocalDateTime.now()));
+            repository.softDeleteReview(reviewId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             return MessageFormat.format("Review with id: {0} successfully deleted", reviewId);
         } else {
             throw new ReviewNotFoundException(reviewId);

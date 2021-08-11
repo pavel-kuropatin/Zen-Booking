@@ -24,6 +24,9 @@ Application is deployed on Heroku and can be accessed via Swagger UI by [this li
 7. Hosts can remove their property from listing without deleting it.
 8. Moderators ensure order in the application and can ban users and delete property or images if they violate the rules of the service.
 9. Moderator roles can be created only by Administrator.
+10. Application has schedulers to accept and finish orders automatically:
+    - order is accepted automatically if it was not accepted, declined or cancelled within ~5 minutes after it was placed;
+    - ended orders are finished automatically once a day or upon restart.
 
 ### Technology stack
 - Java
