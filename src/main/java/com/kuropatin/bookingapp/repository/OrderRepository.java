@@ -44,7 +44,10 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "SELECT o " +
                    "FROM Order o " +
                    "WHERE o.isAccepted = true AND o.isCancelled = false AND o.isFinished = true AND o.user.id = ?1 " +
-                   "ORDER BY o.id")
+                   "AND o.id NOT IN(SELECT r.order.id " +
+                                   "FROM Review r " +
+                                   "WHERE r.isDeleted = false AND r.order.user.id = ?1)" +
+                   "ORDER BY o.id DESC")
     List<Order> findOrdersToAddReview(Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findOrderById'+#orderId")
@@ -92,4 +95,17 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
                    "SET o.isAccepted = false, o.isFinished = true, o.updated = ?2 " +
                    "WHERE o.id = ?1")
     void declineOrder(Long orderId, Timestamp updated);
+
+    @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = false AND o.isFinished = false")
+    List<Order> findOrdersToAutoAccept();
+
+    @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = true AND o.isFinished = false")
+    List<Order> findOrdersToAutoFinish();
+
+    @Modifying
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
+    @Query(value = "UPDATE Order o " +
+                   "SET o.isFinished = true, o.updated = ?2 " +
+                   "WHERE o.id = ?1")
+    void finishOrder(Long id, Timestamp updated);
 }

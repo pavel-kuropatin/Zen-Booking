@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Repository
 @RequiredArgsConstructor
@@ -53,7 +54,7 @@ public class UserService {
         }
         User user = transformToNewUser(userCreateRequest);
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
-        user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
@@ -64,7 +65,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
         transformToUser(userEditRequest, userToUpdate);
-        userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         return repository.save(userToUpdate);
     }
 
@@ -74,7 +75,7 @@ public class UserService {
         }
         User user = getUserById(id);
         user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
-        user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         return repository.save(user);
     }
 
@@ -89,7 +90,7 @@ public class UserService {
                 throw new MoneyAmountExceededException();
             } else {
                 user.setBalance(user.getBalance() - amount);
-                user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+                user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
                 repository.save(user);
             }
         } else {
@@ -107,14 +108,14 @@ public class UserService {
             throw new MoneyAmountExceededException();
         } else {
             user.setBalance(user.getBalance() + amount);
-            user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+            user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             repository.save(user);
         }
     }
 
     public User banUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.banUser(id, Timestamp.valueOf(LocalDateTime.now()));
+            return repository.banUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         } else {
             throw new UserNotFoundException(id);
         }
@@ -122,7 +123,7 @@ public class UserService {
 
     public User unbanUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now()));
+            return repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         } else {
             throw new UserNotFoundException(id);
         }

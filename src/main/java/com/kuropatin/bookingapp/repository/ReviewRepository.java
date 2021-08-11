@@ -18,9 +18,9 @@ import java.util.Optional;
 public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Cacheable(value = CacheNames.BOOLEAN, key = "'existsReviewByIdAndUserId'+#reviewId+#userId")
-    @Query(value = "SELECT CASE WHEN COUNT(p.id) > 0 THEN TRUE ELSE FALSE END " +
-                   "FROM Property p " +
-                   "WHERE p.isDeleted = false AND p.id = ?1 AND p.user.id = ?2")
+    @Query(value = "SELECT CASE WHEN COUNT(r.id) > 0 THEN TRUE ELSE FALSE END " +
+                   "FROM Review r " +
+                   "WHERE r.isDeleted = false AND r.id = ?1 AND r.order.user.id = ?2")
     boolean existsReviewByIdAndUserId(Long reviewId, Long userId);
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +

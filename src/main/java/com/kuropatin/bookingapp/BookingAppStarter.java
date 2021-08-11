@@ -7,11 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = "com.kuropatin.bookingapp")
 @EnableAspectJAutoProxy(proxyTargetClass = true)
 @EnableTransactionManagement
+@EnableScheduling
 @Import({
         SecurityConfig.class,
         CacheConfig.class,

@@ -37,13 +37,13 @@ public class Order {
     private LocalDate endDate;
 
     @Column(name = "is_accepted")
-    private boolean isAccepted = false; //TODO: add system timer to automatically accept the order for demo purposes
+    private boolean isAccepted = false;
 
     @Column(name = "is_cancelled")
     private boolean isCancelled = false;
 
     @Column(name = "is_finished")
-    private boolean isFinished = false; //TODO: add system timer to automatically finish the order
+    private boolean isFinished = false;
 
     @Column(name = "created")
     private Timestamp created;
@@ -61,7 +61,7 @@ public class Order {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Review> reviews;
 
