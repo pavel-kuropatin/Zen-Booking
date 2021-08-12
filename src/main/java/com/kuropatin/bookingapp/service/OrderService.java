@@ -1,6 +1,14 @@
 package com.kuropatin.bookingapp.service;
 
-import com.kuropatin.bookingapp.exception.*;
+import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
+import com.kuropatin.bookingapp.exception.MoneyAmountExceededException;
+import com.kuropatin.bookingapp.exception.OrderCannotBeAcceptedException;
+import com.kuropatin.bookingapp.exception.OrderCannotBeCancelledException;
+import com.kuropatin.bookingapp.exception.OrderCannotBeDeclinedException;
+import com.kuropatin.bookingapp.exception.OrderNotFoundException;
+import com.kuropatin.bookingapp.exception.PropertyCannotBeOrderedException;
+import com.kuropatin.bookingapp.exception.PropertyNotFoundException;
+import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.OrderStatus;
 import com.kuropatin.bookingapp.model.Property;
@@ -56,7 +64,7 @@ public class OrderService {
             InsufficientMoneyAmountException.class
     })
     public Order createOrder(Long clientId, Long propertyId, OrderRequest orderRequest) {
-        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()))) {
+        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()), propertyId)) {
             User client = userService.getUserById(clientId);
             Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
             Order order = new Order();
