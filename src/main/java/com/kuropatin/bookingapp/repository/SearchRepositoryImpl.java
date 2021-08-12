@@ -1,14 +1,22 @@
 package com.kuropatin.bookingapp.repository;
 
 import com.kuropatin.bookingapp.model.Order;
-import com.kuropatin.bookingapp.model.*;
+import com.kuropatin.bookingapp.model.Order_;
+import com.kuropatin.bookingapp.model.Property;
+import com.kuropatin.bookingapp.model.PropertyType;
+import com.kuropatin.bookingapp.model.Property_;
+import com.kuropatin.bookingapp.model.User_;
 import com.kuropatin.bookingapp.model.request.PropertySearchCriteria;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;

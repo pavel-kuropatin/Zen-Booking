@@ -1,6 +1,10 @@
 package com.kuropatin.bookingapp.service;
 
-import com.kuropatin.bookingapp.exception.*;
+import com.kuropatin.bookingapp.exception.EmailAlreadyInUseException;
+import com.kuropatin.bookingapp.exception.InsufficientMoneyAmountException;
+import com.kuropatin.bookingapp.exception.LoginAlreadyInUseException;
+import com.kuropatin.bookingapp.exception.MoneyAmountExceededException;
+import com.kuropatin.bookingapp.exception.UserNotFoundException;
 import com.kuropatin.bookingapp.model.Gender;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
