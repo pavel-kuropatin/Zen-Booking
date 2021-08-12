@@ -8,7 +8,6 @@ import com.kuropatin.bookingapp.service.OrderService;
 import com.kuropatin.bookingapp.service.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,7 +33,6 @@ public class ReviewController {
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Get all reviews of logged user")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> getAllReviewsOfUser() {
         long userId = authenticationUtils.getId();
@@ -42,10 +40,7 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "Get review of logged user by id {reviewId}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
-            @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
-    })
+    @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponse> getReviewOfUserById(@PathVariable final Long reviewId) {
         long userId = authenticationUtils.getId();
@@ -53,7 +48,6 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "Get a list of orders to add a review")
-    @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true)
     @GetMapping("/available-for-review")
     public ResponseEntity<List<OrderResponse>> getOrdersToAddReview() {
         long userId = authenticationUtils.getId();
@@ -61,10 +55,7 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "Add review")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
-            @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
-    })
+    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @PostMapping("/available-for-review/{orderId}/add")
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
