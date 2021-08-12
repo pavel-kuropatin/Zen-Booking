@@ -29,8 +29,8 @@ public class PropertyService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
 
-    public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate) {
-        return repository.canPropertyBeOrdered(startDate, endDate);
+    public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate, Long propertyId) {
+        return repository.canPropertyBeOrdered(startDate, endDate, propertyId);
     }
 
     public List<Property> getAllPropertyOfUser(Long userId) {
