@@ -40,7 +40,6 @@ public class BookingController {
     private final AuthenticationUtils authenticationUtils;
 
     @ApiOperation(value = "Search property that available for order")
-    @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header", required = true)
     @PostMapping
     public ResponseEntity<List<PropertyResponse>> searchProperty(@Valid @RequestBody final PropertySearchCriteria searchCriteria) {
         long userId = authenticationUtils.getId();
@@ -48,7 +47,6 @@ public class BookingController {
     }
 
     @ApiOperation(value = "Browse found property with id {propertyId}")
-    @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header", required = true)
     @GetMapping("/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
@@ -64,10 +62,7 @@ public class BookingController {
     }
 
     @ApiOperation(value = "Browse all images of found property")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
-    })
+    @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @GetMapping("/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
@@ -75,7 +70,6 @@ public class BookingController {
 
     @ApiOperation(value = "Browse image with id {imageId} of found property")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
             @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
             @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
     })
