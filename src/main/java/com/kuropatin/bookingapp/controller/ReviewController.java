@@ -64,10 +64,7 @@ public class ReviewController {
 
     //For moderators
 //    @ApiOperation(value = "Delete review with id {reviewId}")
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "X-Auth-Token", dataTypeClass = String.class, paramType = "header", value = "JWT Authentication Token", required = true),
-//            @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
-//    })
+//    @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
 //    @DeleteMapping("/{reviewId}")
 //    public ResponseEntity<String> deleteReview(@PathVariable final Long reviewId) {
 //        return new ResponseEntity<>(reviewService.softDeleteReview(reviewId), HttpStatus.OK);
