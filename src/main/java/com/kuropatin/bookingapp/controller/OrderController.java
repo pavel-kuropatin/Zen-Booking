@@ -4,7 +4,6 @@ import com.kuropatin.bookingapp.model.response.OrderResponse;
 import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.OrderService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,7 +40,6 @@ public class OrderController {
     }
 
     @ApiOperation(value = "Get order with id {orderId} of logged user")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getById(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
@@ -49,7 +47,6 @@ public class OrderController {
     }
 
     @ApiOperation(value = "Cancel order with id {orderId} of logged user")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<String> cancel(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
