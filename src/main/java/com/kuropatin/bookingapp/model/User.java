@@ -1,6 +1,7 @@
 package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -81,13 +82,23 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Setter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Property> property;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Setter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<Order> orders;
+
+    public void addProperty(Property property) {
+        this.property.add(property);
+    }
+
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
 
     @Override
     public String toString() {

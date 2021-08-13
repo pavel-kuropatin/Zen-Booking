@@ -2,6 +2,7 @@ package com.kuropatin.bookingapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -100,13 +101,18 @@ public class Property {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Setter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Set<PropertyImage> propertyImages;
 
-    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private Order order;
+
+    public void addPropertyImage(PropertyImage propertyImage) {
+        this.propertyImages.add(propertyImage);
+    }
 
     @Override
     public String toString() {
