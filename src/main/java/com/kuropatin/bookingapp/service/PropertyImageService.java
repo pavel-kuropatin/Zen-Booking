@@ -53,7 +53,7 @@ public class PropertyImageService {
         PropertyImage propertyImage = new PropertyImage();
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
         propertyImage.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-        propertyImage.setUpdated(property.getCreated());
+        propertyImage.setUpdated(propertyImage.getCreated());
         property.setPropertyImages(Collections.singleton(propertyImage));
         propertyImage.setProperty(property);
         return repository.save(propertyImage);
