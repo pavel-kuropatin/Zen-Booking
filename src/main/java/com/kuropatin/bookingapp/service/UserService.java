@@ -144,9 +144,7 @@ public class UserService {
     }
 
     public static User transformToNewUser(UserCreateRequest userCreateRequest) {
-        User user = new User();
-        transformToUser(userCreateRequest, user);
-        return user;
+        return transformToUser(userCreateRequest, new User());
     }
 
     public static User transformToUser(UserCreateRequest userCreateRequest, User user) {
@@ -162,9 +160,7 @@ public class UserService {
     }
 
     public UserResponse transformToNewUserResponse(User user) {
-        UserResponse userResponse = new UserResponse();
-        transformToUserResponse(user, userResponse);
-        return userResponse;
+        return transformToUserResponse(user, new UserResponse());
     }
 
     private UserResponse transformToUserResponse(User user, UserResponse userResponse) {
