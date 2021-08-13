@@ -100,11 +100,11 @@ public class Property {
     @JsonBackReference
     private User user;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<PropertyImage> propertyImages;
 
-    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private Order order;
 

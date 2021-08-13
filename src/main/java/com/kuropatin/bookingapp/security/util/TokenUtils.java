@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static io.jsonwebtoken.Claims.SUBJECT;
-import static java.util.Calendar.SECOND;
 
 @Component
 @RequiredArgsConstructor
@@ -57,9 +55,7 @@ public class TokenUtils {
     }
 
     private Date generateExpirationDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(SECOND, jwtTokenConfig.getExpiration());
-        return calendar.getTime();
+        return new Date(System.currentTimeMillis() + jwtTokenConfig.getExpiration() * 1000);
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
