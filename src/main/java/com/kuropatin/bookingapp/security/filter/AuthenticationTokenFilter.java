@@ -2,7 +2,9 @@ package com.kuropatin.bookingapp.security.filter;
 
 import com.kuropatin.bookingapp.security.util.CustomHeaders;
 import com.kuropatin.bookingapp.security.util.TokenUtils;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +19,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@Log4j2
 @RequiredArgsConstructor
 public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -27,18 +30,22 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String authToken = httpRequest.getHeader(CustomHeaders.X_AUTH_TOKEN);
-        if (authToken != null) {
-            String username = tokenUtils.getUsernameFromToken(authToken);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                //TODO: refactor validate token method
-                if (tokenUtils.validateToken(authToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            if (authToken != null) {
+                String username = tokenUtils.getUsernameFromToken(authToken);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    if (tokenUtils.validateToken(authToken, userDetails)) {
+                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
             }
+            chain.doFilter(request, response);
+        } catch (JwtException e) {
+            log.error(((HttpServletRequest) request).getRequestURL() + " " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            chain.doFilter(request, response);
         }
-        chain.doFilter(request, response);
     }
 }
