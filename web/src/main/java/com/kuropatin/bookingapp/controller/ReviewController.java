@@ -7,7 +7,6 @@ import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.OrderService;
 import com.kuropatin.bookingapp.service.ReviewService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,6 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "Get review of logged user by id {reviewId}")
-    @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponse> getReviewOfUserById(@PathVariable final Long reviewId) {
         long userId = authenticationUtils.getId();
@@ -55,18 +53,9 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "Add review")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @PostMapping("/available-for-review/{orderId}/add")
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.OK);
     }
-
-    //For moderators
-//    @ApiOperation(value = "Delete review with id {reviewId}")
-//    @ApiImplicitParam(name = "reviewId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
-//    @DeleteMapping("/{reviewId}")
-//    public ResponseEntity<String> deleteReview(@PathVariable final Long reviewId) {
-//        return new ResponseEntity<>(reviewService.softDeleteReview(reviewId), HttpStatus.OK);
-//    }
 }

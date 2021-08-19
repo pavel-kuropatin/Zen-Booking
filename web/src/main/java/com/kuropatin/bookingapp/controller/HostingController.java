@@ -11,7 +11,6 @@ import com.kuropatin.bookingapp.service.PropertyImageService;
 import com.kuropatin.bookingapp.service.PropertyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -70,7 +69,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Delete property with id {propertyId} of logged user")
-    @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @DeleteMapping("/property/{propertyId}")
     public ResponseEntity<String> deletePropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
@@ -78,7 +76,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Get all images of property with id {propertyId} of logged user")
-    @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @GetMapping("/property/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
@@ -86,10 +83,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Get image with id {imageId} of property with id {propertyId} of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
-            @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
-    })
     @GetMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         long userId = authenticationUtils.getId();
@@ -97,7 +90,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Create image of property with id {propertyId} of logged user")
-    @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @PostMapping("/property/{propertyId}/images")
     public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
         long userId = authenticationUtils.getId();
@@ -105,10 +97,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Delete image with id {imageId} of property with id {propertyId} of logged user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
-            @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
-    })
     @DeleteMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<String> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         long userId = authenticationUtils.getId();
@@ -123,7 +111,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Get order request with id {orderId} of logged user")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @GetMapping("/requests/{orderId}")
     public ResponseEntity<OrderResponse> getOrderRequestById(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
@@ -131,7 +118,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Accept order request with id {orderId} of logged user")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @PutMapping("/requests/{orderId}/accept")
     public ResponseEntity<String> acceptOrder(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
@@ -139,7 +125,6 @@ public class HostingController {
     }
 
     @ApiOperation(value = "Decline order request with id {orderId} of logged user")
-    @ApiImplicitParam(name = "orderId", dataTypeClass = String.class, paramType = "path", value = "orderId", required = true)
     @PutMapping("/requests/{orderId}/decline")
     public ResponseEntity<String> declineOrder(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
