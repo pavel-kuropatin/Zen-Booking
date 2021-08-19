@@ -1,6 +1,8 @@
 package com.kuropatin.bookingapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,13 +14,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -29,51 +32,34 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(exclude = {
-        "property", "orders"
+        "property", "user", "reviews"
 })
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "orders")
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
-    @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Roles role = Roles.ROLE_USER;
+    @Column(name = "total_price")
+    private int totalPrice;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "start_date")
+    private LocalDate startDate;
 
-    @Column(name = "password")
-    private String password;
+    @Column(name = "end_date")
+    private LocalDate endDate;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "is_accepted")
+    private boolean isAccepted = false;
 
-    @Column(name = "surname")
-    private String surname;
+    @Column(name = "is_cancelled")
+    private boolean isCancelled = false;
 
-    @Column(name = "gender")
-    @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.UNDEFINED;
-
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @Column(name = "balance")
-    private int balance = 0;
-
-    @Column(name = "is_banned")
-    private boolean isBanned = false;
+    @Column(name = "is_finished")
+    private boolean isFinished = false;
 
     @Column(name = "created")
     private Timestamp created;
@@ -81,13 +67,24 @@ public class User {
     @Column(name = "updated")
     private Timestamp updated;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private Set<Property> property;
+    @OneToOne
+    @JoinColumn(name = "property_id")
+    @JsonBackReference
+    private Property property;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
+
+    @Setter(value = AccessLevel.NONE)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    private Set<Order> orders;
+    private Set<Review> reviews;
+
+    public void addReview(Review review) {
+        this.reviews.add(review);
+    }
 
     @Override
     public String toString() {

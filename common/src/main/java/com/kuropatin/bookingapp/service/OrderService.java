@@ -27,7 +27,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -76,7 +75,7 @@ public class OrderService {
             order.setUpdated(order.getCreated());
             order.setUser(client);
             order.setProperty(propertyToOrder);
-            client.setOrders(Collections.singleton(order));
+            client.addOrder(order);
             propertyToOrder.setOrder(order);
             return orderRepository.save(order);
         } else {
@@ -163,9 +162,7 @@ public class OrderService {
     }
 
     public OrderResponse transformToNewOrderResponse(Order order) {
-        OrderResponse orderResponse = new OrderResponse();
-        transformToOrderResponse(order, orderResponse);
-        return orderResponse;
+        return transformToOrderResponse(order, new OrderResponse());
     }
 
     public List<OrderResponse> transformToListOrderResponse(List<Order> orders) {

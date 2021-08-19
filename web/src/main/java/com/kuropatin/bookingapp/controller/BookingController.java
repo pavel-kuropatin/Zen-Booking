@@ -11,8 +11,6 @@ import com.kuropatin.bookingapp.service.PropertyImageService;
 import com.kuropatin.bookingapp.service.PropertyService;
 import com.kuropatin.bookingapp.service.SearchService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,7 +52,6 @@ public class BookingController {
     }
 
     @ApiOperation(value = "Order found property")
-    @ApiImplicitParam(name = "X-Auth-Token", value = "JWT Authentication Token", dataTypeClass = String.class, paramType = "header", required = true)
     @PostMapping("/{propertyId}")
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
@@ -62,17 +59,12 @@ public class BookingController {
     }
 
     @ApiOperation(value = "Browse all images of found property")
-    @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @GetMapping("/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Browse image with id {imageId} of found property")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true),
-            @ApiImplicitParam(name = "imageId", dataTypeClass = String.class, paramType = "path", value = "imageId", required = true)
-    })
     @GetMapping("/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyId(imageId, propertyId)), HttpStatus.OK);

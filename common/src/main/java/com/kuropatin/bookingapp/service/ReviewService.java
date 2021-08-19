@@ -15,7 +15,6 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,7 +44,7 @@ public class ReviewService {
         if(repository.canReviewBeAdded(orderId, userId)) {
             Order order = orderService.getOrderById(orderId, userId);
             Review review = transformToNewReview(reviewRequest);
-            order.setReviews(Collections.singleton(review));
+            order.addReview(review);
             review.setOrder(order);
             review.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
             review.setUpdated(review.getCreated());
@@ -65,9 +64,7 @@ public class ReviewService {
     }
 
     public static Review transformToNewReview(ReviewRequest reviewRequest) {
-        Review review = new Review();
-        transformToReview(reviewRequest, review);
-        return review;
+        return transformToReview(reviewRequest, new Review());
     }
 
     public static Review transformToReview(ReviewRequest reviewRequest, Review review) {
@@ -78,9 +75,7 @@ public class ReviewService {
     }
 
     public ReviewResponse transformToNewReviewResponse(Review review) {
-        ReviewResponse reviewResponse = new ReviewResponse();
-        transformToReviewResponse(review, reviewResponse);
-        return reviewResponse;
+        return transformToReviewResponse(review, new ReviewResponse());
     }
 
     public List<ReviewResponse> transformToListReviewResponse(List<Review> reviews) {

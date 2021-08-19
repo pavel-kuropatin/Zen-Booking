@@ -14,7 +14,6 @@ import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -54,7 +53,7 @@ public class PropertyImageService {
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
         propertyImage.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         propertyImage.setUpdated(propertyImage.getCreated());
-        property.setPropertyImages(Collections.singleton(propertyImage));
+        property.addPropertyImage(propertyImage);
         propertyImage.setProperty(property);
         return repository.save(propertyImage);
     }
@@ -69,9 +68,7 @@ public class PropertyImageService {
     }
 
     public PropertyImageResponse transformToNewPropertyImageResponse(PropertyImage propertyImage) {
-        PropertyImageResponse propertyImageResponse = new PropertyImageResponse();
-        transformToPropertyImageResponse(propertyImage, propertyImageResponse);
-        return propertyImageResponse;
+        return transformToPropertyImageResponse(propertyImage, new PropertyImageResponse());
     }
 
     public List<PropertyImageResponse> transformToListPropertyImageResponse(List<PropertyImage> propertyImages) {

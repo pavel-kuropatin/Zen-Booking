@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +55,7 @@ public class PropertyService {
     public Property createProperty(Long userId, PropertyRequest propertyRequest) {
         User user = userService.getUserById(userId);
         Property property = transformToNewProperty(propertyRequest);
-        user.setProperty(Collections.singleton(property));
+        user.addProperty(property);
         property.setUser(user);
         property.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         property.setUpdated(property.getCreated());
@@ -85,9 +84,7 @@ public class PropertyService {
     }
 
     public Property transformToNewProperty(PropertyRequest propertyRequest) {
-        Property property = new Property();
-        transformToProperty(propertyRequest, property);
-        return property;
+        return transformToProperty(propertyRequest, new Property());
     }
 
     public Property transformToProperty(PropertyRequest propertyRequest, Property property) {
@@ -109,9 +106,7 @@ public class PropertyService {
     }
 
     public PropertyResponse transformToNewPropertyResponse(Property property) {
-        PropertyResponse propertyResponse = new PropertyResponse();
-        transformToPropertyResponse(property, propertyResponse);
-        return propertyResponse;
+        return transformToPropertyResponse(property, new PropertyResponse());
     }
 
     public List<PropertyResponse> transformToListPropertyResponse(List<Property> properties) {
