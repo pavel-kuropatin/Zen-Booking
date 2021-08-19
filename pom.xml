@@ -27,6 +27,7 @@
         <start-class>com.kuropatin.bookingapp.BookingAppStarter</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>Pavel-Kuropatin_Booking-App</sonar.projectKey>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
         <sonar.organization>pavel-kuropatin</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <jwt.version>0.9.1</jwt.version>
