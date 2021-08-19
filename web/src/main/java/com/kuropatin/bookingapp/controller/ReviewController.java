@@ -58,11 +58,4 @@ public class ReviewController {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.OK);
     }
-
-    //For moderators
-//    @ApiOperation(value = "Delete review with id {reviewId}")
-//    @DeleteMapping("/{reviewId}")
-//    public ResponseEntity<String> deleteReview(@PathVariable final Long reviewId) {
-//        return new ResponseEntity<>(reviewService.softDeleteReview(reviewId), HttpStatus.OK);
-//    }
 }
