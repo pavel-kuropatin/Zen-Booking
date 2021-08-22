@@ -40,19 +40,19 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "SELECT CASE WHEN COUNT(u.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM User u " +
                    "WHERE u.isBanned = true AND u.id = ?1")
-    boolean isBanned(long id);
+    boolean isBanned(Long id);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE User u " +
                    "SET u.isBanned = true, u.updated = ?2 " +
                    "WHERE u.id = ?1")
-    User banUser(Long id, Timestamp updated);
+    void banUser(Long id, Timestamp updated);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE User u " +
                    "SET u.isBanned = false, u.updated = ?2 " +
                    "WHERE u.id = ?1")
-    User unbanUser(Long id, Timestamp updated);
+    void unbanUser(Long id, Timestamp updated);
 }

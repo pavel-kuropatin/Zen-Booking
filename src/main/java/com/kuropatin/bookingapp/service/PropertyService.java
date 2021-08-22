@@ -87,7 +87,7 @@ public class PropertyService {
         return transformToProperty(propertyRequest, new Property());
     }
 
-    public Property transformToProperty(PropertyRequest propertyRequest, Property property) {
+    private Property transformToProperty(PropertyRequest propertyRequest, Property property) {
         property.setType(PropertyType.valueOf(propertyRequest.getType()));
         property.setName(propertyRequest.getName());
         property.setDescription(propertyRequest.getDescription());
