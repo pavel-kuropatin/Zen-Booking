@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -57,7 +58,6 @@ public class UserService {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
         User user = transformToNewUser(userCreateRequest);
-        user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         user.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
         user.setUpdated(user.getCreated());
         return repository.save(user);
@@ -89,14 +89,9 @@ public class UserService {
     })
     public void pay(User user, int amount) {
         if(user.getBalance() >= amount) {
-            long checkOverflow = (long) user.getBalance() + (long) amount;
-            if (checkOverflow > Integer.MAX_VALUE) {
-                throw new MoneyAmountExceededException();
-            } else {
-                user.setBalance(user.getBalance() - amount);
-                user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-                repository.save(user);
-            }
+            user.setBalance(user.getBalance() - amount);
+            user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            repository.save(user);
         } else {
             throw new InsufficientMoneyAmountException();
         }
@@ -117,39 +112,41 @@ public class UserService {
         }
     }
 
-    public User banUser(Long id) {
+    public String banUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.banUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            repository.banUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            return MessageFormat.format("User with id: {0} was banned", id);
         } else {
             throw new UserNotFoundException(id);
         }
     }
 
-    public User unbanUser(Long id) {
+    public String unbanUser(Long id) {
         if(repository.existsById(id)) {
-            return repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            return MessageFormat.format("User with id: {0} is no longer banned", id);
         } else {
             throw new UserNotFoundException(id);
         }
     }
 
-    public static User transformToUser(UserEditRequest userCreateRequest, User user) {
-        user.setName(userCreateRequest.getName());
-        user.setSurname(userCreateRequest.getSurname());
-        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
-        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
-        user.setEmail(userCreateRequest.getEmail());
-        user.setPhone(userCreateRequest.getPhone());
+    public User transformToUser(UserEditRequest userEditRequest, User user) {
+        user.setName(userEditRequest.getName());
+        user.setSurname(userEditRequest.getSurname());
+        user.setGender(Gender.valueOf(userEditRequest.getGender()));
+        user.setBirthDate(LocalDate.parse(userEditRequest.getBirthDate()));
+        user.setEmail(userEditRequest.getEmail());
+        user.setPhone(userEditRequest.getPhone());
         return user;
     }
 
-    public static User transformToNewUser(UserCreateRequest userCreateRequest) {
+    public User transformToNewUser(UserCreateRequest userCreateRequest) {
         return transformToUser(userCreateRequest, new User());
     }
 
-    public static User transformToUser(UserCreateRequest userCreateRequest, User user) {
+    private User transformToUser(UserCreateRequest userCreateRequest, User user) {
         user.setLogin(userCreateRequest.getLogin());
-        user.setPassword(userCreateRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         user.setName(userCreateRequest.getName());
         user.setSurname(userCreateRequest.getSurname());
         user.setGender(Gender.valueOf(userCreateRequest.getGender()));

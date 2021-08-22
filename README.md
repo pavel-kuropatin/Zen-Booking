@@ -9,11 +9,11 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=bugs)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
 
-### Project description
+### Project description:
 This is a booking application made as part of training at IT-Academy.
 Application is deployed on Heroku and can be accessed via Swagger UI by [this link](https://booking-app-pk.herokuapp.com/swagger-ui/)
 
-### Application features
+### Application features:
 
 1. There is roles for Admins, Moderators and Users based on Spring Security.
 2. Users should be registered and logged in to use this application.
@@ -28,23 +28,26 @@ Application is deployed on Heroku and can be accessed via Swagger UI by [this li
     - order is accepted automatically if it was not accepted, declined or cancelled within ~5 minutes after it was placed;
     - ended orders are finished automatically once a day or upon restart.
 
-### Technology stack
+_NOTE: Functionality for admins and moderators will be implemented on the later stage._
+
+### Technology stack:
 - Java
 - Spring Boot
 - Spring Data
 - Spring Caches
 - Spring AOP
-- Spring Security (_basics_)
+- Spring Security with JWT Token
 - PostgreSQL
 - Swagger
+- Unit testing (JUnit 5, AssertJ, Mockito)
 - Git (_obviously_)
 - Sonar Cloud _via GitHub Actions_
 
-### Known issues
+### Known issues:
 1. JWT exception can't be handled to send informative message to front side.
 
-### TODO
+### TODO:
 1. Fix known issues.
-2. Further improvement of Swagger UI documentation.
-3. Add tests.
+2. Add more tests.
+3. Further improvement of Swagger UI documentation.
 4. Further improvement of application functionality.

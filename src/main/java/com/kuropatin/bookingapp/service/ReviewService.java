@@ -63,11 +63,11 @@ public class ReviewService {
         }
     }
 
-    public static Review transformToNewReview(ReviewRequest reviewRequest) {
+    public Review transformToNewReview(ReviewRequest reviewRequest) {
         return transformToReview(reviewRequest, new Review());
     }
 
-    public static Review transformToReview(ReviewRequest reviewRequest, Review review) {
+    public Review transformToReview(ReviewRequest reviewRequest, Review review) {
         review.setSummary(reviewRequest.getSummary());
         review.setDescription(reviewRequest.getDescription());
         review.setRating(Byte.parseByte(reviewRequest.getRating()));
