@@ -135,13 +135,13 @@ public class UserService {
         }
     }
 
-    public User transformToUser(UserEditRequest userCreateRequest, User user) {
-        user.setName(userCreateRequest.getName());
-        user.setSurname(userCreateRequest.getSurname());
-        user.setGender(Gender.valueOf(userCreateRequest.getGender()));
-        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
-        user.setEmail(userCreateRequest.getEmail());
-        user.setPhone(userCreateRequest.getPhone());
+    public User transformToUser(UserEditRequest userEditRequest, User user) {
+        user.setName(userEditRequest.getName());
+        user.setSurname(userEditRequest.getSurname());
+        user.setGender(Gender.valueOf(userEditRequest.getGender()));
+        user.setBirthDate(LocalDate.parse(userEditRequest.getBirthDate()));
+        user.setEmail(userEditRequest.getEmail());
+        user.setPhone(userEditRequest.getPhone());
         return user;
     }
 
