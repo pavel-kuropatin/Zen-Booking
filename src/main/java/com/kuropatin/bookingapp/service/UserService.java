@@ -89,14 +89,9 @@ public class UserService {
     })
     public void pay(User user, int amount) {
         if(user.getBalance() >= amount) {
-            long checkOverflow = (long) user.getBalance() + (long) amount;
-            if (checkOverflow > Integer.MAX_VALUE) {
-                throw new MoneyAmountExceededException();
-            } else {
-                user.setBalance(user.getBalance() - amount);
-                user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-                repository.save(user);
-            }
+            user.setBalance(user.getBalance() - amount);
+            user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            repository.save(user);
         } else {
             throw new InsufficientMoneyAmountException();
         }
