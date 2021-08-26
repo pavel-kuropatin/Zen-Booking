@@ -17,6 +17,7 @@ import com.kuropatin.bookingapp.model.request.OrderRequest;
 import com.kuropatin.bookingapp.model.response.OrderResponse;
 import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.OrderRepository;
+import com.kuropatin.bookingapp.util.ApplicationTimestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +70,10 @@ public class OrderService {
             order.setStartDate(LocalDate.parse(orderRequest.getStartDate()));
             order.setEndDate(LocalDate.parse(orderRequest.getEndDate()));
             order.setTotalPrice(calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate()));
-            userService.pay(client, order.getTotalPrice());
-            order.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            order.setUpdated(order.getCreated());
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            userService.pay(client, order.getTotalPrice(), timestamp);
+            order.setCreated(timestamp);
+            order.setUpdated(timestamp);
             order.setUser(client);
             order.setProperty(propertyToOrder);
             client.addOrder(order);
@@ -93,8 +93,8 @@ public class OrderService {
         if(orderRepository.existsByIdAndUserId(orderId, userId)) {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
-                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
-                userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
+                Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+                userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice(), timestamp);
                 orderRepository.cancelOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully cancelled", orderId));
             } else {
@@ -127,8 +127,8 @@ public class OrderService {
             Order orderToAccept = orderRepository.findOrderById(orderId);
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 User host = userService.getUserById(hostId);
-                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
-                userService.transferMoney(host, orderToAccept.getTotalPrice());
+                Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+                userService.transferMoney(host, orderToAccept.getTotalPrice(), timestamp);
                 orderRepository.acceptOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully accepted", orderId));
             } else {
@@ -148,8 +148,8 @@ public class OrderService {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
-                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
-                userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice());
+                Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+                userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice(), timestamp);
                 orderRepository.declineOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully declined", orderId));
             } else {
@@ -214,8 +214,7 @@ public class OrderService {
 
     public void autoFinishOrder(Long id) {
         if(orderRepository.existsById(id)) {
-            Timestamp updated = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
-            orderRepository.finishOrder(id, updated);
+            orderRepository.finishOrder(id, ApplicationTimestamp.getTimestampUTC());
         } else {
             throw new OrderNotFoundException(MessageFormat.format("Order with id: {0} cannot be finished automatically", id));
         }
