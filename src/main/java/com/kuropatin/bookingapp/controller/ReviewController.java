@@ -56,6 +56,6 @@ public class ReviewController {
     @PostMapping("/available-for-review/{orderId}/add")
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.OK);
+        return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.CREATED);
     }
 }

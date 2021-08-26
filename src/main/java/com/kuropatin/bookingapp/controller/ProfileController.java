@@ -45,6 +45,6 @@ public class ProfileController {
     @PutMapping("/deposit")
     public ResponseEntity<UserResponse> deposit(@Valid @RequestBody final AmountRequest amountRequest) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.OK);
     }
 }

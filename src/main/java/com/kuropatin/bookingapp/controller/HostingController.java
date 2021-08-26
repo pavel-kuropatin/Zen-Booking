@@ -5,6 +5,7 @@ import com.kuropatin.bookingapp.model.request.PropertyRequest;
 import com.kuropatin.bookingapp.model.response.OrderResponse;
 import com.kuropatin.bookingapp.model.response.PropertyImageResponse;
 import com.kuropatin.bookingapp.model.response.PropertyResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.OrderService;
 import com.kuropatin.bookingapp.service.PropertyImageService;
@@ -70,7 +71,7 @@ public class HostingController {
 
     @ApiOperation(value = "Delete property with id {propertyId} of logged user")
     @DeleteMapping("/property/{propertyId}")
-    public ResponseEntity<String> deletePropertyById(@PathVariable final Long propertyId) {
+    public ResponseEntity<SuccessfulResponse> deletePropertyById(@PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.softDeletePropertyByIdAndUserId(propertyId, userId), HttpStatus.OK);
     }
@@ -98,7 +99,7 @@ public class HostingController {
 
     @ApiOperation(value = "Delete image with id {imageId} of property with id {propertyId} of logged user")
     @DeleteMapping("/property/{propertyId}/images/{imageId}")
-    public ResponseEntity<String> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
+    public ResponseEntity<SuccessfulResponse> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.softDeletePropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId), HttpStatus.OK);
     }
@@ -119,14 +120,14 @@ public class HostingController {
 
     @ApiOperation(value = "Accept order request with id {orderId} of logged user")
     @PutMapping("/requests/{orderId}/accept")
-    public ResponseEntity<String> acceptOrder(@PathVariable final Long orderId) {
+    public ResponseEntity<SuccessfulResponse> acceptOrder(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.acceptOrder(orderId, userId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Decline order request with id {orderId} of logged user")
     @PutMapping("/requests/{orderId}/decline")
-    public ResponseEntity<String> declineOrder(@PathVariable final Long orderId) {
+    public ResponseEntity<SuccessfulResponse> declineOrder(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.declineOrder(orderId, userId), HttpStatus.OK);
     }

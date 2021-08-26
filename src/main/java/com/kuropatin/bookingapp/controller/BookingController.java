@@ -55,7 +55,7 @@ public class BookingController {
     @PostMapping("/{propertyId}")
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Browse all images of found property")

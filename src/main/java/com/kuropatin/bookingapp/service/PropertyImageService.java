@@ -5,6 +5,7 @@ import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.PropertyImage;
 import com.kuropatin.bookingapp.model.request.PropertyImageRequest;
 import com.kuropatin.bookingapp.model.response.PropertyImageResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -58,10 +59,11 @@ public class PropertyImageService {
         return repository.save(propertyImage);
     }
 
-    public String softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
+    public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            repository.softDeletePropertyImage(imageId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("Image with id: {0} successfully deleted", imageId);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            repository.softDeletePropertyImage(imageId, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }
