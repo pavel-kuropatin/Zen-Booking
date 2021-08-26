@@ -13,6 +13,7 @@ import com.kuropatin.bookingapp.model.request.UserEditRequest;
 import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.repository.UserRepository;
+import com.kuropatin.bookingapp.util.ApplicationTimestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -21,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 @Repository
 @RequiredArgsConstructor
@@ -59,7 +58,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
         User user = transformToNewUser(userCreateRequest);
-        user.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+        user.setCreated(ApplicationTimestamp.getTimestampUTC());
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
@@ -70,7 +69,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
         transformToUser(userEditRequest, userToUpdate);
-        userToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+        userToUpdate.setUpdated(ApplicationTimestamp.getTimestampUTC());
         return repository.save(userToUpdate);
     }
 
@@ -80,7 +79,7 @@ public class UserService {
         }
         User user = getUserById(id);
         user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
-        user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+        user.setUpdated(ApplicationTimestamp.getTimestampUTC());
         return repository.save(user);
     }
 
@@ -88,10 +87,10 @@ public class UserService {
             InsufficientMoneyAmountException.class,
             MoneyAmountExceededException.class
     })
-    public void pay(User user, int amount) {
+    public void pay(User user, int amount, Timestamp timestamp) {
         if(user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
-            user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            user.setUpdated(timestamp);
             repository.save(user);
         } else {
             throw new InsufficientMoneyAmountException();
@@ -102,20 +101,20 @@ public class UserService {
             InsufficientMoneyAmountException.class,
             MoneyAmountExceededException.class
     })
-    public void transferMoney(User user, int amount) {
+    public void transferMoney(User user, int amount, Timestamp timestamp) {
         long checkOverflow = (long) user.getBalance() + (long) amount;
         if (checkOverflow > Integer.MAX_VALUE) {
             throw new MoneyAmountExceededException();
         } else {
             user.setBalance(user.getBalance() + amount);
-            user.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+            user.setUpdated(timestamp);
             repository.save(user);
         }
     }
 
     public SuccessfulResponse banUser(Long id) {
         if(repository.existsById(id)) {
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
             repository.banUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
         } else {
@@ -125,7 +124,7 @@ public class UserService {
 
     public SuccessfulResponse unbanUser(Long id) {
         if(repository.existsById(id)) {
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
             repository.unbanUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
         } else {

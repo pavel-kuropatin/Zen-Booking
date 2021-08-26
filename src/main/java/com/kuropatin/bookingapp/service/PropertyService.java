@@ -9,14 +9,13 @@ import com.kuropatin.bookingapp.model.response.PropertyResponse;
 import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import com.kuropatin.bookingapp.repository.ReviewRepository;
+import com.kuropatin.bookingapp.util.ApplicationTimestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,21 +57,22 @@ public class PropertyService {
         Property property = transformToNewProperty(propertyRequest);
         user.addProperty(property);
         property.setUser(user);
-        property.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-        property.setUpdated(property.getCreated());
+        Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+        property.setCreated(timestamp);
+        property.setUpdated(timestamp);
         return repository.save(property);
     }
 
     public Property updateProperty(Long propertyId, Long userId, PropertyRequest propertyRequest) {
         Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
         transformToProperty(propertyRequest, propertyToUpdate);
-        propertyToUpdate.setUpdated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
+        propertyToUpdate.setUpdated(ApplicationTimestamp.getTimestampUTC());
         return repository.save(propertyToUpdate);
     }
 
     public SuccessfulResponse softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
             repository.softDeleteProperty(propertyId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Property with id: {0} successfully deleted", propertyId));
         } else {

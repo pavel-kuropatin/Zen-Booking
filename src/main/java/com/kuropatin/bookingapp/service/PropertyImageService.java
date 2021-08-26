@@ -7,13 +7,12 @@ import com.kuropatin.bookingapp.model.request.PropertyImageRequest;
 import com.kuropatin.bookingapp.model.response.PropertyImageResponse;
 import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.PropertyImageRepository;
+import com.kuropatin.bookingapp.util.ApplicationTimestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,8 +51,9 @@ public class PropertyImageService {
         Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
         PropertyImage propertyImage = new PropertyImage();
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
-        propertyImage.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-        propertyImage.setUpdated(propertyImage.getCreated());
+        Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+        propertyImage.setCreated(timestamp);
+        propertyImage.setUpdated(timestamp);
         property.addPropertyImage(propertyImage);
         propertyImage.setProperty(property);
         return repository.save(propertyImage);
@@ -61,7 +61,7 @@ public class PropertyImageService {
 
     public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
             repository.softDeletePropertyImage(imageId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
         } else {
