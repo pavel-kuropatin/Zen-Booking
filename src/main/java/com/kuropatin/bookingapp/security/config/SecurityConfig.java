@@ -1,7 +1,8 @@
 package com.kuropatin.bookingapp.security.config;
 
-import com.kuropatin.bookingapp.security.filter.AuthenticationTokenFilter;
-import com.kuropatin.bookingapp.security.util.TokenUtils;
+import com.kuropatin.bookingapp.security.filter.JwtAuthenticationFilter;
+import com.kuropatin.bookingapp.security.service.CustomUserDetailsService;
+import com.kuropatin.bookingapp.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,8 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
-    private final TokenUtils tokenUtils;
+    private final CustomUserDetailsService userDetailsService;
+    private final JwtUtils jwtUtils;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Bean
@@ -40,8 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public AuthenticationTokenFilter authenticationTokenFilterBean(AuthenticationManager authenticationManager) {
-        AuthenticationTokenFilter authenticationTokenFilter = new AuthenticationTokenFilter(tokenUtils, userDetailsService);
+    public JwtAuthenticationFilter jwtAuthenticationFilterBean(AuthenticationManager authenticationManager) {
+        JwtAuthenticationFilter authenticationTokenFilter = new JwtAuthenticationFilter(jwtUtils, userDetailsService);
         authenticationTokenFilter.setAuthenticationManager(authenticationManager);
         return authenticationTokenFilter;
     }
@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .addFilterBefore(jwtAuthenticationFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/register/**").permitAll()
                 .antMatchers("/login/**").permitAll()
@@ -72,9 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/review/**").hasRole("USER")
                 .antMatchers("/administration/**").hasRole("ADMIN")
                 .antMatchers("/moderation/**").hasRole("MODER")
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(authenticationTokenFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
     }
 
     //For swagger access only
