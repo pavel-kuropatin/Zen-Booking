@@ -6,6 +6,7 @@ import com.kuropatin.bookingapp.model.PropertyType;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.PropertyRequest;
 import com.kuropatin.bookingapp.model.response.PropertyResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.PropertyRepository;
 import com.kuropatin.bookingapp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,10 +70,11 @@ public class PropertyService {
         return repository.save(propertyToUpdate);
     }
 
-    public String softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
+    public SuccessfulResponse softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            repository.softDeleteProperty(propertyId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("Property with id: {0} successfully deleted", propertyId);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            repository.softDeleteProperty(propertyId, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("Property with id: {0} successfully deleted", propertyId));
         } else {
             throw new PropertyNotFoundException(propertyId);
         }

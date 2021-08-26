@@ -10,6 +10,7 @@ import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.AmountRequest;
 import com.kuropatin.bookingapp.model.request.UserCreateRequest;
 import com.kuropatin.bookingapp.model.request.UserEditRequest;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.model.response.UserResponse;
 import com.kuropatin.bookingapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -112,19 +113,21 @@ public class UserService {
         }
     }
 
-    public String banUser(Long id) {
+    public SuccessfulResponse banUser(Long id) {
         if(repository.existsById(id)) {
-            repository.banUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("User with id: {0} was banned", id);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            repository.banUser(id, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
         } else {
             throw new UserNotFoundException(id);
         }
     }
 
-    public String unbanUser(Long id) {
+    public SuccessfulResponse unbanUser(Long id) {
         if(repository.existsById(id)) {
-            repository.unbanUser(id, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("User with id: {0} is no longer banned", id);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            repository.unbanUser(id, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
         } else {
             throw new UserNotFoundException(id);
         }

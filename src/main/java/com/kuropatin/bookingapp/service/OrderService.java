@@ -15,6 +15,7 @@ import com.kuropatin.bookingapp.model.Property;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.model.request.OrderRequest;
 import com.kuropatin.bookingapp.model.response.OrderResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -88,13 +89,14 @@ public class OrderService {
             UserNotFoundException.class,
             MoneyAmountExceededException.class
     })
-    public String cancelOrder(Long orderId, Long userId) {
+    public SuccessfulResponse cancelOrder(Long orderId, Long userId) {
         if(orderRepository.existsByIdAndUserId(orderId, userId)) {
             Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
+                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice());
-                orderRepository.cancelOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-                return MessageFormat.format("Order with id: {0} successfully cancelled", orderId);
+                orderRepository.cancelOrder(orderId, timestamp);
+                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully cancelled", orderId));
             } else {
                 throw new OrderCannotBeCancelledException(orderId);
             }
@@ -120,14 +122,15 @@ public class OrderService {
             UserNotFoundException.class,
             MoneyAmountExceededException.class
     })
-    public String acceptOrder(Long orderId, Long hostId) {
+    public SuccessfulResponse acceptOrder(Long orderId, Long hostId) {
         if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToAccept = orderRepository.findOrderById(orderId);
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 User host = userService.getUserById(hostId);
+                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
                 userService.transferMoney(host, orderToAccept.getTotalPrice());
-                orderRepository.acceptOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-                return MessageFormat.format("Order with id: {0} successfully accepted", orderId);
+                orderRepository.acceptOrder(orderId, timestamp);
+                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully accepted", orderId));
             } else {
                 throw new OrderCannotBeAcceptedException(orderId);
             }
@@ -141,13 +144,14 @@ public class OrderService {
             UserNotFoundException.class,
             MoneyAmountExceededException.class
     })
-    public String declineOrder(Long orderId, Long hostId) {
+    public SuccessfulResponse declineOrder(Long orderId, Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
+                Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice());
-                orderRepository.declineOrder(orderId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-                return MessageFormat.format("Order with id: {0} successfully declined", orderId);
+                orderRepository.declineOrder(orderId, timestamp);
+                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully declined", orderId));
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);
             }

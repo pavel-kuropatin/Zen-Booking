@@ -6,6 +6,7 @@ import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.Review;
 import com.kuropatin.bookingapp.model.request.ReviewRequest;
 import com.kuropatin.bookingapp.model.response.ReviewResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,10 +55,11 @@ public class ReviewService {
         }
     }
 
-    public String softDeleteReview(Long reviewId) {
+    public SuccessfulResponse softDeleteReview(Long reviewId) {
         if(repository.existsById(reviewId)) {
-            repository.softDeleteReview(reviewId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("Review with id: {0} successfully deleted", reviewId);
+            Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+            repository.softDeleteReview(reviewId, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("Review with id: {0} successfully deleted", reviewId));
         } else {
             throw new ReviewNotFoundException(reviewId);
         }
