@@ -12,6 +12,11 @@ import java.util.Map;
 @ControllerAdvice
 class CustomExceptionHandler {
 
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> badCredentialsHandler(BadCredentialsException e) {
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<Object> userNotFoundHandler(UserNotFoundException e) {
         return throwCustomException(e, HttpStatus.NOT_FOUND);
