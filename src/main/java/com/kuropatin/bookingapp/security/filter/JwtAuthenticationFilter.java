@@ -1,7 +1,7 @@
 package com.kuropatin.bookingapp.security.filter;
 
 import com.kuropatin.bookingapp.security.util.CustomHeaders;
-import com.kuropatin.bookingapp.security.util.TokenUtils;
+import com.kuropatin.bookingapp.security.util.JwtUtils;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,21 +21,21 @@ import java.io.IOException;
 
 @Log4j2
 @RequiredArgsConstructor
-public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private final TokenUtils tokenUtils;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String authToken = httpRequest.getHeader(CustomHeaders.X_AUTH_TOKEN);
+        String jwtToken = httpRequest.getHeader(CustomHeaders.X_AUTH_TOKEN);
         try {
-            if (authToken != null) {
-                String username = tokenUtils.getUsernameFromToken(authToken);
+            if (jwtToken != null && !jwtToken.isEmpty()) {
+                String username = jwtUtils.getUsernameFromToken(jwtToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    if (tokenUtils.validateToken(authToken, userDetails)) {
+                    if (jwtUtils.validateToken(jwtToken, userDetails)) {
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -44,7 +44,7 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
             }
             chain.doFilter(request, response);
         } catch (JwtException e) {
-            log.error(((HttpServletRequest) request).getRequestURL() + " " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            log.warn(httpRequest.getRequestURL() + " " + e.getClass().getSimpleName() + ": " + e.getMessage());
             chain.doFilter(request, response);
         }
     }

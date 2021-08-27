@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -287,15 +288,17 @@ class UserServiceTest {
         final int amount = 100;
         User user = getUserForTest();
         final int expected = user.getBalance() - amount;
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when
-        userService.pay(user, amount);
+        userService.pay(user, amount, timestamp);
 
         //then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
         assertEquals(expected, capturedUser.getBalance());
+        assertEquals(timestamp, capturedUser.getUpdated());
     }
 
     @Test
@@ -303,9 +306,10 @@ class UserServiceTest {
         //given
         final int amount = 300;
         User user = getUserForTest();
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
-        assertThatThrownBy(() -> userService.pay(user, amount))
+        assertThatThrownBy(() -> userService.pay(user, amount, timestamp))
                 .isInstanceOf(InsufficientMoneyAmountException.class)
                 .hasMessageContaining("Insufficient money amount");
     }
@@ -316,15 +320,17 @@ class UserServiceTest {
         final int amount = 100;
         User user = getUserForTest();
         final int expected = user.getBalance() + amount;
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when
-        userService.transferMoney(user, amount);
+        userService.transferMoney(user, amount, timestamp);
 
         //then
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
         User capturedUser = userArgumentCaptor.getValue();
         assertEquals(expected, capturedUser.getBalance());
+        assertEquals(timestamp, capturedUser.getUpdated());
     }
 
     @Test
@@ -332,9 +338,10 @@ class UserServiceTest {
         //given
         final int amount = Integer.MAX_VALUE;
         User user = getUserForTest();
+        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
-        assertThatThrownBy(() -> userService.transferMoney(user, amount))
+        assertThatThrownBy(() -> userService.transferMoney(user, amount, timestamp))
                 .isInstanceOf(MoneyAmountExceededException.class)
                 .hasMessageContaining("The maximum amount of money has been exceeded");
     }

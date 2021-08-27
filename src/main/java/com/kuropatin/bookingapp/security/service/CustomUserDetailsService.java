@@ -1,5 +1,6 @@
 package com.kuropatin.bookingapp.security.service;
 
+import com.kuropatin.bookingapp.exception.BadCredentialsException;
 import com.kuropatin.bookingapp.model.Admin;
 import com.kuropatin.bookingapp.model.User;
 import com.kuropatin.bookingapp.security.model.SecurityUser;
@@ -29,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     user.getPassword(),
                     AuthorityUtils.createAuthorityList(String.valueOf(user.getRole()))
             );
-        } else {
+        } else if (adminService.existsByLogin(username)) {
             Admin admin = adminService.getAdminByLogin(username);
             return new SecurityUser(
                     admin.getId(),
@@ -37,6 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     admin.getPassword(),
                     AuthorityUtils.createAuthorityList(String.valueOf(admin.getRole()))
             );
+        } else {
+            throw new BadCredentialsException();
         }
     }
 }

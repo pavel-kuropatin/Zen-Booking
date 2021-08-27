@@ -6,14 +6,14 @@ import com.kuropatin.bookingapp.model.Order;
 import com.kuropatin.bookingapp.model.Review;
 import com.kuropatin.bookingapp.model.request.ReviewRequest;
 import com.kuropatin.bookingapp.model.response.ReviewResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.repository.ReviewRepository;
+import com.kuropatin.bookingapp.util.ApplicationTimestamp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,18 +46,20 @@ public class ReviewService {
             Review review = transformToNewReview(reviewRequest);
             order.addReview(review);
             review.setOrder(order);
-            review.setCreated(Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            review.setUpdated(review.getCreated());
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            review.setCreated(timestamp);
+            review.setUpdated(timestamp);
             return repository.save(review);
         } else {
             throw new ReviewCannotBeAddedException(orderId);
         }
     }
 
-    public String softDeleteReview(Long reviewId) {
+    public SuccessfulResponse softDeleteReview(Long reviewId) {
         if(repository.existsById(reviewId)) {
-            repository.softDeleteReview(reviewId, Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC)));
-            return MessageFormat.format("Review with id: {0} successfully deleted", reviewId);
+            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            repository.softDeleteReview(reviewId, timestamp);
+            return new SuccessfulResponse(timestamp, MessageFormat.format("Review with id: {0} successfully deleted", reviewId));
         } else {
             throw new ReviewNotFoundException(reviewId);
         }

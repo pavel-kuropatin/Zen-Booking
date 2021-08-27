@@ -1,5 +1,6 @@
 package com.kuropatin.bookingapp.security.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +10,7 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = false)
 public class SecurityUser extends User {
 
     long id;
@@ -16,15 +18,5 @@ public class SecurityUser extends User {
     public SecurityUser(long id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
         setId(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }
