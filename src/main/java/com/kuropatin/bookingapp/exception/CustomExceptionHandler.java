@@ -1,16 +1,18 @@
 package com.kuropatin.bookingapp.exception;
 
+import com.kuropatin.bookingapp.model.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-@ControllerAdvice
+@RestControllerAdvice
 class CustomExceptionHandler {
+
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> badCredentialsHandler(BadCredentialsException e) {
+        return throwCustomException(e, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     protected ResponseEntity<Object> userNotFoundHandler(UserNotFoundException e) {
@@ -82,12 +84,7 @@ class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> throwCustomException(RuntimeException e, HttpStatus httpStatus) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", httpStatus.value() + " " + httpStatus.getReasonPhrase());
-        body.put("exception", e.getClass().getSimpleName());
-        body.put("message", e.getMessage());
-        return new ResponseEntity<>(body, httpStatus);
+    private ResponseEntity<Object> throwCustomException(RuntimeException e, HttpStatus status) {
+        return new ResponseEntity<>(new ErrorResponse(e, status), status);
     }
 }

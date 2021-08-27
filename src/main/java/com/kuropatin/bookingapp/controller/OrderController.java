@@ -1,6 +1,7 @@
 package com.kuropatin.bookingapp.controller;
 
 import com.kuropatin.bookingapp.model.response.OrderResponse;
+import com.kuropatin.bookingapp.model.response.SuccessfulResponse;
 import com.kuropatin.bookingapp.security.util.AuthenticationUtils;
 import com.kuropatin.bookingapp.service.OrderService;
 import io.swagger.annotations.Api;
@@ -48,7 +49,7 @@ public class OrderController {
 
     @ApiOperation(value = "Cancel order with id {orderId} of logged user")
     @PutMapping("/{orderId}/cancel")
-    public ResponseEntity<String> cancel(@PathVariable final Long orderId) {
+    public ResponseEntity<SuccessfulResponse> cancel(@PathVariable final Long orderId) {
         long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.cancelOrder(orderId, userId), HttpStatus.OK);
     }

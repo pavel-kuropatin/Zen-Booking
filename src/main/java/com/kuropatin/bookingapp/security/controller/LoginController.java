@@ -2,7 +2,7 @@ package com.kuropatin.bookingapp.security.controller;
 
 import com.kuropatin.bookingapp.security.request.LoginRequest;
 import com.kuropatin.bookingapp.security.response.LoginResponse;
-import com.kuropatin.bookingapp.security.util.TokenUtils;
+import com.kuropatin.bookingapp.security.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ import javax.validation.Valid;
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
-    private final TokenUtils tokenUtils;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     @ApiOperation(value = "Login page")
@@ -39,7 +39,7 @@ public class LoginController {
         return ResponseEntity.ok(
                 LoginResponse
                         .builder()
-                        .token(tokenUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin())))
+                        .token(jwtUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin())))
                         .login(loginRequest.getLogin())
                         .build()
         );

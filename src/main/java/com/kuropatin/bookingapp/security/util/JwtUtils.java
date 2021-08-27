@@ -18,11 +18,11 @@ import static io.jsonwebtoken.Claims.SUBJECT;
 
 @Component
 @RequiredArgsConstructor
-public class TokenUtils {
+public class JwtUtils {
 
     public static final String CREATED = "created";
     public static final String ROLES = "roles";
-    private final JwtConfig jwtTokenConfig;
+    private final JwtConfig jwtConfig;
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -50,12 +50,12 @@ public class TokenUtils {
                 .builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, jwtTokenConfig.getSecret())
+                .signWith(SignatureAlgorithm.HS512, jwtConfig.getSecret())
                 .compact();
     }
 
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + jwtTokenConfig.getExpiration() * 1000);
+        return new Date(System.currentTimeMillis() + jwtConfig.getExpiration() * 1000);
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
@@ -66,7 +66,7 @@ public class TokenUtils {
     public String getUsernameFromToken(String token) {
         return Jwts
                 .parser()
-                .setSigningKey(jwtTokenConfig.getSecret())
+                .setSigningKey(jwtConfig.getSecret())
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
