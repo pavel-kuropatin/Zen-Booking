@@ -19,7 +19,7 @@
     <url>https://booking-app-pk.herokuapp.com/swagger-ui/</url>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.projectKey>Pavel-Kuropatin_Booking-App</sonar.projectKey>
         <sonar.organization>pavel-kuropatin</sonar.organization>
