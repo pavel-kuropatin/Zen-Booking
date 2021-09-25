@@ -17,11 +17,11 @@ import java.util.Map;
 public class ValidationHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> errors = new LinkedHashMap<>();
-        ex.getBindingResult().getAllErrors().forEach(
+        e.getBindingResult().getAllErrors().forEach(
                 error -> errors.put(((FieldError) error).getField(), error.getDefaultMessage())
         );
-        return new ResponseEntity<>(new ValidationErrorResponse(ex, errors, status), status);
+        return new ResponseEntity<>(new ValidationErrorResponse(e, status, errors), status);
     }
 }
