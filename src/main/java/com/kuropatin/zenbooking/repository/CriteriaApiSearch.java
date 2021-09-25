@@ -1,11 +1,11 @@
 package com.kuropatin.zenbooking.repository;
 
+import com.kuropatin.zenbooking.model.BasicEntity_;
 import com.kuropatin.zenbooking.model.Order;
 import com.kuropatin.zenbooking.model.Order_;
 import com.kuropatin.zenbooking.model.Property;
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.model.Property_;
-import com.kuropatin.zenbooking.model.User_;
 import com.kuropatin.zenbooking.model.request.PropertySearchCriteria;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class SearchRepositoryImpl implements SearchRepository {
+public class CriteriaApiSearch implements SearchRepository {
 
     private final EntityManager entityManager;
     private final CriteriaBuilder criteriaBuilder;
 
-    public SearchRepositoryImpl(EntityManager entityManager) {
+    public CriteriaApiSearch(EntityManager entityManager) {
         this.entityManager = entityManager;
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
@@ -39,7 +39,7 @@ public class SearchRepositoryImpl implements SearchRepository {
         Root<Order> subqueryRoot = criteriaSubquery.from(Order.class);
 
         Predicate subqueryPredicate = getSubqueryPredicate(searchCriteria, subqueryRoot);
-        criteriaSubquery.select(subqueryRoot.get(Order_.property).get(Property_.id));
+        criteriaSubquery.select(subqueryRoot.get(Order_.property).get(BasicEntity_.id));
         criteriaSubquery.where(subqueryPredicate);
         criteriaSubquery.distinct(true);
         List<Long> subquery = entityManager.createQuery(criteriaSubquery).getResultList();
@@ -56,7 +56,7 @@ public class SearchRepositoryImpl implements SearchRepository {
 
     private Predicate getQueryPredicate(Long userId, PropertySearchCriteria searchCriteria, Root<Property> root, List<Long> subquery) {
         Expression<Boolean> rootIsDeleted = root.get(Property_.isDeleted);
-        Expression<Long> rootUserId = root.get(Property_.user).get(User_.id);
+        Expression<Long> rootUserId = root.get(Property_.user).get(BasicEntity_.id);
         Expression<Boolean> rootIsAvailable = root.get(Property_.isAvailable);
         Expression<PropertyType> rootType = root.get(Property_.type);
         Expression<String> rootAddress = root.get(Property_.address);
@@ -69,7 +69,7 @@ public class SearchRepositoryImpl implements SearchRepository {
         Expression<Boolean> rootHasTv = root.get(Property_.hasTv);
         Expression<Boolean> rootHasInternet = root.get(Property_.hasInternet);
         Expression<Boolean> rootIsPetsAllowed = root.get(Property_.isPetsAllowed);
-        Expression<Long> orderId = root.get(Property_.id);
+        Expression<Long> orderId = root.get(BasicEntity_.id);
 
         List<Predicate> predicates = new ArrayList<>();
         predicates.add(criteriaBuilder.equal(rootIsDeleted, false));
