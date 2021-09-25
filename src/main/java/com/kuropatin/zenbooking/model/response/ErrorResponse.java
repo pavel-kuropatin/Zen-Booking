@@ -1,27 +1,19 @@
 package com.kuropatin.zenbooking.model.response;
 
-import com.kuropatin.zenbooking.util.ApplicationTimestamp;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.http.HttpStatus;
 
-import java.sql.Timestamp;
-
 @Getter
 @Setter
-public class ErrorResponse {
+public class ErrorResponse extends AbstractErrorResponse {
 
-    private Timestamp timestamp;
-    private String status;
-    private String exception;
     private String message;
 
     public ErrorResponse(Exception e, HttpStatus status) {
-        this.timestamp = ApplicationTimestamp.getTimestampUTC();
-        this.status = status.value() + " " + status.getReasonPhrase();
-        this.exception = e.getClass().getSimpleName();
+        super(e, status);
         this.message = e.getMessage();
     }
 
