@@ -31,7 +31,7 @@ Application is deployed on Heroku and can be accessed via Swagger UI by [this li
 _NOTE: Functionality for admins and moderators will be implemented on the later stage._
 
 ### Technology stack:
-- Java
+- Java 11
 - Spring Boot
 - Spring Data
 - Spring Caches
