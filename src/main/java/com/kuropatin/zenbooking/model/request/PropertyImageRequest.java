@@ -1,15 +1,15 @@
 package com.kuropatin.zenbooking.model.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
 public class PropertyImageRequest {
 
     @NotBlank(message = "Enter image URL")
