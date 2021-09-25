@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.sql.Timestamp;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @MappedSuperclass
@@ -22,11 +23,11 @@ public class BasicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    protected long id;
 
     @Column(name = "created")
-    private Timestamp created;
+    protected Timestamp created;
 
     @Column(name = "updated")
-    private Timestamp updated;
+    protected Timestamp updated;
 }
