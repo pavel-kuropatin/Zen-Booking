@@ -84,6 +84,11 @@ class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(QueryBuilderException.class)
+    protected ResponseEntity<Object> queryBuilderHandler(QueryBuilderException e) {
+        return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<Object> throwCustomException(RuntimeException e, HttpStatus status) {
         return new ResponseEntity<>(new ErrorResponse(e, status), status);
     }
