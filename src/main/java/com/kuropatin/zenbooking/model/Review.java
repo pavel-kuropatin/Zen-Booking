@@ -11,13 +11,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,12 +22,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(exclude = "order")
 @Entity
 @Table(name = "review")
-public class Review {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class Review extends BasicEntity {
 
     @Column(name = "summary")
     private String summary;
@@ -44,12 +35,6 @@ public class Review {
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
-
-    @Column(name = "created")
-    private Timestamp created;
-
-    @Column(name = "updated")
-    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

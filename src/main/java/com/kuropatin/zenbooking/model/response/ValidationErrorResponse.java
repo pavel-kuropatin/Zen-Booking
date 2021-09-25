@@ -6,15 +6,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.http.HttpStatus;
 
+import java.util.Map;
+
 @Getter
 @Setter
-public class ErrorResponse extends AbstractErrorResponse {
+public class ValidationErrorResponse extends AbstractErrorResponse {
 
-    private String message;
+    private Map<String, String> errors;
 
-    public ErrorResponse(Exception e, HttpStatus status) {
+    public ValidationErrorResponse(Exception e, HttpStatus status, Map<String, String> errors) {
         super(e, status);
-        this.message = e.getMessage();
+        this.errors = errors;
     }
 
     @Override

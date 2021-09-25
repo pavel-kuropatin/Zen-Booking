@@ -189,17 +189,17 @@ public class OrderService {
         orderResponse.setHostId(order.getProperty().getUser().getId());
         orderResponse.setPropertyId(order.getProperty().getId());
         if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
-            orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED);
+            orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED.label);
         } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
-            orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED);
+            orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED.label);
         } else if(!orderResponse.isAccepted() && orderResponse.isCancelled() && orderResponse.isFinished()) {
-            orderResponse.setStatus(OrderStatus.CANCELLED);
+            orderResponse.setStatus(OrderStatus.CANCELLED.label);
         } else if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
-            orderResponse.setStatus(OrderStatus.DECLINED);
+            orderResponse.setStatus(OrderStatus.DECLINED.label);
         } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
-            orderResponse.setStatus(OrderStatus.FINISHED);
+            orderResponse.setStatus(OrderStatus.FINISHED.label);
         } else {
-            orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN);
+            orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN.label);
         }
         return orderResponse;
     }
