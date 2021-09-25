@@ -1,13 +1,13 @@
 # Zen Booking
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=ncloc)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=alert_status)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=security_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=code_smells)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=bugs)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=ncloc)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=alert_status)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=security_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=code_smells)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Zen-Booking&metric=bugs)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Zen-Booking)
 
 ### Project description:
 This is a booking application made as part of training at IT-Academy.
