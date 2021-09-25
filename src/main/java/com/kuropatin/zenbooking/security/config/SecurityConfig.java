@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.security.config;
 
+import com.kuropatin.zenbooking.model.Roles;
 import com.kuropatin.zenbooking.security.filter.JwtAuthenticationFilter;
 import com.kuropatin.zenbooking.security.service.CustomUserDetailsService;
 import com.kuropatin.zenbooking.security.util.JwtUtils;
@@ -65,13 +66,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/profile/**").hasRole("USER")
-                .antMatchers("/hosting/**").hasRole("USER")
-                .antMatchers("/booking/**").hasRole("USER")
-                .antMatchers("/order/**").hasRole("USER")
-                .antMatchers("/review/**").hasRole("USER")
-                .antMatchers("/administration/**").hasRole("ADMIN")
-                .antMatchers("/moderation/**").hasRole("MODER")
+                .antMatchers("/profile/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/hosting/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/booking/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/order/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/review/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
+                .antMatchers("/moderation/**").hasRole(Roles.ROLE_MODER.label)
                 .anyRequest().authenticated();
     }
 

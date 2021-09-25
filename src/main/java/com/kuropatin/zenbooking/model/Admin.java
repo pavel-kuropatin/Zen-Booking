@@ -11,11 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,12 +19,7 @@ import java.sql.Timestamp;
 @Setter
 @Entity
 @Table(name = "admins")
-public class Admin {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class Admin extends BasicEntity {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -48,12 +39,6 @@ public class Admin {
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
-
-    @Column(name = "created")
-    private Timestamp created;
-
-    @Column(name = "updated")
-    private Timestamp updated;
 
     @Override
     public String toString() {

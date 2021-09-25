@@ -3,6 +3,7 @@ package com.kuropatin.zenbooking.repository;
 import com.kuropatin.zenbooking.model.Gender;
 import com.kuropatin.zenbooking.model.Roles;
 import com.kuropatin.zenbooking.model.User;
+import com.kuropatin.zenbooking.test.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,24 +31,8 @@ class UserRepositoryTest {
     void shouldBeTrueExistsByLoginAndIsBannedFalse() {
         //given
         final String login = "login";
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                login,
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                false,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setLogin(login);
         userRepository.save(newUser);
 
         //when
@@ -63,24 +47,8 @@ class UserRepositoryTest {
         //given
         final String login = "login";
         final String username = "username";
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                login,
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                false,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setLogin(login);
         userRepository.save(newUser);
 
         //when
@@ -101,24 +69,8 @@ class UserRepositoryTest {
         //given
         final String email = "email@gmail.com";
         final String secondEmail = "not@email.com";
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                email,
-                "+375112223344",
-                0,
-                false,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setEmail(email);
         userRepository.save(newUser);
 
         //when
@@ -138,24 +90,9 @@ class UserRepositoryTest {
     void shouldBeTrueIsBanned() {
         //given
         final boolean isBanned = true;
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                isBanned,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setBanned(isBanned);
+
         User savedUser = userRepository.save(newUser);
 
         //when
@@ -169,24 +106,9 @@ class UserRepositoryTest {
     void shouldBeFalseIsBanned() {
         //given
         final boolean isBanned = false;
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                isBanned,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setBanned(isBanned);
+
         User savedUser = userRepository.save(newUser);
 
         //when
@@ -200,24 +122,9 @@ class UserRepositoryTest {
     void testBanUser() {
         //given
         final boolean isBanned = false;
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                isBanned,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = TestUtils.getUser();
+        newUser.setBanned(isBanned);
+
         User savedUser = userRepository.save(newUser);
 
         //when
@@ -238,24 +145,9 @@ class UserRepositoryTest {
     void testUnbanUser() {
         //given
         final boolean isBanned = true;
-        User newUser = new User(
-                0L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.MALE,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                0,
-                isBanned,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
+        User newUser = getUserForTest();
+        newUser.setBanned(isBanned);
+
         User savedUser = userRepository.save(newUser);
 
         //when
@@ -270,5 +162,24 @@ class UserRepositoryTest {
 
         //then
         assertFalse(shouldBeFalse);
+    }
+
+    private User getUserForTest() {
+        User user = new User();
+        user.setId(0L);
+        user.setRole(Roles.ROLE_USER);
+        user.setLogin("login");
+        user.setPassword("12345678");
+        user.setName("Name");
+        user.setSurname("Surname");
+        user.setGender(Gender.UNDEFINED);
+        user.setBirthDate(LocalDate.parse("1990-01-01"));
+        user.setEmail("email@gmail.com");
+        user.setPhone("+375112223344");
+        user.setBalance(200);
+        user.setBanned(false);
+        user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
+        user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
+        return user;
     }
 }

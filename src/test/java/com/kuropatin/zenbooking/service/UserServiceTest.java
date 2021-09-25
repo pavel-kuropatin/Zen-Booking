@@ -6,13 +6,13 @@ import com.kuropatin.zenbooking.exception.LoginAlreadyInUseException;
 import com.kuropatin.zenbooking.exception.MoneyAmountExceededException;
 import com.kuropatin.zenbooking.exception.UserNotFoundException;
 import com.kuropatin.zenbooking.model.Gender;
-import com.kuropatin.zenbooking.model.Roles;
 import com.kuropatin.zenbooking.model.User;
 import com.kuropatin.zenbooking.model.request.AmountRequest;
 import com.kuropatin.zenbooking.model.request.UserCreateRequest;
 import com.kuropatin.zenbooking.model.request.UserEditRequest;
 import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.repository.UserRepository;
+import com.kuropatin.zenbooking.test.utils.TestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +26,6 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -115,16 +114,9 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = new UserCreateRequest(
-                login,
-                "12345678",
-                "Name",
-                "Surname",
-                "MALE",
-                "1990-01-01",
-                email,
-                "+375112223344"
-        );
+        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        userCreateRequest.setLogin(login);
+        userCreateRequest.setEmail(email);
         given(userRepository.isLoginInUse(login)).willReturn(false);
         given(userRepository.isEmailInUse(email)).willReturn(false);
 
@@ -152,16 +144,9 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = new UserCreateRequest(
-                login,
-                "12345678",
-                "Name",
-                "Surname",
-                "MALE",
-                "1990-01-01",
-                email,
-                "+375112223344"
-        );
+        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        userCreateRequest.setLogin(login);
+        userCreateRequest.setEmail(email);
         given(userRepository.isLoginInUse(login)).willReturn(true);
 
         //when, then
@@ -175,16 +160,9 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = new UserCreateRequest(
-                login,
-                "12345678",
-                "Name",
-                "Surname",
-                "MALE",
-                "1990-01-01",
-                email,
-                "+375112223344"
-        );
+        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        userCreateRequest.setLogin(login);
+        userCreateRequest.setEmail(email);
         given(userRepository.isEmailInUse(email)).willReturn(true);
 
         //when, then
@@ -197,18 +175,9 @@ class UserServiceTest {
     void canUpdateUser() {
         //given
         final Long id = 1L;
-
-        UserEditRequest userEditRequest = new UserEditRequest(
-                "New Name",
-                "New Surname",
-                "MALE",
-                "1991-12-12",
-                "new-email@gmail.com",
-                "+375998887766"
-        );
-
+        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
         given(userRepository.existsById(id)).willReturn(true);
-        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(getUserForTest());
+        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
 
         //when
         userService.updateUser(id, userEditRequest);
@@ -230,18 +199,10 @@ class UserServiceTest {
         //given
         final Long id = 1L;
         final String email = "new-email@gmail.com";
-
-        UserEditRequest userEditRequest = new UserEditRequest(
-                "New Name",
-                "New Surname",
-                "MALE",
-                "1991-12-12",
-                email,
-                "+375998887766"
-        );
-
+        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
+        userEditRequest.setEmail(email);
         given(userRepository.existsById(id)).willReturn(true);
-        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(getUserForTest());
+        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
         given(userRepository.isEmailInUse(email)).willReturn(true);
 
         //when, then
@@ -254,10 +215,10 @@ class UserServiceTest {
     void canDeposit() {
         //given
         final Long id = 1L;
-        AmountRequest amountRequest = new AmountRequest("123");
+        AmountRequest amountRequest = TestUtils.getAmountRequest();
         given(userRepository.isBanned(id)).willReturn(false);
         given(userRepository.existsById(id)).willReturn(true);
-        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(getUserForTest());
+        given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
 
         //when
         userService.deposit(id, amountRequest);
@@ -273,7 +234,7 @@ class UserServiceTest {
     void throwsExceptionIfBannedOnDeposit() {
         //given
         final Long id = 1L;
-        AmountRequest amountRequest = new AmountRequest("123");
+        AmountRequest amountRequest = TestUtils.getAmountRequest();
         given(userRepository.isBanned(id)).willReturn(true);
 
         //when, then
@@ -286,7 +247,7 @@ class UserServiceTest {
     void canPay() {
         //given
         final int amount = 100;
-        User user = getUserForTest();
+        User user = TestUtils.getUser();
         final int expected = user.getBalance() - amount;
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
@@ -305,7 +266,7 @@ class UserServiceTest {
     void throwsExceptionIfNotEnoughMoney() {
         //given
         final int amount = 300;
-        User user = getUserForTest();
+        User user = TestUtils.getUser();
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
@@ -318,7 +279,7 @@ class UserServiceTest {
     void canTransferMoney() {
         //given
         final int amount = 100;
-        User user = getUserForTest();
+        User user = TestUtils.getUser();
         final int expected = user.getBalance() + amount;
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
@@ -337,7 +298,7 @@ class UserServiceTest {
     void throwsExceptionOnMoneyOverflow() {
         //given
         final int amount = Integer.MAX_VALUE;
-        User user = getUserForTest();
+        User user = TestUtils.getUser();
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
@@ -405,15 +366,8 @@ class UserServiceTest {
     @Test
     void canTransformToUserFromUserCreateRequest() {
         //given
-        User user = getUserForTest();
-        UserEditRequest userEditRequest = new UserEditRequest(
-                "John",
-                "Doe",
-                "MALE",
-                "1991-12-12",
-                "new-email@gmail.com",
-                "+375998887766"
-        );
+        User user = TestUtils.getUser();
+        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
 
         //when
         userService.transformToUser(userEditRequest, user);
@@ -430,16 +384,7 @@ class UserServiceTest {
     @Test
     void canTransformToNewUserFromUserCreateRequest() {
         //given
-        UserCreateRequest userCreateRequest = new UserCreateRequest(
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                "MALE",
-                "1990-01-01",
-                "email@gmail.com",
-                "+375112223344"
-        );
+        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
 
         //when
         User transformedUser = userService.transformToNewUser(userCreateRequest);
@@ -458,7 +403,7 @@ class UserServiceTest {
     @Test
     void transformToNewUserResponse() {
         //given
-        User user = getUserForTest();
+        User user = TestUtils.getUser();
 
         //when
         UserResponse userResponse = userService.transformToNewUserResponse(user);
@@ -472,26 +417,5 @@ class UserServiceTest {
         assertEquals(user.getEmail(), userResponse.getEmail());
         assertEquals(user.getPhone(), userResponse.getPhone());
         assertEquals(user.getBalance(), userResponse.getBalance());
-    }
-
-    private User getUserForTest() {
-        return new User(
-                100L,
-                Roles.ROLE_USER,
-                "login",
-                "12345678",
-                "Name",
-                "Surname",
-                Gender.UNDEFINED,
-                LocalDate.parse("1990-01-01"),
-                "email@gmail.com",
-                "+375112223344",
-                200,
-                false,
-                Timestamp.valueOf(LocalDateTime.now()),
-                Timestamp.valueOf(LocalDateTime.now()),
-                Collections.emptySet(),
-                Collections.emptySet()
-        );
     }
 }
