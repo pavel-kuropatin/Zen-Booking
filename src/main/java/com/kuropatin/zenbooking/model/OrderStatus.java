@@ -1,15 +1,17 @@
 package com.kuropatin.zenbooking.model;
 
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+public enum OrderStatus {
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderStatus {
+    ACTIVE_NOT_ACCEPTED("NOT ACCEPTED"),
+    ACTIVE_ACCEPTED("ACCEPTED"),
+    FINISHED("FINISHED"),
+    CANCELLED("CANCELLED"),
+    DECLINED("DECLINED"),
+    STATUS_UNKNOWN("STATUS UNKNOWN");
 
-    public static final String ACTIVE_NOT_ACCEPTED = "NOT ACCEPTED";
-    public static final String ACTIVE_ACCEPTED = "ACCEPTED";
-    public static final String FINISHED = "FINISHED";
-    public static final String CANCELLED = "CANCELLED";
-    public static final String DECLINED = "DECLINED";
-    public static final String STATUS_UNKNOWN = "STATUS UNKNOWN";
+    public final String label;
+
+    OrderStatus(String label) {
+        this.label = label;
+    }
 }
