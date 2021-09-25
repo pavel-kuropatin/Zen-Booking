@@ -11,13 +11,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,24 +22,13 @@ import java.sql.Timestamp;
 @EqualsAndHashCode(exclude = "property")
 @Entity
 @Table(name = "property_image")
-public class PropertyImage {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class PropertyImage extends BasicEntity {
 
     @Column(name = "img_url")
     private String imgUrl;
 
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
-
-    @Column(name = "created")
-    private Timestamp created;
-
-    @Column(name = "updated")
-    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name = "property_id")

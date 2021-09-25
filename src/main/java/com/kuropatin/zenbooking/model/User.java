@@ -16,12 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -34,12 +30,7 @@ import java.util.Set;
 })
 @Entity
 @Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class User extends BasicEntity {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
@@ -75,12 +66,6 @@ public class User {
 
     @Column(name = "is_banned")
     private boolean isBanned = false;
-
-    @Column(name = "created")
-    private Timestamp created;
-
-    @Column(name = "updated")
-    private Timestamp updated;
 
     @Setter(value = AccessLevel.NONE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
