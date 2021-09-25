@@ -1,16 +1,16 @@
 package com.kuropatin.zenbooking.model.request;
 
 import com.kuropatin.zenbooking.validation.ShortInRange;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
 public class ReviewRequest {
 
     @NotBlank(message = "Enter summary")

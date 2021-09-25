@@ -3,9 +3,9 @@ package com.kuropatin.zenbooking.model.request;
 import com.kuropatin.zenbooking.model.Gender;
 import com.kuropatin.zenbooking.validation.AgeXPlus;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,8 +13,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
+@Setter
 public class UserEditRequest {
 
     @NotBlank(message = "Enter name")
