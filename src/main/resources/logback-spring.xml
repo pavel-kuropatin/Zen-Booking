@@ -35,8 +35,8 @@
         <appender-ref ref="Console" />
     </root>
 
-    <!-- LOG "com.kuropatin.bookingapp*" at TRACE level -->
-    <logger name="com.kuropatin.bookingapp" level="trace" additivity="false">
+    <!-- LOG "com.kuropatin.zenbooking*" at TRACE level -->
+    <logger name="com.kuropatin.zenbooking" level="trace" additivity="false">
         <appender-ref ref="RollingFile" />
         <appender-ref ref="Console" />
     </logger>

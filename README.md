@@ -1,4 +1,4 @@
-# Booking-App
+# Zen Booking
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=ncloc)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=alert_status)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Pavel-Kuropatin_Booking-App&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=Pavel-Kuropatin_Booking-App)
@@ -11,7 +11,7 @@
 
 ### Project description:
 This is a booking application made as part of training at IT-Academy.
-Application is deployed on Heroku and can be accessed via Swagger UI by [this link](https://booking-app-pk.herokuapp.com/swagger-ui/)
+Application is deployed on Heroku and can be accessed via Swagger UI by [this link](https://zen-booking.herokuapp.com/swagger-ui/)
 
 ### Application features:
 
