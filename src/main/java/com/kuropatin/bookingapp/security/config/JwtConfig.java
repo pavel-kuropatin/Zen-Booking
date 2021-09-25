@@ -5,10 +5,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("jwtconfig")
+@ConfigurationProperties("jwt.config")
 @Data
 public class JwtConfig {
 
     private String secret;
-    private Integer expiration;
+    private Integer expiration; //expiration time in seconds
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,7 @@ public class JwtUtils {
     }
 
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + jwtConfig.getExpiration() * 1000);
+        return Date.from(Instant.ofEpochSecond(System.currentTimeMillis() / 1000 + jwtConfig.getExpiration())); //expiration time in seconds
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
