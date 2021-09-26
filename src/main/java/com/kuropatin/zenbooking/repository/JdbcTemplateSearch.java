@@ -27,6 +27,7 @@ public class JdbcTemplateSearch implements SearchRepository {
 
     private String buildQuery(Long userId, PropertySearchCriteria criteria) {
         try {
+            criteria.setAddress(criteria.getAddress().replace("'", ""));
             StringBuilder queryBuilder = new StringBuilder()
                     .append("SELECT p.* FROM property p ")
                     .append("WHERE p.is_deleted = false ")
