@@ -32,6 +32,9 @@ public class JdbcTemplateSearch implements SearchRepository {
                     .append("WHERE p.is_deleted = false ")
                     .append("AND p.user_id <> ").append(userId).append(" ")
                     .append("AND p.is_available = true ");
+            if (!criteria.getAddress().isEmpty()) {
+                queryBuilder.append("AND LOWER(p.address) LIKE LOWER('%").append(criteria.getAddress()).append("%') ");
+            }
             if (!criteria.getType().equals(PropertyType.NOT_SPECIFIED.toString())) {
                 queryBuilder.append("AND p.type = '").append(criteria.getType()).append("' ");
             }
