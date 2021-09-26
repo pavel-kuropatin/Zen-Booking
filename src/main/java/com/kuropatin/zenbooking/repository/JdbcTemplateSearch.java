@@ -84,28 +84,3 @@ public class JdbcTemplateSearch implements SearchRepository {
         }
     }
 }
-
-//    "SELECT p.* FROM property p " +
-//    "WHERE p.is_deleted = false " +
-//    "AND p.user_id <> ?1 " +
-//    "AND p.is_available = true " +
-//    "AND p.type = ?2 " +
-//    "AND p.price BETWEEN ?3 AND ?4 " +
-//    "AND p.guests >= ?5 " +
-//    "AND p.rooms >= ?6 " +
-//    "AND p.beds >= ?7 " +
-//    "AND p.has_kitchen = ?8 " +
-//    "AND p.has_washer = ?9 " +
-//    "AND p.has_tv = ?10 " +
-//    "AND p.has_internet = ?11 " +
-//    "AND p.is_pets_allowed = ?12 " +
-//    "AND p.id NOT IN (
-//        "SELECT DISTINCT o.property_id FROM orders o " +
-//        "WHERE o.is_accepted = false " +
-//        "AND o.is_finished = false " +
-//        "AND (?13 BETWEEN o.start_date AND o.end_date " +
-//             "OR ?14 BETWEEN o.start_date AND o.end_date " +
-//             "OR o.start_date BETWEEN ?13 AND ?14 " +
-//             "OR o.end_date BETWEEN ?13 AND ?14)) " +
-//    "ORDER BY p.price ASC " +
-//    "LIMIT 25"
