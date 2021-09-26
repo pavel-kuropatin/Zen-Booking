@@ -46,26 +46,26 @@ public class PropertyRequest {
     protected String beds;
 
     @NotBlank(message = "Enter if property has kitchen")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     protected String hasKitchen;
 
     @NotBlank(message = "Enter if property has washer")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     protected String hasWasher;
 
     @NotBlank(message = "Enter if property has TV")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     protected String hasTv;
 
     @NotBlank(message = "Enter if property has internet")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     protected String hasInternet;
 
     @NotBlank(message = "Enter if pets allowed")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     protected String isPetsAllowed;
 
     @NotBlank(message = "Enter if property available for booking")
-    @Pattern(regexp = "true|false", message = "Should be a boolean value true or false")
+    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
     private String isAvailable;
 }

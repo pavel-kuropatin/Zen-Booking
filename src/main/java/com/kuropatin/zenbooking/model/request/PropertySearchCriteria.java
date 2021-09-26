@@ -41,19 +41,19 @@ public class PropertySearchCriteria {
     @EmptyOrIntegerInRange(min = 1, max = 10, message = "Number of beds should be empty or between 1 and 10")
     protected String beds = "";
 
-    @Pattern(regexp = "^$|true|false$", message = "Should be empty or a boolean value true or false")
+    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
     protected String hasKitchen = "";
 
-    @Pattern(regexp = "^$|true|false$", message = "Should be empty or a boolean value true or false")
+    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
     protected String hasWasher = "";
 
-    @Pattern(regexp = "^$|true|false$", message = "Should be empty or a boolean value true or false")
+    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
     protected String hasTv = "";
 
-    @Pattern(regexp = "^$|true|false$", message = "Should be empty or a boolean value true or false")
+    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
     protected String hasInternet = "";
 
-    @Pattern(regexp = "^$|true|false$", message = "Should be empty or a boolean value true or false")
+    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
     protected String isPetsAllowed = "";
 
     @NotBlank(message = "Enter start date")
