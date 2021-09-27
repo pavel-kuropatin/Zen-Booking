@@ -54,19 +54,19 @@ public class JdbcTemplateSearch implements SearchRepository {
             if (!criteria.getBeds().isEmpty()) {
                 queryBuilder.append("AND p.beds >= ").append(criteria.getBeds()).append(" ");
             }
-            if (!criteria.getHasKitchen().isEmpty()) {
+            if (!criteria.getHasKitchen().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_kitchen = '").append(criteria.getHasKitchen()).append("' ");
             }
-            if (!criteria.getHasWasher().isEmpty()) {
+            if (!criteria.getHasWasher().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_washer = '").append(criteria.getHasWasher()).append("' ");
             }
-            if (!criteria.getHasTv().isEmpty()) {
+            if (!criteria.getHasTv().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_tv = '").append(criteria.getHasTv()).append("' ");
             }
-            if (!criteria.getHasInternet().isEmpty()) {
+            if (!criteria.getHasInternet().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_internet = '").append(criteria.getHasInternet()).append("' ");
             }
-            if (!criteria.getIsPetsAllowed().isEmpty()) {
+            if (!criteria.getIsPetsAllowed().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.is_pets_allowed = '").append(criteria.getIsPetsAllowed()).append("' ");
             }
             queryBuilder.append("AND p.id NOT IN ( ")
