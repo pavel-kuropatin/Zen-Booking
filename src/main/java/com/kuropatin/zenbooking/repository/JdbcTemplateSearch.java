@@ -6,13 +6,11 @@ import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.model.request.PropertySearchCriteria;
 import com.kuropatin.zenbooking.repository.mapper.PropertyMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Primary
 @Repository
 @RequiredArgsConstructor
 public class JdbcTemplateSearch implements SearchRepository {
