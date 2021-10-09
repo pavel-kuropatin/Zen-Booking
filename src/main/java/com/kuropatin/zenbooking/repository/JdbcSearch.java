@@ -29,7 +29,7 @@ public class JdbcSearch implements SearchRepository {
     private final HikariDataSource hikariDataSource;
 
     @AllArgsConstructor
-    static final class QueryAndParam {
+    final class QueryAndParam {
         private String sql;
         private Map<Integer, Object> params;
     }
