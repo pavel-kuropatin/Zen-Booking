@@ -10,9 +10,9 @@ import org.springframework.util.StopWatch;
 @Component
 @Aspect
 @Log4j2
-public class RepositoryLoggingAspect {
+public class ControllerLoggingAspect {
 
-    @Around("execution(* com.kuropatin.zenbooking.repository.*.*(..))")
+    @Around("execution(* com.kuropatin.zenbooking.controller.*.*(..))")
     public Object logAroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
         String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
         StopWatch timer = new StopWatch();

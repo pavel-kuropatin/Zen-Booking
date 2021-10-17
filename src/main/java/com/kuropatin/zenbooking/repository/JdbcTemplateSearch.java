@@ -74,23 +74,23 @@ public class JdbcTemplateSearch implements SearchRepository {
             }
             if (!criteria.getHasKitchen().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_kitchen = ? ");
-                params.add(criteria.getHasKitchen());
+                params.add(Boolean.parseBoolean(criteria.getHasKitchen()));
             }
-            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasWasher())) {
                 queryBuilder.append("AND p.has_washer = ? ");
-                params.add(criteria.getHasWasher());
+                params.add(Boolean.parseBoolean(criteria.getHasWasher()));
             }
-            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasTv())) {
                 queryBuilder.append("AND p.has_tv = ? ");
-                params.add(criteria.getHasTv());
+                params.add(Boolean.parseBoolean(criteria.getHasTv()));
             }
-            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasInternet())) {
                 queryBuilder.append("AND p.has_internet = ? ");
-                params.add(criteria.getHasInternet());
+                params.add(Boolean.parseBoolean(criteria.getHasInternet()));
             }
-            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getIsPetsAllowed())) {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
-                params.add(criteria.getIsPetsAllowed());
+                params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
             }
             queryBuilder.append("AND p.id NOT IN ( ")
                     .append("SELECT DISTINCT o.property_id FROM orders o ")
