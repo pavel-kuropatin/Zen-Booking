@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.repository.mapper;
 
 import com.kuropatin.zenbooking.model.Property;
 import com.kuropatin.zenbooking.model.PropertyType;
+import com.kuropatin.zenbooking.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,6 +14,9 @@ public class PropertyMapper implements RowMapper<Property> {
     public Property mapRow(ResultSet resultSet, int i) throws SQLException {
         Property property = new Property();
         property.setId(resultSet.getLong("id"));
+        User user = new User();
+        user.setId(resultSet.getLong("user_id"));
+        property.setUser(user);
         property.setType(PropertyType.valueOf(resultSet.getString("type")));
         property.setName(resultSet.getString("name"));
         property.setDescription(resultSet.getString("description"));
