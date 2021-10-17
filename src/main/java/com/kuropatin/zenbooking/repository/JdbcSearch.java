@@ -96,23 +96,23 @@ public class JdbcSearch implements SearchRepository {
             }
             if (!criteria.getHasKitchen().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_kitchen = ? ");
-                params.put(++index, criteria.getHasKitchen());
+                params.put(++index, Boolean.parseBoolean(criteria.getHasKitchen()));
             }
-            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasWasher())) {
                 queryBuilder.append("AND p.has_washer = ? ");
-                params.put(++index, criteria.getHasWasher());
+                params.put(++index, Boolean.parseBoolean(criteria.getHasWasher()));
             }
-            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasTv())) {
                 queryBuilder.append("AND p.has_tv = ? ");
-                params.put(++index, criteria.getHasTv());
+                params.put(++index, Boolean.parseBoolean(criteria.getHasTv()));
             }
-            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasInternet())) {
                 queryBuilder.append("AND p.has_internet = ? ");
-                params.put(++index, criteria.getHasInternet());
+                params.put(++index, Boolean.parseBoolean(criteria.getHasInternet()));
             }
-            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getIsPetsAllowed())) {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
-                params.put(++index, criteria.getIsPetsAllowed());
+                params.put(++index, Boolean.parseBoolean(criteria.getIsPetsAllowed()));
             }
             queryBuilder.append("AND p.id NOT IN ( ")
                     .append("SELECT DISTINCT o.property_id FROM orders o ")
