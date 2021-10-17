@@ -1,4 +1,4 @@
-package com.kuropatin.zenbooking.security.controller;
+package com.kuropatin.zenbooking.controller;
 
 import com.kuropatin.zenbooking.security.request.LoginRequest;
 import com.kuropatin.zenbooking.security.response.LoginResponse;
