@@ -23,8 +23,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @deprecated all PropertySearchCriteria fields must be not null,
- *             takes longer than JdbcSearch and JdbcTemplateSearch
+ * @deprecated This repository is no longer supported.
+ *
+ * All PropertySearchCriteria fields must be not null.
+ * There are 2 queries to database instead one so searchByCriteria() method must be refactored.
+ * Takes longer time than JdbcSearch and JdbcTemplateSearch.
  */
 @Deprecated(forRemoval = true)
 @Repository
