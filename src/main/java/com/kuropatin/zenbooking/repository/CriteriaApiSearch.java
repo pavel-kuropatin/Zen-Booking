@@ -22,6 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @deprecated all PropertySearchCriteria fields must be not null,
+ *             takes longer than JdbcSearch and JdbcTemplateSearch
+ */
+@Deprecated(forRemoval = true)
 @Repository
 public class CriteriaApiSearch implements SearchRepository {
 
