@@ -44,6 +44,8 @@ public class SwaggerConfig {
                         "When using the application, do not enter any real personal information. " +
                         "You enter any personal information at your own risk.")
                 .version("v0.1.0-SNAPSHOT")
+                .license("Licensed under APACHE LICENSE, VERSION 2.0")
+                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0")
                 .contact(new Contact("Pavel Kuropatin", "https://www.linkedin.com/in/pavel-kurapatsin/", "kuropatin.pv@gmail.com"))
                 .build();
     }
