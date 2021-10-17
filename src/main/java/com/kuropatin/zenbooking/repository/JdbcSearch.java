@@ -8,7 +8,6 @@ import com.kuropatin.zenbooking.repository.mapper.PropertyMapper;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -21,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Primary
 @Repository
 @RequiredArgsConstructor
 public class JdbcSearch implements SearchRepository {
@@ -29,7 +27,7 @@ public class JdbcSearch implements SearchRepository {
     private final HikariDataSource hikariDataSource;
 
     @AllArgsConstructor
-    final class QueryAndParam {
+    private final class QueryAndParams {
         private String sql;
         private Map<Integer, Object> params;
     }
@@ -37,9 +35,9 @@ public class JdbcSearch implements SearchRepository {
     @Override
     public List<Property> searchByCriteria(Long userId, PropertySearchCriteria searchCriteria) {
         List<Property> propertyList = new ArrayList<>();
-        QueryAndParam queryAndParam = buildQuery(userId, searchCriteria);
-        String sql = queryAndParam.sql;
-        Map<Integer, Object> params = queryAndParam.params;
+        QueryAndParams queryAndParams = buildQuery(userId, searchCriteria);
+        String sql = queryAndParams.sql;
+        Map<Integer, Object> params = queryAndParams.params;
 
         try(Connection connection = hikariDataSource.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)
@@ -58,7 +56,7 @@ public class JdbcSearch implements SearchRepository {
         }
     }
 
-    private QueryAndParam buildQuery(Long userId, PropertySearchCriteria criteria) {
+    private QueryAndParams buildQuery(Long userId, PropertySearchCriteria criteria) {
         try {
             Map<Integer, Object> params = new HashMap<>();
             int index = 0;
@@ -78,41 +76,41 @@ public class JdbcSearch implements SearchRepository {
             }
             if (!criteria.getPriceMin().isEmpty()) {
                 queryBuilder.append("AND p.price >= ? ");
-                params.put(++index, criteria.getPriceMin());
+                params.put(++index, Integer.parseInt(criteria.getPriceMin()));
             }
             if (!criteria.getPriceMax().isEmpty()) {
                 queryBuilder.append("AND p.price <= ? ");
-                params.put(++index, criteria.getPriceMax());
+                params.put(++index, Integer.parseInt(criteria.getPriceMax()));
             }
             if (!criteria.getGuests().isEmpty()) {
                 queryBuilder.append("AND p.guests >= ? ");
-                params.put(++index, criteria.getGuests());
+                params.put(++index, Short.parseShort(criteria.getGuests()));
             }
             if (!criteria.getRooms().isEmpty()) {
                 queryBuilder.append("AND p.rooms >= ? ");
-                params.put(++index, criteria.getRooms());
+                params.put(++index, Short.parseShort(criteria.getRooms()));
             }
             if (!criteria.getBeds().isEmpty()) {
                 queryBuilder.append("AND p.beds >= ? ");
-                params.put(++index, criteria.getBeds());
+                params.put(++index, Short.parseShort(criteria.getBeds()));
             }
-            if (!criteria.getHasKitchen().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasKitchen().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_kitchen = ? ");
                 params.put(++index, criteria.getHasKitchen());
             }
-            if (!criteria.getHasWasher().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_washer = ? ");
                 params.put(++index, criteria.getHasWasher());
             }
-            if (!criteria.getHasTv().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_tv = ? ");
                 params.put(++index, criteria.getHasTv());
             }
-            if (!criteria.getHasInternet().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_internet = ? ");
                 params.put(++index, criteria.getHasInternet());
             }
-            if (!criteria.getIsPetsAllowed().isEmpty() || Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
                 params.put(++index, criteria.getIsPetsAllowed());
             }
@@ -132,7 +130,7 @@ public class JdbcSearch implements SearchRepository {
             params.put(++index, criteria.getEndDate());
             params.put(++index, criteria.getStartDate());
             params.put(++index, criteria.getEndDate());
-            return new QueryAndParam(queryBuilder.toString(), params);
+            return new QueryAndParams(queryBuilder.toString(), params);
         } catch (RuntimeException e) {
             throw new QueryBuilderException(e);
         }
