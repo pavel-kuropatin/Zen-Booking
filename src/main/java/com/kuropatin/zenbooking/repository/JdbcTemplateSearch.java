@@ -1,6 +1,6 @@
 package com.kuropatin.zenbooking.repository;
 
-import com.kuropatin.zenbooking.exception.QueryBuilderException;
+import com.kuropatin.zenbooking.exception.AppException;
 import com.kuropatin.zenbooking.model.Property;
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.model.request.PropertySearchCriteria;
@@ -111,8 +111,8 @@ public class JdbcTemplateSearch implements SearchRepository {
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
             return new QueryAndParams(queryBuilder.toString(), params);
-        } catch (RuntimeException e) {
-            throw new QueryBuilderException(e);
+        } catch (Exception e) {
+            throw new AppException(e);
         }
     }
 }
