@@ -16,7 +16,7 @@ public class SuccessfulResponse {
     private String status;
     private String message;
 
-    public SuccessfulResponse(Timestamp timestamp, String message) {
+    public SuccessfulResponse(final Timestamp timestamp, final String message) {
         this.timestamp = timestamp;
         this.status = HttpStatus.OK.value() + " " + HttpStatus.OK.getReasonPhrase();
         this.message = message;

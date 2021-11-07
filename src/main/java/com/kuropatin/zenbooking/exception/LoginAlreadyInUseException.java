@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public class LoginAlreadyInUseException extends RuntimeException {
 
-    public LoginAlreadyInUseException(String login) {
+    public LoginAlreadyInUseException(final String login) {
         super(MessageFormat.format("Login {0} already in use", login));
     }
 }

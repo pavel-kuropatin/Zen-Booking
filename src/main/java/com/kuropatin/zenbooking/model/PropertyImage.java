@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "property")
+@EqualsAndHashCode(callSuper = true, exclude = "property")
 @Entity
 @Table(name = "property_image")
 public class PropertyImage extends BasicEntity {

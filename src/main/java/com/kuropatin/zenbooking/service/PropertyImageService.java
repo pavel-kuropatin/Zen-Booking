@@ -7,7 +7,7 @@ import com.kuropatin.zenbooking.model.request.PropertyImageRequest;
 import com.kuropatin.zenbooking.model.response.PropertyImageResponse;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
 import com.kuropatin.zenbooking.repository.PropertyImageRepository;
-import com.kuropatin.zenbooking.util.ApplicationTimestamp;
+import com.kuropatin.zenbooking.util.ApplicationTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +23,15 @@ public class PropertyImageService {
     private final PropertyImageRepository repository;
     private final PropertyService propertyService;
 
-    public List<PropertyImage> getAllImagesOfPropertyByIdAndUserId(Long propertyId, Long userId) {
+    public List<PropertyImage> getAllImagesOfPropertyByIdAndUserId(final Long propertyId, final Long userId) {
         return repository.findAllImagesOfPropertyOfUser(propertyId, userId);
     }
 
-    public List<PropertyImage> getAllImagesOfPropertyById(Long propertyId) {
+    public List<PropertyImage> getAllImagesOfPropertyById(final Long propertyId) {
         return repository.findAllImagesOfProperty(propertyId);
     }
 
-    public PropertyImage getImageOfPropertyByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
+    public PropertyImage getImageOfPropertyByIdAndPropertyIdAndUserId(final Long imageId, final Long propertyId, final Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
             return repository.findPropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId);
         } else {
@@ -39,7 +39,7 @@ public class PropertyImageService {
         }
     }
 
-    public PropertyImage getImageOfPropertyByIdAndPropertyId(Long imageId, Long propertyId) {
+    public PropertyImage getImageOfPropertyByIdAndPropertyId(final Long imageId, final Long propertyId) {
         if(repository.existsByIdAndPropertyId(imageId, propertyId)) {
             return repository.findPropertyImageByIdAndPropertyId(imageId, propertyId);
         } else {
@@ -47,11 +47,11 @@ public class PropertyImageService {
         }
     }
 
-    public PropertyImage create(Long propertyId, Long userId, PropertyImageRequest propertyImageRequest) {
-        Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
-        PropertyImage propertyImage = new PropertyImage();
+    public PropertyImage create(final Long propertyId, final Long userId, final PropertyImageRequest propertyImageRequest) {
+        final Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
+        final PropertyImage propertyImage = new PropertyImage();
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
-        Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+        final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
         propertyImage.setCreated(timestamp);
         propertyImage.setUpdated(timestamp);
         property.addPropertyImage(propertyImage);
@@ -59,9 +59,9 @@ public class PropertyImageService {
         return repository.save(propertyImage);
     }
 
-    public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(Long imageId, Long propertyId, Long userId) {
+    public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(final Long imageId, final Long propertyId, final Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
             repository.softDeletePropertyImage(imageId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
         } else {
@@ -69,19 +69,19 @@ public class PropertyImageService {
         }
     }
 
-    public PropertyImageResponse transformToNewPropertyImageResponse(PropertyImage propertyImage) {
+    public PropertyImageResponse transformToNewPropertyImageResponse(final PropertyImage propertyImage) {
         return transformToPropertyImageResponse(propertyImage, new PropertyImageResponse());
     }
 
-    public List<PropertyImageResponse> transformToListPropertyImageResponse(List<PropertyImage> propertyImages) {
-        List<PropertyImageResponse> propertyImageResponseList = new ArrayList<>();
+    public List<PropertyImageResponse> transformToListPropertyImageResponse(final List<PropertyImage> propertyImages) {
+        final List<PropertyImageResponse> propertyImageResponseList = new ArrayList<>();
         for(PropertyImage propertyImage : propertyImages) {
             propertyImageResponseList.add(transformToNewPropertyImageResponse(propertyImage));
         }
         return propertyImageResponseList;
     }
 
-    private PropertyImageResponse transformToPropertyImageResponse(PropertyImage propertyImage, PropertyImageResponse propertyImageResponse) {
+    private PropertyImageResponse transformToPropertyImageResponse(final PropertyImage propertyImage, final PropertyImageResponse propertyImageResponse) {
         propertyImageResponse.setId(propertyImage.getId());
         propertyImageResponse.setImgUrl(propertyImage.getImgUrl());
         return propertyImageResponse;

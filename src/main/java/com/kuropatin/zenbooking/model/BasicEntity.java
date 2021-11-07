@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.model;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,8 +18,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
+@EqualsAndHashCode
 @MappedSuperclass
-public class BasicEntity {
+public abstract class BasicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

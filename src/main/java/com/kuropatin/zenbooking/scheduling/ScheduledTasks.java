@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.scheduling;
 
 import com.kuropatin.zenbooking.model.Order;
 import com.kuropatin.zenbooking.service.OrderService;
+import com.kuropatin.zenbooking.util.ApplicationTimeUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,25 +12,24 @@ import org.springframework.util.StopWatch;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Component
 @Log4j2
 @RequiredArgsConstructor
-public class ScheduledTasks {
+public final class ScheduledTasks {
 
     private final OrderService orderService;
 
-    private LocalDate lastCheckDate = LocalDate.now(ZoneOffset.UTC);
+    private LocalDate lastCheckDate = ApplicationTimeUtils.getDateUTC();
     private boolean isCheckedForFinishToday = false;
 
     //Order is accepted automatically if it was not accepted, declined or cancelled within ~5 minutes after placing
     @Scheduled(fixedDelay = 60 * 1000, initialDelay = 60 * 1000)
     public void tryToAccept() {
-        List<Order> ordersToAccept = orderService.getOrdersToAutoAccept();
+        final List<Order> ordersToAccept = orderService.getOrdersToAutoAccept();
         if(!ordersToAccept.isEmpty()) {
-            LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
+            final LocalDateTime now = ApplicationTimeUtils.getTimeUTC();
             for (Order order : ordersToAccept) {
                 if(order.getUpdated().toLocalDateTime().isBefore(now.minusMinutes(5))) {
                     log.trace(MessageFormat.format("Automatically accept order with id {0}", order.getId()));
@@ -42,7 +42,7 @@ public class ScheduledTasks {
     //Ended orders are finish automatically once a day or upon restart
     @Scheduled(fixedDelay = 60 * 1000, initialDelay = 10 * 1000)
     public void tryToFinish() {
-        LocalDate now = LocalDate.now(ZoneOffset.UTC);
+        final LocalDate now = ApplicationTimeUtils.getDateUTC();
         if (now.isAfter(lastCheckDate)) {
             isCheckedForFinishToday = false;
             lastCheckDate = now;

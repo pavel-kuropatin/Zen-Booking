@@ -31,8 +31,8 @@ public class LoginController {
 
     @ApiOperation(value = "Login page")
     @PostMapping
-    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginRequest loginRequest) {
-        Authentication authenticate = authenticationManager.authenticate(
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody final LoginRequest loginRequest) {
+        final Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authenticate);
