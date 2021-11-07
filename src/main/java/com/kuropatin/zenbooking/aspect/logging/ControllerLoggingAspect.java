@@ -21,4 +21,5 @@ public final class ControllerLoggingAspect {
         timer.stop();
         log.trace(baseMethod + " finished in " + timer.getTotalTimeMillis() + " ms");
         return proceed;
-    }}
+    }
+}
