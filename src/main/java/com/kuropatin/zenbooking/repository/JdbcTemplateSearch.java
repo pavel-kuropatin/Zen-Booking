@@ -23,26 +23,27 @@ public class JdbcTemplateSearch implements SearchRepository {
 
     @AllArgsConstructor
     private final class QueryAndParams {
-        private String sql;
-        private List<Object> params;
+        private final String sql;
+        private final List<Object> params;
     }
 
     @Override
-    public List<Property> searchByCriteria(Long userId, PropertySearchCriteria searchCriteria) {
-        QueryAndParams queryAndParams = buildQuery(userId, searchCriteria);
-        String sql = queryAndParams.sql;
-        List<Object> params = queryAndParams.params;
+    public List<Property> searchByCriteria(final Long userId, final PropertySearchCriteria searchCriteria) {
+        final QueryAndParams queryAndParams = buildQuery(userId, searchCriteria);
+        final String sql = queryAndParams.sql;
+        final List<Object> params = queryAndParams.params;
         return jdbcTemplate.query(sql, new PropertyMapper(), params.toArray());
     }
 
-    private QueryAndParams buildQuery(Long userId, PropertySearchCriteria criteria) {
+    private QueryAndParams buildQuery(final Long userId, final PropertySearchCriteria criteria) {
         try {
-            List<Object> params = new ArrayList<>();
-            StringBuilder queryBuilder = new StringBuilder()
-                    .append("SELECT p.* FROM property p ")
-                    .append("WHERE p.is_deleted = false ")
-                    .append("AND p.user_id <> ? ")
-                    .append("AND p.is_available = true ");
+            final List<Object> params = new ArrayList<>();
+            final StringBuilder queryBuilder = new StringBuilder(
+                    "SELECT p.* FROM property p " +
+                    "WHERE p.is_deleted = false " +
+                    "AND p.user_id <> ? " +
+                    "AND p.is_available = true "
+            );
             params.add(userId);
             if (!criteria.getAddress().isEmpty()) {
                 queryBuilder.append("AND LOWER(p.address) LIKE LOWER('%' || ? || '%') ");
@@ -92,16 +93,17 @@ public class JdbcTemplateSearch implements SearchRepository {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
                 params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
             }
-            queryBuilder.append("AND p.id NOT IN ( ")
-                    .append("SELECT DISTINCT o.property_id FROM orders o ")
-                    .append("WHERE o.is_accepted = false ")
-                    .append("AND o.is_finished = false ")
-                    .append("AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date ")
-                    .append("OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date ")
-                    .append("OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) ")
-                    .append("OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) ")
-                    .append("ORDER BY p.price ASC ")
-                    .append("LIMIT 25");
+            queryBuilder.append(
+                    "AND p.id NOT IN ( " +
+                    "SELECT DISTINCT o.property_id FROM orders o " +
+                    "WHERE o.is_accepted = false " +
+                    "AND o.is_finished = false " +
+                    "AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
+                    "OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
+                    "OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) " +
+                    "OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) " +
+                    "ORDER BY p.price ASC " +
+                    "LIMIT 25");
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
             params.add(criteria.getStartDate());

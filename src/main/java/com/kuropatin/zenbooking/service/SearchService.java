@@ -14,7 +14,7 @@ public class SearchService {
 
     private final SearchRepository searchRepository;
 
-    public List<Property> searchProperty(long userId, PropertySearchCriteria searchCriteria) {
+    public List<Property> searchProperty(final long userId, final PropertySearchCriteria searchCriteria) {
         return searchRepository.searchByCriteria(userId, searchCriteria);
     }
 }

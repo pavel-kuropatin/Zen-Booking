@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public class ReviewNotFoundException extends RuntimeException {
 
-    public ReviewNotFoundException(Long id) {
+    public ReviewNotFoundException(final Long id) {
         super(MessageFormat.format("Could not find review with id: {0}", id));
     }
 }

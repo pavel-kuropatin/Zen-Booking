@@ -14,7 +14,7 @@ public class ValidationErrorResponse extends AbstractErrorResponse {
 
     private Map<String, String> errors;
 
-    public ValidationErrorResponse(Exception e, HttpStatus status, Map<String, String> errors) {
+    public ValidationErrorResponse(final Exception e, final HttpStatus status, final Map<String, String> errors) {
         super(e, status);
         this.errors = errors;
     }

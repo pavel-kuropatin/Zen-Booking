@@ -28,24 +28,24 @@ public class JdbcSearch implements SearchRepository {
 
     @AllArgsConstructor
     private final class QueryAndParams {
-        private String sql;
-        private Map<Integer, Object> params;
+        private final String sql;
+        private final Map<Integer, Object> params;
     }
 
     @Override
-    public List<Property> searchByCriteria(Long userId, PropertySearchCriteria searchCriteria) {
-        List<Property> propertyList = new ArrayList<>();
-        QueryAndParams queryAndParams = buildQuery(userId, searchCriteria);
-        String sql = queryAndParams.sql;
-        Map<Integer, Object> params = queryAndParams.params;
+    public List<Property> searchByCriteria(final Long userId, final PropertySearchCriteria searchCriteria) {
+        final List<Property> propertyList = new ArrayList<>();
+        final QueryAndParams queryAndParams = buildQuery(userId, searchCriteria);
+        final String sql = queryAndParams.sql;
+        final Map<Integer, Object> params = queryAndParams.params;
 
-        try(Connection connection = hikariDataSource.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)
+        try(final Connection connection = hikariDataSource.getConnection();
+            final PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
             for (int i = 1; i <= params.size(); i++) {
                 preparedStatement.setObject(i, params.get(i));
             }
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     propertyList.add(new PropertyMapper().mapRow(resultSet, resultSet.getRow()));
                 }
@@ -56,15 +56,16 @@ public class JdbcSearch implements SearchRepository {
         }
     }
 
-    private QueryAndParams buildQuery(Long userId, PropertySearchCriteria criteria) {
+    private QueryAndParams buildQuery(final Long userId, final PropertySearchCriteria criteria) {
         try {
-            Map<Integer, Object> params = new HashMap<>();
+            final Map<Integer, Object> params = new HashMap<>();
             int index = 0;
-            StringBuilder queryBuilder = new StringBuilder()
-                    .append("SELECT p.* FROM property p ")
-                    .append("WHERE p.is_deleted = false ")
-                    .append("AND p.user_id <> ? ")
-                    .append("AND p.is_available = true ");
+            final StringBuilder queryBuilder = new StringBuilder(
+                    "SELECT p.* FROM property p " +
+                    "WHERE p.is_deleted = false " +
+                    "AND p.user_id <> ? " +
+                    "AND p.is_available = true "
+            );
             params.put(++index, userId);
             if (!criteria.getAddress().isEmpty()) {
                 queryBuilder.append("AND LOWER(p.address) LIKE LOWER('%' || ? || '%') ");
@@ -114,16 +115,18 @@ public class JdbcSearch implements SearchRepository {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
                 params.put(++index, Boolean.parseBoolean(criteria.getIsPetsAllowed()));
             }
-            queryBuilder.append("AND p.id NOT IN ( ")
-                    .append("SELECT DISTINCT o.property_id FROM orders o ")
-                    .append("WHERE o.is_accepted = false ")
-                    .append("AND o.is_finished = false ")
-                    .append("AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date ")
-                    .append("OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date ")
-                    .append("OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) ")
-                    .append("OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) ")
-                    .append("ORDER BY p.price ASC ")
-                    .append("LIMIT 25");
+            queryBuilder.append(
+                    "AND p.id NOT IN ( " +
+                    "SELECT DISTINCT o.property_id FROM orders o " +
+                    "WHERE o.is_accepted = false " +
+                    "AND o.is_finished = false " +
+                    "AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
+                    "OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
+                    "OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) " +
+                    "OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) " +
+                    "ORDER BY p.price ASC " +
+                    "LIMIT 25"
+            );
             params.put(++index, criteria.getStartDate());
             params.put(++index, criteria.getEndDate());
             params.put(++index, criteria.getStartDate());

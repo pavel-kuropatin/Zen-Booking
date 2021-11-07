@@ -40,21 +40,21 @@ public class BookingController {
     @ApiOperation(value = "Search property that available for order")
     @PostMapping
     public ResponseEntity<List<PropertyResponse>> searchProperty(@Valid @RequestBody final PropertySearchCriteria searchCriteria) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Browse found property with id {propertyId}")
     @GetMapping("/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Order found property")
     @PostMapping("/{propertyId}")
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.CREATED);
     }
 

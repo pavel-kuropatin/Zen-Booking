@@ -13,7 +13,7 @@ import com.kuropatin.zenbooking.model.request.UserEditRequest;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
 import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.repository.UserRepository;
-import com.kuropatin.zenbooking.util.ApplicationTimestamp;
+import com.kuropatin.zenbooking.util.ApplicationTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
@@ -30,11 +30,11 @@ public class UserService {
     private final UserRepository repository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public boolean existsByLogin(String login) {
+    public boolean existsByLogin(final String login) {
         return repository.existsByLoginAndIsBannedFalse(login);
     }
 
-    public User getUserById(Long id) {
+    public User getUserById(final Long id) {
         if(repository.existsById(id)) {
             return repository.findUserByIdAndIsBannedFalse(id);
         } else {
@@ -42,7 +42,7 @@ public class UserService {
         }
     }
 
-    public User getUserByLogin(String login) {
+    public User getUserByLogin(final String login) {
         if(existsByLogin(login)) {
             return repository.findUserByLoginAndIsBannedFalse(login);
         } else {
@@ -50,36 +50,36 @@ public class UserService {
         }
     }
 
-    public User createUser(UserCreateRequest userCreateRequest) {
+    public User createUser(final UserCreateRequest userCreateRequest) {
         if(repository.isLoginInUse(userCreateRequest.getLogin())) {
             throw new LoginAlreadyInUseException(userCreateRequest.getLogin());
         }
         if(repository.isEmailInUse(userCreateRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
-        User user = transformToNewUser(userCreateRequest);
-        user.setCreated(ApplicationTimestamp.getTimestampUTC());
+        final User user = transformToNewUser(userCreateRequest);
+        user.setCreated(ApplicationTimeUtils.getTimestampUTC());
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
 
-    public User updateUser(Long id, UserEditRequest userEditRequest) {
-        User userToUpdate = getUserById(id);
+    public User updateUser(final Long id, final UserEditRequest userEditRequest) {
+        final User userToUpdate = getUserById(id);
         if(!userToUpdate.getEmail().equals(userEditRequest.getEmail()) && repository.isEmailInUse(userEditRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
         transformToUser(userEditRequest, userToUpdate);
-        userToUpdate.setUpdated(ApplicationTimestamp.getTimestampUTC());
+        userToUpdate.setUpdated(ApplicationTimeUtils.getTimestampUTC());
         return repository.save(userToUpdate);
     }
 
-    public User deposit(Long id, AmountRequest amountRequest) {
+    public User deposit(final Long id, final AmountRequest amountRequest) {
         if(repository.isBanned(id)) {
             throw new UserNotFoundException(id);
         }
-        User user = getUserById(id);
+        final User user = getUserById(id);
         user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
-        user.setUpdated(ApplicationTimestamp.getTimestampUTC());
+        user.setUpdated(ApplicationTimeUtils.getTimestampUTC());
         return repository.save(user);
     }
 
@@ -87,7 +87,7 @@ public class UserService {
             InsufficientMoneyAmountException.class,
             MoneyAmountExceededException.class
     })
-    public void pay(User user, int amount, Timestamp timestamp) {
+    public void pay(final User user, final int amount, final Timestamp timestamp) {
         if(user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
             user.setUpdated(timestamp);
@@ -101,8 +101,8 @@ public class UserService {
             InsufficientMoneyAmountException.class,
             MoneyAmountExceededException.class
     })
-    public void transferMoney(User user, int amount, Timestamp timestamp) {
-        long checkOverflow = (long) user.getBalance() + (long) amount;
+    public void transferMoney(final User user, final int amount, final Timestamp timestamp) {
+        final long checkOverflow = (long) user.getBalance() + (long) amount;
         if (checkOverflow > Integer.MAX_VALUE) {
             throw new MoneyAmountExceededException();
         } else {
@@ -112,9 +112,9 @@ public class UserService {
         }
     }
 
-    public SuccessfulResponse banUser(Long id) {
+    public SuccessfulResponse banUser(final Long id) {
         if(repository.existsById(id)) {
-            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
             repository.banUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
         } else {
@@ -122,9 +122,9 @@ public class UserService {
         }
     }
 
-    public SuccessfulResponse unbanUser(Long id) {
+    public SuccessfulResponse unbanUser(final Long id) {
         if(repository.existsById(id)) {
-            Timestamp timestamp = ApplicationTimestamp.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
             repository.unbanUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
         } else {
@@ -132,7 +132,7 @@ public class UserService {
         }
     }
 
-    public User transformToUser(UserEditRequest userEditRequest, User user) {
+    public User transformToUser(final UserEditRequest userEditRequest, final User user) {
         user.setName(userEditRequest.getName());
         user.setSurname(userEditRequest.getSurname());
         user.setGender(Gender.valueOf(userEditRequest.getGender()));
@@ -142,11 +142,11 @@ public class UserService {
         return user;
     }
 
-    public User transformToNewUser(UserCreateRequest userCreateRequest) {
+    public User transformToNewUser(final UserCreateRequest userCreateRequest) {
         return transformToUser(userCreateRequest, new User());
     }
 
-    private User transformToUser(UserCreateRequest userCreateRequest, User user) {
+    private User transformToUser(final UserCreateRequest userCreateRequest, final User user) {
         user.setLogin(userCreateRequest.getLogin());
         user.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
         user.setName(userCreateRequest.getName());
@@ -158,11 +158,11 @@ public class UserService {
         return user;
     }
 
-    public UserResponse transformToNewUserResponse(User user) {
+    public UserResponse transformToNewUserResponse(final User user) {
         return transformToUserResponse(user, new UserResponse());
     }
 
-    private UserResponse transformToUserResponse(User user, UserResponse userResponse) {
+    private UserResponse transformToUserResponse(final User user, final UserResponse userResponse) {
         userResponse.setId(user.getId());
         userResponse.setName(user.getName());
         userResponse.setSurname(user.getSurname());
