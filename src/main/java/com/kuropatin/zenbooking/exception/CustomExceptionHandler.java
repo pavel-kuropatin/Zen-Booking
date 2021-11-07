@@ -84,8 +84,8 @@ final class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(QueryBuilderException.class)
-    public ResponseEntity<Object> queryBuilderHandler(final QueryBuilderException e) {
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<Object> appExceptionHandler(final AppException e) {
         return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
