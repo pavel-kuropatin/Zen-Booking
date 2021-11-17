@@ -3,7 +3,6 @@ package com.kuropatin.zenbooking.security.config;
 import com.kuropatin.zenbooking.model.Roles;
 import com.kuropatin.zenbooking.security.filter.JwtAuthenticationFilter;
 import com.kuropatin.zenbooking.security.service.CustomUserDetailsService;
-import com.kuropatin.zenbooking.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,9 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @Configuration
@@ -28,8 +24,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String REGISTER_ENDPOINT = "/register";
+    public static final String LOGIN_ENDPOINT = "/login";
+
     private final CustomUserDetailsService userDetailsService;
-    private final JwtUtils jwtUtils;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final CorsConfig corsConfig;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Bean
@@ -43,55 +43,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilterBean(AuthenticationManager authenticationManager) {
-        JwtAuthenticationFilter authenticationTokenFilter = new JwtAuthenticationFilter(jwtUtils, userDetailsService);
-        authenticationTokenFilter.setAuthenticationManager(authenticationManager);
-        return authenticationTokenFilter;
-    }
-
-    // TODO: configure CORS
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    public void configureAuthentication(final AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    protected void configure(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .httpBasic().disable()
                 .csrf().disable()
-                .cors()
-                .and()
-                .exceptionHandling()
+                .cors().configurationSource(corsConfig)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtAuthenticationFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers(REGISTER_ENDPOINT).permitAll()
+                .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers("/profile/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/hosting/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/booking/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/order/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/review/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
                 .antMatchers("/moderation/**").hasRole(Roles.ROLE_MODER.label)
+                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
                 .anyRequest().authenticated();
     }
 
     //For swagger access only
     @Override
-    public void configure(WebSecurity web) {
+    public void configure(final WebSecurity web) {
         web.ignoring()
                 .antMatchers("/v2/api-docs","/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/webjars/**");
     }
