@@ -12,7 +12,7 @@ import java.time.ZoneOffset;
 public final class ApplicationTimeUtils {
 
     public static Timestamp getTimestampUTC() {
-        return Timestamp.valueOf(LocalDateTime.now());
+        return Timestamp.valueOf(getTimeUTC());
     }
 
     public static LocalDateTime getTimeUTC() {
