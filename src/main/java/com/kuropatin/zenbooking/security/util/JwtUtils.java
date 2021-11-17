@@ -56,7 +56,7 @@ public class JwtUtils {
     }
 
     private Date generateExpirationDate() {
-        return Date.from(Instant.ofEpochSecond(System.currentTimeMillis() / 1000 + jwtConfig.getExpiration())); //expiration time in seconds
+        return Date.from(Instant.ofEpochSecond(System.currentTimeMillis() / 1000 + jwtConfig.getExpiration() * 60)); //expiration time in minutes
     }
 
     public boolean validateToken(String token, UserDetails userDetails) {
