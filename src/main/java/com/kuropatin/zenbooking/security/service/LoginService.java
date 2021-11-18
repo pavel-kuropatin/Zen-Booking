@@ -33,8 +33,8 @@ public class LoginService {
 
     private LoginResponse buildLoginResponse(final LoginRequest loginRequest) {
         return new LoginResponse(
-                jwtUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin())),
-                loginRequest.getLogin()
+                loginRequest.getLogin(),
+                jwtUtils.generateToken(userDetailsService.loadUserByUsername(loginRequest.getLogin()))
         );
     }
 }

@@ -24,7 +24,7 @@ public final class AgeXPlusValidator implements ConstraintValidator<AgeXPlus, Ch
         try {
             final LocalDate birthDate = LocalDate.parse(date);
             //TODO: refactor in future to check age in user time zone if possible
-            return birthDate.plusYears(minAge).isBefore(ApplicationTimeUtils.getDateUTC()) || birthDate.plusYears(minAge).isEqual(ApplicationTimeUtils.getDateUTC());
+            return birthDate.plusYears(minAge).isBefore(ApplicationTimeUtils.getLocalDate()) || birthDate.plusYears(minAge).isEqual(ApplicationTimeUtils.getLocalDate());
         } catch (DateTimeParseException e){
             return false;
         }

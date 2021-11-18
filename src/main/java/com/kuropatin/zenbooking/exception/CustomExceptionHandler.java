@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-final class CustomExceptionHandler {
+public final class CustomExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> badCredentialsHandler(final BadCredentialsException e) {
@@ -15,12 +15,12 @@ final class CustomExceptionHandler {
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    private ResponseEntity<Object> userNotFoundHandler(final UserNotFoundException e) {
+    public ResponseEntity<Object> userNotFoundHandler(final UserNotFoundException e) {
         return throwCustomException(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(PropertyNotFoundException.class)
-    private ResponseEntity<Object> propertyNotFoundHandler(final PropertyNotFoundException e) {
+    public ResponseEntity<Object> propertyNotFoundHandler(final PropertyNotFoundException e) {
         return throwCustomException(e, HttpStatus.NOT_FOUND);
     }
 

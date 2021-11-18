@@ -3,6 +3,7 @@ package com.kuropatin.zenbooking.security.config;
 import com.kuropatin.zenbooking.model.Roles;
 import com.kuropatin.zenbooking.security.filter.JwtAuthenticationFilter;
 import com.kuropatin.zenbooking.security.service.CustomUserDetailsService;
+import com.kuropatin.zenbooking.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,17 +19,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String REGISTER_ENDPOINT = "/register";
-    public static final String LOGIN_ENDPOINT = "/login";
+    public static final List<String> AUTHORIZED_ENDPOINTS = List.of("/profile", "/hosting", "/booking", "/order", "/review", "/moderation", "/administration");
 
     private final CustomUserDetailsService userDetailsService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtUtils jwtUtils;
     private final CorsConfig corsConfig;
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -41,6 +43,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilterBean(final AuthenticationManager authenticationManager) {
+        final JwtAuthenticationFilter authenticationTokenFilter = new JwtAuthenticationFilter(jwtUtils, userDetailsService);
+        authenticationTokenFilter.setAuthenticationManager(authenticationManager);
+        return authenticationTokenFilter;
     }
 
     @Autowired
@@ -59,10 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(REGISTER_ENDPOINT).permitAll()
-                .antMatchers(LOGIN_ENDPOINT).permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/profile/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/hosting/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/booking/**").hasRole(Roles.ROLE_USER.label)
@@ -76,7 +85,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //For swagger access only
     @Override
     public void configure(final WebSecurity web) {
-        web.ignoring()
-                .antMatchers("/v2/api-docs","/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/webjars/**");
+        web.ignoring().antMatchers(
+                "/swagger-ui/**",
+                "/swagger-resources/**",
+                "/v2/api-docs",
+                "/webjars/**",
+                "/favicon.ico");
     }
 }

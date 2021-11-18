@@ -57,7 +57,7 @@ public class PropertyService {
         Property property = transformToNewProperty(propertyRequest);
         user.addProperty(property);
         property.setUser(user);
-        Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+        Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
         property.setCreated(timestamp);
         property.setUpdated(timestamp);
         return repository.save(property);
@@ -66,13 +66,13 @@ public class PropertyService {
     public Property updateProperty(Long propertyId, Long userId, PropertyRequest propertyRequest) {
         Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
         transformToProperty(propertyRequest, propertyToUpdate);
-        propertyToUpdate.setUpdated(ApplicationTimeUtils.getTimestampUTC());
+        propertyToUpdate.setUpdated(ApplicationTimeUtils.getTimestamp());
         return repository.save(propertyToUpdate);
     }
 
     public SuccessfulResponse softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
         if(repository.existsByIdAndUserId(propertyId, userId)) {
-            Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteProperty(propertyId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Property with id: {0} successfully deleted", propertyId));
         } else {
