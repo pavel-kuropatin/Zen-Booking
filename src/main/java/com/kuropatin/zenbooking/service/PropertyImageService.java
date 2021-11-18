@@ -51,7 +51,7 @@ public class PropertyImageService {
         final Property property = propertyService.getPropertyByIdAndUserId(propertyId, userId);
         final PropertyImage propertyImage = new PropertyImage();
         propertyImage.setImgUrl(propertyImageRequest.getImgUrl());
-        final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+        final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
         propertyImage.setCreated(timestamp);
         propertyImage.setUpdated(timestamp);
         property.addPropertyImage(propertyImage);
@@ -61,7 +61,7 @@ public class PropertyImageService {
 
     public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(final Long imageId, final Long propertyId, final Long userId) {
         if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
-            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeletePropertyImage(imageId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
         } else {

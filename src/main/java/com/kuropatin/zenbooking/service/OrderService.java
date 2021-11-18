@@ -70,7 +70,7 @@ public class OrderService {
             order.setStartDate(LocalDate.parse(orderRequest.getStartDate()));
             order.setEndDate(LocalDate.parse(orderRequest.getEndDate()));
             order.setTotalPrice(calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate()));
-            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             userService.pay(client, order.getTotalPrice(), timestamp);
             order.setCreated(timestamp);
             order.setUpdated(timestamp);
@@ -93,7 +93,7 @@ public class OrderService {
         if(orderRepository.existsByIdAndUserId(orderId, userId)) {
             final Order orderToCancel = getOrderById(orderId, userId);
             if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
-                final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+                final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice(), timestamp);
                 orderRepository.cancelOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully cancelled", orderId));
@@ -127,7 +127,7 @@ public class OrderService {
             final Order orderToAccept = orderRepository.findOrderById(orderId);
             if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
                 final User host = userService.getUserById(hostId);
-                final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+                final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(host, orderToAccept.getTotalPrice(), timestamp);
                 orderRepository.acceptOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully accepted", orderId));
@@ -148,7 +148,7 @@ public class OrderService {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             final Order orderToDecline = orderRepository.findOrderById(orderId);
             if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
-                final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+                final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice(), timestamp);
                 orderRepository.declineOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully declined", orderId));
@@ -214,7 +214,7 @@ public class OrderService {
 
     public void autoFinishOrder(final Long id) {
         if(orderRepository.existsById(id)) {
-            orderRepository.finishOrder(id, ApplicationTimeUtils.getTimestampUTC());
+            orderRepository.finishOrder(id, ApplicationTimeUtils.getTimestamp());
         } else {
             throw new OrderNotFoundException(MessageFormat.format("Order with id: {0} cannot be finished automatically", id));
         }
