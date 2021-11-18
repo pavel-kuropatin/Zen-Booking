@@ -21,7 +21,7 @@ public final class ScheduledTasks {
 
     private final OrderService orderService;
 
-    private LocalDate lastCheckDate = ApplicationTimeUtils.getDateUTC();
+    private LocalDate lastCheckDate = ApplicationTimeUtils.getLocalDate();
     private boolean isCheckedForFinishToday = false;
 
     //Order is accepted automatically if it was not accepted, declined or cancelled within ~5 minutes after placing
@@ -29,7 +29,7 @@ public final class ScheduledTasks {
     public void tryToAccept() {
         final List<Order> ordersToAccept = orderService.getOrdersToAutoAccept();
         if(!ordersToAccept.isEmpty()) {
-            final LocalDateTime now = ApplicationTimeUtils.getTimeUTC();
+            final LocalDateTime now = ApplicationTimeUtils.getLocalDateTime();
             for (Order order : ordersToAccept) {
                 if(order.getUpdated().toLocalDateTime().isBefore(now.minusMinutes(5))) {
                     log.trace(MessageFormat.format("Automatically accept order with id {0}", order.getId()));
@@ -42,7 +42,7 @@ public final class ScheduledTasks {
     //Ended orders are finish automatically once a day or upon restart
     @Scheduled(fixedDelay = 60 * 1000, initialDelay = 10 * 1000)
     public void tryToFinish() {
-        final LocalDate now = ApplicationTimeUtils.getDateUTC();
+        final LocalDate now = ApplicationTimeUtils.getLocalDate();
         if (now.isAfter(lastCheckDate)) {
             isCheckedForFinishToday = false;
             lastCheckDate = now;

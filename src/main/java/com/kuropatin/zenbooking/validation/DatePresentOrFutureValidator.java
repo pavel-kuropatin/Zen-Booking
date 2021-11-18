@@ -17,7 +17,7 @@ public final class DatePresentOrFutureValidator implements ConstraintValidator<D
         try {
             final LocalDate date = LocalDate.parse(value);
             //TODO: refactor in future to check date in property location time zone if needed
-            return date.isEqual(ApplicationTimeUtils.getDateUTC()) || date.isAfter(ApplicationTimeUtils.getDateUTC());
+            return date.isEqual(ApplicationTimeUtils.getLocalDate()) || date.isAfter(ApplicationTimeUtils.getLocalDate());
         } catch (DateTimeParseException e){
             return false;
         }

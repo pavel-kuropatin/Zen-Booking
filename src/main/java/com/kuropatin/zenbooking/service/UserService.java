@@ -58,7 +58,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
         final User user = transformToNewUser(userCreateRequest);
-        user.setCreated(ApplicationTimeUtils.getTimestampUTC());
+        user.setCreated(ApplicationTimeUtils.getTimestamp());
         user.setUpdated(user.getCreated());
         return repository.save(user);
     }
@@ -69,7 +69,7 @@ public class UserService {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
         transformToUser(userEditRequest, userToUpdate);
-        userToUpdate.setUpdated(ApplicationTimeUtils.getTimestampUTC());
+        userToUpdate.setUpdated(ApplicationTimeUtils.getTimestamp());
         return repository.save(userToUpdate);
     }
 
@@ -79,7 +79,7 @@ public class UserService {
         }
         final User user = getUserById(id);
         user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
-        user.setUpdated(ApplicationTimeUtils.getTimestampUTC());
+        user.setUpdated(ApplicationTimeUtils.getTimestamp());
         return repository.save(user);
     }
 
@@ -114,7 +114,7 @@ public class UserService {
 
     public SuccessfulResponse banUser(final Long id) {
         if(repository.existsById(id)) {
-            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.banUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
         } else {
@@ -124,7 +124,7 @@ public class UserService {
 
     public SuccessfulResponse unbanUser(final Long id) {
         if(repository.existsById(id)) {
-            final Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.unbanUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
         } else {

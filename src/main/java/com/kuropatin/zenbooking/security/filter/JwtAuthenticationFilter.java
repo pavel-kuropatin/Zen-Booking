@@ -13,56 +13,57 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-@Component
 @Log4j2
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
     @Override
-    public void doFilterInternal(@NonNull final HttpServletRequest request, @NonNull final HttpServletResponse response, @NonNull final FilterChain chain) throws IOException, ServletException {
-        String jwtToken = request.getHeader(CustomHeaders.X_AUTH_TOKEN);
+    public void doFilter(@NonNull final ServletRequest request, @NonNull final ServletResponse response, @NonNull final FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String jwtToken = httpRequest.getHeader(CustomHeaders.X_AUTH_TOKEN);
         try {
-            if (isAuthorizationRequired(String.valueOf(request.getRequestURL()))) {
+            if (isAuthorizationRequired(httpRequest.getRequestURI())) {
                 String username = jwtUtils.getUsernameFromToken(jwtToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                     if (jwtUtils.validateToken(jwtToken, userDetails)) {
                         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
             }
             chain.doFilter(request, response);
         } catch (Exception e) {
-            log.warn(request.getRequestURL() + " " + e.getClass().getName() + ": " + e.getMessage());
-            processException(e, response);
+            log.warn(httpRequest.getRequestURL() + " " + e.getClass().getName() + ": " + e.getMessage());
+            processException(e, (HttpServletResponse) response);
         }
     }
 
     private boolean isAuthorizationRequired(String requestUrl) {
-        final List<String> endpoints = List.of(SecurityConfig.REGISTER_ENDPOINT, SecurityConfig.LOGIN_ENDPOINT);
+        final List<String> endpoints = SecurityConfig.AUTHORIZED_ENDPOINTS;
         for (final String endpoint : endpoints) {
-            if (requestUrl.endsWith(endpoint)) {
-                return false;
+            if (requestUrl.contains(endpoint)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private void processException(final Exception e, final HttpServletResponse response) throws IOException {
