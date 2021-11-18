@@ -46,7 +46,7 @@ public class ReviewService {
             Review review = transformToNewReview(reviewRequest);
             order.addReview(review);
             review.setOrder(order);
-            Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             review.setCreated(timestamp);
             review.setUpdated(timestamp);
             return repository.save(review);
@@ -57,7 +57,7 @@ public class ReviewService {
 
     public SuccessfulResponse softDeleteReview(Long reviewId) {
         if(repository.existsById(reviewId)) {
-            Timestamp timestamp = ApplicationTimeUtils.getTimestampUTC();
+            Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteReview(reviewId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Review with id: {0} successfully deleted", reviewId));
         } else {
