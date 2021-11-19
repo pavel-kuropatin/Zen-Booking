@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.model.request;
 
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.validation.DatePresentOrFuture;
+import com.kuropatin.zenbooking.validation.EmptyOrBigger;
 import com.kuropatin.zenbooking.validation.EmptyOrIntegerInRange;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
 import lombok.Getter;
@@ -63,4 +64,10 @@ public class PropertySearchCriteria {
     @NotBlank(message = "Enter end date")
     @DatePresentOrFuture
     private String endDate = "";
+
+    @EmptyOrIntegerInRange(min = 1, max = 100, message = "Number of property per page should be empty or between 1 and 100")
+    private String perPage = "";
+
+    @EmptyOrBigger(min = 0, message = "Page number should be empty or bigger than 0")
+    private String pageNumber = "";
 }

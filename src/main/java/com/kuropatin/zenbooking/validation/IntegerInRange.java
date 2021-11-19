@@ -33,7 +33,7 @@ public @interface IntegerInRange {
     /**
      * @return the error message template
      */
-    String message() default "Number must be integer in specified range";
+    String message() default "Value must be integer in specified range";
 
     /**
      * @return the groups the constraint belongs to
