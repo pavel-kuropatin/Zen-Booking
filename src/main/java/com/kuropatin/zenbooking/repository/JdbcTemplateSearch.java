@@ -93,23 +93,32 @@ public class JdbcTemplateSearch implements SearchRepository {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
                 params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
             }
+            if (!criteria.getPerPage().isEmpty()) {
+                queryBuilder.append("AND p.is_pets_allowed = ? ");
+                params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
+            }
             queryBuilder.append(
                     "AND p.id NOT IN ( " +
                     "SELECT DISTINCT o.property_id FROM orders o " +
-                    "WHERE o.is_accepted = false " +
+                    "WHERE o.is_cancelled = false " +
                     "AND o.is_finished = false " +
-                    "AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
-                    "OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
-                    "OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) " +
-                    "OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) " +
+                    "AND (to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
+                    "OR to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
+                    "OR o.start_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd') " +
+                    "OR o.end_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd'))) " +
                     "ORDER BY p.price ASC " +
-                    "LIMIT 25");
+                    "LIMIT ? OFFSET ?"
+            );
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
+            final int perPage = criteria.getPerPage().isEmpty() ? 10 : Integer.parseInt(criteria.getPerPage());
+            final int pageNumber = criteria.getPageNumber().isEmpty() ? 1 : Integer.parseInt(criteria.getPageNumber());
+            params.add(perPage);
+            params.add((pageNumber - 1) * perPage);
             return new QueryAndParams(queryBuilder.toString(), params);
         } catch (Exception e) {
             throw new AppException(e);

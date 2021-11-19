@@ -118,14 +118,14 @@ public class JdbcSearch implements SearchRepository {
             queryBuilder.append(
                     "AND p.id NOT IN ( " +
                     "SELECT DISTINCT o.property_id FROM orders o " +
-                    "WHERE o.is_accepted = false " +
+                    "WHERE o.is_cancelled = false " +
                     "AND o.is_finished = false " +
-                    "AND (to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
-                    "OR to_date('yyyy-mm-dd', ?) BETWEEN o.start_date AND o.end_date " +
-                    "OR o.start_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?) " +
-                    "OR o.end_date BETWEEN to_date('yyyy-mm-dd', ?) AND to_date('yyyy-mm-dd', ?))) " +
+                    "AND (to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
+                    "OR to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
+                    "OR o.start_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd') " +
+                    "OR o.end_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd'))) " +
                     "ORDER BY p.price ASC " +
-                    "LIMIT 25"
+                    "LIMIT ? OFFSET ?"
             );
             params.put(++index, criteria.getStartDate());
             params.put(++index, criteria.getEndDate());
@@ -133,6 +133,10 @@ public class JdbcSearch implements SearchRepository {
             params.put(++index, criteria.getEndDate());
             params.put(++index, criteria.getStartDate());
             params.put(++index, criteria.getEndDate());
+            final int perPage = criteria.getPerPage().isEmpty() ? 10 : Integer.parseInt(criteria.getPerPage());
+            final int pageNumber = criteria.getPageNumber().isEmpty() ? 1 : Integer.parseInt(criteria.getPageNumber());
+            params.put(++index, perPage);
+            params.put(++index, (pageNumber - 1) * perPage);
             return new QueryAndParams(queryBuilder.toString(), params);
         } catch (Exception e) {
             throw new AppException(e);
