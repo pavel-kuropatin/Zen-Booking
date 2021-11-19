@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 
 /**
- * The annotated element must not be {@code null} and must be an {@code integer} in range (including) between {@code min} and {@code max}.
+ * The annotated element can be {@code null} or {@code empty} and must be an {@code integer} in range (including) between {@code min} and {@code max}.
  * <p>
  * Accepts {@code CharSequence}.
  */
@@ -33,7 +33,7 @@ public @interface EmptyOrIntegerInRange {
     /**
      * @return the error message template
      */
-    String message() default "Must be empty of integer in specified range";
+    String message() default "Value must be empty of integer in specified range";
 
     /**
      * @return the groups the constraint belongs to
