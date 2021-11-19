@@ -10,25 +10,25 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.FIELD;
 
 /**
- * The annotated element must not be {@code null} and must be a value of {@code enumClass}.
+ * The annotated element can be {@code null} or {@code empty} and must be an {@code integer} equal or bigger than {@code min}.
  * <p>
- * Accepts {@code Enum}.
+ * Accepts {@code CharSequence}.
  */
 @Documented
 @Target(FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = ValueOfEnumValidator.class)
-public @interface ValueOfEnum {
+@Constraint(validatedBy = EmptyOrBiggerValidator.class)
+public @interface EmptyOrBigger {
 
     /**
-     * @return the difference in years between today date and annotated element date
+     * @return the minimum value of annotated element
      */
-    Class<? extends Enum<?>> enumClass();
+    int min();
 
     /**
      * @return the error message template
      */
-    String message() default "Value must be any of enum {enumClass}";
+    String message() default "Value must be empty or integer equal or bigger than specified value";
 
     /**
      * @return the groups the constraint belongs to
