@@ -10,14 +10,14 @@ import org.springframework.util.StopWatch;
 @Component
 @Aspect
 @Log4j2
-public class ControllerLoggingAspect {
+public final class ControllerLoggingAspect {
 
     @Around("execution(* com.kuropatin.zenbooking.controller.*.*(..))")
-    public Object logAroundMethods(ProceedingJoinPoint joinPoint) throws Throwable {
-        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
-        StopWatch timer = new StopWatch();
+    public Object logAroundMethods(final ProceedingJoinPoint joinPoint) throws Throwable {
+        final String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
+        final StopWatch timer = new StopWatch();
         timer.start();
-        Object proceed = joinPoint.proceed();
+        final Object proceed = joinPoint.proceed();
         timer.stop();
         log.trace(baseMethod + " finished in " + timer.getTotalTimeMillis() + " ms");
         return proceed;

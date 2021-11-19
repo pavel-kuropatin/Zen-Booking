@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 @Aspect
 @Log4j2
-public class ServiceExceptionLoggingAspect {
+public final class ServiceExceptionLoggingAspect {
 
     @AfterThrowing(pointcut = "execution(* com.kuropatin.zenbooking.service.*.*(..))", throwing = "exception")
     public void afterThrowingPointcut(JoinPoint joinPoint, Throwable exception) {
-        String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
-        String exceptionDescription = exception.getClass().getSimpleName() + ": " + exception.getMessage();
+        final String baseMethod = "Method " + joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
+        final String exceptionDescription = exception.getClass().getSimpleName() + ": " + exception.getMessage();
         log.warn(baseMethod + " throws " + exceptionDescription);
     }
 }

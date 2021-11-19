@@ -18,9 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @Configuration
@@ -28,8 +27,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final List<String> AUTHORIZED_ENDPOINTS = List.of("/profile", "/hosting", "/booking", "/order", "/review", "/moderation", "/administration");
+
     private final CustomUserDetailsService userDetailsService;
     private final JwtUtils jwtUtils;
+    private final CorsConfig corsConfig;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Bean
@@ -44,34 +46,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilterBean(AuthenticationManager authenticationManager) {
-        JwtAuthenticationFilter authenticationTokenFilter = new JwtAuthenticationFilter(jwtUtils, userDetailsService);
+    public JwtAuthenticationFilter jwtAuthenticationFilterBean(final AuthenticationManager authenticationManager) {
+        final JwtAuthenticationFilter authenticationTokenFilter = new JwtAuthenticationFilter(jwtUtils, userDetailsService);
         authenticationTokenFilter.setAuthenticationManager(authenticationManager);
         return authenticationTokenFilter;
     }
 
-    // TODO: configure CORS
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-        return source;
-    }
-
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    public void configureAuthentication(final AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    protected void configure(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .httpBasic().disable()
                 .csrf().disable()
-                .cors()
-                .and()
-                .exceptionHandling()
+                .cors().configurationSource(corsConfig)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -84,15 +77,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/booking/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/order/**").hasRole(Roles.ROLE_USER.label)
                 .antMatchers("/review/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
                 .antMatchers("/moderation/**").hasRole(Roles.ROLE_MODER.label)
+                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
                 .anyRequest().authenticated();
     }
 
     //For swagger access only
     @Override
-    public void configure(WebSecurity web) {
-        web.ignoring()
-                .antMatchers("/v2/api-docs","/configuration/ui/**", "/swagger-resources/**", "/configuration/security/**", "/swagger-ui/**", "/webjars/**");
+    public void configure(final WebSecurity web) {
+        web.ignoring().antMatchers(
+                "/swagger-ui/**",
+                "/swagger-resources/**",
+                "/v2/api-docs",
+                "/webjars/**",
+                "/favicon.ico");
     }
 }

@@ -50,7 +50,7 @@ class UserServiceTest {
     @Test
     void existsByLogin() {
         //given
-        String login = "login";
+        final String login = "login";
 
         //when
         userService.existsByLogin(login);
@@ -114,7 +114,7 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        final UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
         userCreateRequest.setLogin(login);
         userCreateRequest.setEmail(email);
         given(userRepository.isLoginInUse(login)).willReturn(false);
@@ -124,9 +124,9 @@ class UserServiceTest {
         userService.createUser(userCreateRequest);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
+        final User capturedUser = userArgumentCaptor.getValue();
         assertEquals(capturedUser.getLogin(), userCreateRequest.getLogin());
         assertTrue(passwordEncoder.matches(userCreateRequest.getPassword(), capturedUser.getPassword()));
         assertEquals(capturedUser.getName(), userCreateRequest.getName());
@@ -144,7 +144,7 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        final UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
         userCreateRequest.setLogin(login);
         userCreateRequest.setEmail(email);
         given(userRepository.isLoginInUse(login)).willReturn(true);
@@ -160,7 +160,7 @@ class UserServiceTest {
         //given
         final String login = "login";
         final String email = "email@gmail.com";
-        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        final UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
         userCreateRequest.setLogin(login);
         userCreateRequest.setEmail(email);
         given(userRepository.isEmailInUse(email)).willReturn(true);
@@ -175,7 +175,7 @@ class UserServiceTest {
     void canUpdateUser() {
         //given
         final Long id = 1L;
-        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
+        final UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
         given(userRepository.existsById(id)).willReturn(true);
         given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
 
@@ -183,9 +183,9 @@ class UserServiceTest {
         userService.updateUser(id, userEditRequest);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
+        final User capturedUser = userArgumentCaptor.getValue();
         assertEquals(userEditRequest.getName(), capturedUser.getName());
         assertEquals(userEditRequest.getSurname(), capturedUser.getSurname());
         assertEquals(Gender.valueOf(userEditRequest.getGender()), capturedUser.getGender());
@@ -199,7 +199,7 @@ class UserServiceTest {
         //given
         final Long id = 1L;
         final String email = "new-email@gmail.com";
-        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
+        final UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
         userEditRequest.setEmail(email);
         given(userRepository.existsById(id)).willReturn(true);
         given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
@@ -215,7 +215,7 @@ class UserServiceTest {
     void canDeposit() {
         //given
         final Long id = 1L;
-        AmountRequest amountRequest = TestUtils.getAmountRequest();
+        final AmountRequest amountRequest = TestUtils.getAmountRequest();
         given(userRepository.isBanned(id)).willReturn(false);
         given(userRepository.existsById(id)).willReturn(true);
         given(userRepository.findUserByIdAndIsBannedFalse(id)).willReturn(TestUtils.getUser());
@@ -224,9 +224,9 @@ class UserServiceTest {
         userService.deposit(id, amountRequest);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
+        final User capturedUser = userArgumentCaptor.getValue();
         assertEquals(323, capturedUser.getBalance());
     }
 
@@ -234,7 +234,7 @@ class UserServiceTest {
     void throwsExceptionIfBannedOnDeposit() {
         //given
         final Long id = 1L;
-        AmountRequest amountRequest = TestUtils.getAmountRequest();
+        final AmountRequest amountRequest = TestUtils.getAmountRequest();
         given(userRepository.isBanned(id)).willReturn(true);
 
         //when, then
@@ -247,17 +247,17 @@ class UserServiceTest {
     void canPay() {
         //given
         final int amount = 100;
-        User user = TestUtils.getUser();
+        final User user = TestUtils.getUser();
         final int expected = user.getBalance() - amount;
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+        final Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when
         userService.pay(user, amount, timestamp);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
+        final User capturedUser = userArgumentCaptor.getValue();
         assertEquals(expected, capturedUser.getBalance());
         assertEquals(timestamp, capturedUser.getUpdated());
     }
@@ -266,8 +266,8 @@ class UserServiceTest {
     void throwsExceptionIfNotEnoughMoney() {
         //given
         final int amount = 300;
-        User user = TestUtils.getUser();
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+        final User user = TestUtils.getUser();
+        final Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
         assertThatThrownBy(() -> userService.pay(user, amount, timestamp))
@@ -279,17 +279,17 @@ class UserServiceTest {
     void canTransferMoney() {
         //given
         final int amount = 100;
-        User user = TestUtils.getUser();
+        final User user = TestUtils.getUser();
         final int expected = user.getBalance() + amount;
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+        final Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when
         userService.transferMoney(user, amount, timestamp);
 
         //then
-        ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
+        final ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         verify(userRepository).save(userArgumentCaptor.capture());
-        User capturedUser = userArgumentCaptor.getValue();
+        final User capturedUser = userArgumentCaptor.getValue();
         assertEquals(expected, capturedUser.getBalance());
         assertEquals(timestamp, capturedUser.getUpdated());
     }
@@ -298,8 +298,8 @@ class UserServiceTest {
     void throwsExceptionOnMoneyOverflow() {
         //given
         final int amount = Integer.MAX_VALUE;
-        User user = TestUtils.getUser();
-        Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
+        final User user = TestUtils.getUser();
+        final Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now(ZoneOffset.UTC));
 
         //when, then
         assertThatThrownBy(() -> userService.transferMoney(user, amount, timestamp))
@@ -317,10 +317,10 @@ class UserServiceTest {
         userService.banUser(id);
 
         //then
-        ArgumentCaptor<Timestamp> timestampArgumentCaptor = ArgumentCaptor.forClass(Timestamp.class);
-        ArgumentCaptor<Long> idArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        final ArgumentCaptor<Timestamp> timestampArgumentCaptor = ArgumentCaptor.forClass(Timestamp.class);
+        final ArgumentCaptor<Long> idArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         verify(userRepository).banUser(idArgumentCaptor.capture(), timestampArgumentCaptor.capture());
-        Timestamp capturedTimestamp = timestampArgumentCaptor.getValue();
+        final Timestamp capturedTimestamp = timestampArgumentCaptor.getValue();
         verify(userRepository).banUser(id, capturedTimestamp);
     }
 
@@ -345,10 +345,10 @@ class UserServiceTest {
         userService.unbanUser(id);
 
         //then
-        ArgumentCaptor<Timestamp> timestampArgumentCaptor = ArgumentCaptor.forClass(Timestamp.class);
-        ArgumentCaptor<Long> idArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        final ArgumentCaptor<Timestamp> timestampArgumentCaptor = ArgumentCaptor.forClass(Timestamp.class);
+        final ArgumentCaptor<Long> idArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         verify(userRepository).unbanUser(idArgumentCaptor.capture(), timestampArgumentCaptor.capture());
-        Timestamp capturedTimestamp = timestampArgumentCaptor.getValue();
+        final Timestamp capturedTimestamp = timestampArgumentCaptor.getValue();
         verify(userRepository).unbanUser(id, capturedTimestamp);
     }
 
@@ -366,8 +366,8 @@ class UserServiceTest {
     @Test
     void canTransformToUserFromUserCreateRequest() {
         //given
-        User user = TestUtils.getUser();
-        UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
+        final User user = TestUtils.getUser();
+        final UserEditRequest userEditRequest = TestUtils.getUserEditRequest();
 
         //when
         userService.transformToUser(userEditRequest, user);
@@ -384,10 +384,10 @@ class UserServiceTest {
     @Test
     void canTransformToNewUserFromUserCreateRequest() {
         //given
-        UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
+        final UserCreateRequest userCreateRequest = TestUtils.getUserCreateRequest();
 
         //when
-        User transformedUser = userService.transformToNewUser(userCreateRequest);
+        final User transformedUser = userService.transformToNewUser(userCreateRequest);
 
         //then
         assertEquals(transformedUser.getLogin(), userCreateRequest.getLogin());
@@ -403,10 +403,10 @@ class UserServiceTest {
     @Test
     void transformToNewUserResponse() {
         //given
-        User user = TestUtils.getUser();
+        final User user = TestUtils.getUser();
 
         //when
-        UserResponse userResponse = userService.transformToNewUserResponse(user);
+        final UserResponse userResponse = userService.transformToNewUserResponse(user);
 
         //then
         assertEquals(user.getId(), userResponse.getId());

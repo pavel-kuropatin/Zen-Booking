@@ -1,14 +1,18 @@
 package com.kuropatin.zenbooking.security.config;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties("jwt.config")
-@Data
+@Getter
+@Setter
 public class JwtConfig {
 
+    @Value("${jwt.config.secret}")
     private String secret;
-    private Integer expiration; //expiration time in seconds
+
+    @Value("${jwt.config.expiration}")
+    private Integer expiration; //expiration time in minutes
 }
