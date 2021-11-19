@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SearchRepository {
 
-    List<Property> searchByCriteria(Long userId, PropertySearchCriteria searchCriteria);
+    List<Property> searchByCriteria(final Long userId, final PropertySearchCriteria searchCriteria);
 }

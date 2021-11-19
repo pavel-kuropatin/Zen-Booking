@@ -29,28 +29,28 @@ public class OrderController {
     @ApiOperation(value = "Get list of all active orders of logged user")
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllActive() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getActiveOrders(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get list of all finished orders of logged user")
     @GetMapping("/history")
     public ResponseEntity<List<OrderResponse>> getAllFinished() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getOrderHistory(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get order with id {orderId} of logged user")
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getById(@PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewOrderResponse(service.getOrderById(orderId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Cancel order with id {orderId} of logged user")
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<SuccessfulResponse> cancel(@PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.cancelOrder(orderId, userId), HttpStatus.OK);
     }
 }

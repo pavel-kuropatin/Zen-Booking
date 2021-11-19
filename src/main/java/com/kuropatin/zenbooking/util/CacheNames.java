@@ -1,12 +1,13 @@
 package com.kuropatin.zenbooking.util;
 
+import com.kuropatin.zenbooking.exception.AppException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.lang.reflect.Field;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CacheNames {
+public final class CacheNames {
 
     public static final String ORDER = "order";
     public static final String PROPERTY_IMAGE = "propertyImage";
@@ -18,14 +19,14 @@ public class CacheNames {
 
     public static String[] getCacheNames() {
         try {
-            Field[] fields = Class.forName(CacheNames.class.getName()).getDeclaredFields();
-            String[] cacheNames = new String[fields.length];
+            final Field[] fields = Class.forName(CacheNames.class.getName()).getDeclaredFields();
+            final String[] cacheNames = new String[fields.length];
             for (int i = 0; i < fields.length; i++) {
                 cacheNames[i] = (String) fields[i].get(fields[i].getName());
             }
             return cacheNames;
         } catch (ClassNotFoundException | IllegalAccessException e) {
-            throw new RuntimeException(e.getMessage());
+            throw new AppException(e);
         }
     }
 }

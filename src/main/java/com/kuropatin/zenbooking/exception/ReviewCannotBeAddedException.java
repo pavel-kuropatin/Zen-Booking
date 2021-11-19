@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public class ReviewCannotBeAddedException extends RuntimeException {
 
-    public ReviewCannotBeAddedException(Long id) {
+    public ReviewCannotBeAddedException(final Long id) {
         super(MessageFormat.format("Review cannot be added to order with id: {0}", id));
     }
 }

@@ -3,7 +3,7 @@ package com.kuropatin.zenbooking.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class IntegerInRangeValidator implements ConstraintValidator<IntegerInRange, CharSequence> {
+public final class IntegerInRangeValidator implements ConstraintValidator<IntegerInRange, CharSequence> {
 
     private int min;
     private int max;
@@ -15,7 +15,7 @@ public class IntegerInRangeValidator implements ConstraintValidator<IntegerInRan
     }
 
     @Override
-    public boolean isValid(CharSequence value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(final CharSequence value, final ConstraintValidatorContext constraintValidatorContext) {
         if (value == null) {
             return false;
         }

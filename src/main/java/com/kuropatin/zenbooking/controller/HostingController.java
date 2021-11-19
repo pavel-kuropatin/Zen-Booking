@@ -42,7 +42,7 @@ public class HostingController {
     @ApiOperation(value = "Get all property of logged user")
     @GetMapping("/property")
     public ResponseEntity<List<PropertyResponse>> getAllPropertyOfUser() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToListPropertyResponse(propertyService.getAllPropertyOfUser(userId)), HttpStatus.OK);
     }
 
@@ -50,14 +50,14 @@ public class HostingController {
     @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @GetMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create property for logged user")
     @PostMapping("/property")
     public ResponseEntity<PropertyResponse> createProperty(@Valid @RequestBody final PropertyRequest propertyRequest) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.createProperty(userId, propertyRequest)), HttpStatus.CREATED);
     }
 
@@ -65,70 +65,70 @@ public class HostingController {
     @ApiImplicitParam(name = "propertyId", dataTypeClass = String.class, paramType = "path", value = "propertyId", required = true)
     @PutMapping("/property/{propertyId}")
     public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyRequest propertyRequest) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.updateProperty(propertyId, userId, propertyRequest)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Delete property with id {propertyId} of logged user")
     @DeleteMapping("/property/{propertyId}")
     public ResponseEntity<SuccessfulResponse> deletePropertyById(@PathVariable final Long propertyId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.softDeletePropertyByIdAndUserId(propertyId, userId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all images of property with id {propertyId} of logged user")
     @GetMapping("/property/{propertyId}/images")
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get image with id {imageId} of property with id {propertyId} of logged user")
     @GetMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyIdAndUserId(imageId, propertyId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Create image of property with id {propertyId} of logged user")
     @PostMapping("/property/{propertyId}/images")
     public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.create(propertyId, userId, propertyImageRequest)), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete image with id {imageId} of property with id {propertyId} of logged user")
     @DeleteMapping("/property/{propertyId}/images/{imageId}")
     public ResponseEntity<SuccessfulResponse> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.softDeletePropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get all order requests of logged user")
     @GetMapping("/requests")
     public ResponseEntity<List<OrderResponse>> getAllOrderRequests() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getAllOrderRequestsOfUser(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get order request with id {orderId} of logged user")
     @GetMapping("/requests/{orderId}")
     public ResponseEntity<OrderResponse> getOrderRequestById(@PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.getOrderRequestByIdAndUserId(orderId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Accept order request with id {orderId} of logged user")
     @PutMapping("/requests/{orderId}/accept")
     public ResponseEntity<SuccessfulResponse> acceptOrder(@PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.acceptOrder(orderId, userId), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Decline order request with id {orderId} of logged user")
     @PutMapping("/requests/{orderId}/decline")
     public ResponseEntity<SuccessfulResponse> declineOrder(@PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.declineOrder(orderId, userId), HttpStatus.OK);
     }
 }

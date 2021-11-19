@@ -34,28 +34,28 @@ public class ReviewController {
     @ApiOperation(value = "Get all reviews of logged user")
     @GetMapping
     public ResponseEntity<List<ReviewResponse>> getAllReviewsOfUser() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToListReviewResponse(reviewService.getAllReviewsOfUser(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get review of logged user by id {reviewId}")
     @GetMapping("/{reviewId}")
     public ResponseEntity<ReviewResponse> getReviewOfUserById(@PathVariable final Long reviewId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.getReviewOfUserById(reviewId, userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Get a list of orders to add a review")
     @GetMapping("/available-for-review")
     public ResponseEntity<List<OrderResponse>> getOrdersToAddReview() {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getOrdersToAddReview(userId)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add review")
     @PostMapping("/available-for-review/{orderId}/add")
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
-        long userId = authenticationUtils.getId();
+        final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.CREATED);
     }
 }

@@ -8,13 +8,13 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class PropertyMapper implements RowMapper<Property> {
+public final class PropertyMapper implements RowMapper<Property> {
 
     @Override
-    public Property mapRow(ResultSet resultSet, int i) throws SQLException {
-        Property property = new Property();
+    public Property mapRow(final ResultSet resultSet, final int i) throws SQLException {
+        final Property property = new Property();
         property.setId(resultSet.getLong("id"));
-        User user = new User();
+        final User user = new User();
         user.setId(resultSet.getLong("user_id"));
         property.setUser(user);
         property.setType(PropertyType.valueOf(resultSet.getString("type")));
