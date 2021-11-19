@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public class PropertyCannotBeOrderedException extends RuntimeException {
 
-    public PropertyCannotBeOrderedException(Long id) {
+    public PropertyCannotBeOrderedException(final Long id) {
         super(MessageFormat.format("Could not order property with id: {0}", id));
     }
 }

@@ -28,7 +28,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {
+@EqualsAndHashCode(callSuper = true, exclude = {
         "user", "propertyImages", "order"
 })
 @Entity
@@ -95,7 +95,7 @@ public class Property extends BasicEntity {
     @JsonManagedReference
     private Order order;
 
-    public void addPropertyImage(PropertyImage propertyImage) {
+    public void addPropertyImage(final PropertyImage propertyImage) {
         this.propertyImages.add(propertyImage);
     }
 

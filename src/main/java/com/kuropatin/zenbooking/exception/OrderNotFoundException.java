@@ -4,11 +4,11 @@ import java.text.MessageFormat;
 
 public class OrderNotFoundException extends RuntimeException {
 
-    public OrderNotFoundException(Long id) {
+    public OrderNotFoundException(final Long id) {
         super(MessageFormat.format("Could not find order with id: {0}", id));
     }
 
-    public OrderNotFoundException(String message) {
+    public OrderNotFoundException(final String message) {
         super(message);
     }
 }

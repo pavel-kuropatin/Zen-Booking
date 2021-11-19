@@ -11,13 +11,13 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public class TestUtils {
+public final class TestUtils {
 
-    public TestUtils() {
+    private TestUtils() {
     }
 
     public static User getUser() {
-        User user = new User();
+        final User user = new User();
         user.setRole(Roles.ROLE_USER);
         user.setLogin("login");
         user.setPassword("12345678");
@@ -35,7 +35,7 @@ public class TestUtils {
     }
 
     public static UserCreateRequest getUserCreateRequest() {
-        UserCreateRequest userCreateRequest = new UserCreateRequest();
+        final UserCreateRequest userCreateRequest = new UserCreateRequest();
         userCreateRequest.setLogin("login");
         userCreateRequest.setPassword("12345678");
         userCreateRequest.setName("Name");
@@ -48,7 +48,7 @@ public class TestUtils {
     }
 
     public static UserEditRequest getUserEditRequest() {
-        UserEditRequest userEditRequest = new UserCreateRequest();
+        final UserEditRequest userEditRequest = new UserCreateRequest();
         userEditRequest.setName("New Name");
         userEditRequest.setSurname("NewSurname");
         userEditRequest.setGender("MALE");
@@ -59,7 +59,7 @@ public class TestUtils {
     }
 
     public static AmountRequest getAmountRequest() {
-        AmountRequest amountRequest = new AmountRequest();
+        final AmountRequest amountRequest = new AmountRequest();
         amountRequest.setAmount("123");
         return amountRequest;
     }

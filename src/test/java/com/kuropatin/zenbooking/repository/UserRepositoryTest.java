@@ -31,12 +31,12 @@ class UserRepositoryTest {
     void shouldBeTrueExistsByLoginAndIsBannedFalse() {
         //given
         final String login = "login";
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setLogin(login);
         userRepository.save(newUser);
 
         //when
-        boolean shouldBeTrue = userRepository.existsByLoginAndIsBannedFalse(login);
+        final boolean shouldBeTrue = userRepository.existsByLoginAndIsBannedFalse(login);
 
         //then
         assertTrue(shouldBeTrue);
@@ -47,18 +47,18 @@ class UserRepositoryTest {
         //given
         final String login = "login";
         final String username = "username";
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setLogin(login);
         userRepository.save(newUser);
 
         //when
-        boolean shouldBeTrue = userRepository.isLoginInUse(login);
+        final boolean shouldBeTrue = userRepository.isLoginInUse(login);
 
         //then
         assertTrue(shouldBeTrue);
 
         //when
-        boolean shouldBeFalse = userRepository.isLoginInUse(username);
+        final boolean shouldBeFalse = userRepository.isLoginInUse(username);
 
         //then
         assertFalse(shouldBeFalse);
@@ -69,18 +69,18 @@ class UserRepositoryTest {
         //given
         final String email = "email@gmail.com";
         final String secondEmail = "not@email.com";
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setEmail(email);
         userRepository.save(newUser);
 
         //when
-        boolean shouldBeTrue = userRepository.isEmailInUse(email);
+        final boolean shouldBeTrue = userRepository.isEmailInUse(email);
 
         //then
         assertTrue(shouldBeTrue);
 
         //when
-        boolean shouldBeFalse = userRepository.isEmailInUse(secondEmail);
+        final boolean shouldBeFalse = userRepository.isEmailInUse(secondEmail);
 
         //then
         assertFalse(shouldBeFalse);
@@ -90,13 +90,13 @@ class UserRepositoryTest {
     void shouldBeTrueIsBanned() {
         //given
         final boolean isBanned = true;
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setBanned(isBanned);
 
-        User savedUser = userRepository.save(newUser);
+        final User savedUser = userRepository.save(newUser);
 
         //when
-        boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
 
         //then
         assertTrue(shouldBeTrue);
@@ -106,13 +106,13 @@ class UserRepositoryTest {
     void shouldBeFalseIsBanned() {
         //given
         final boolean isBanned = false;
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setBanned(isBanned);
 
-        User savedUser = userRepository.save(newUser);
+        final User savedUser = userRepository.save(newUser);
 
         //when
-        boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
 
         //then
         assertFalse(shouldBeFalse);
@@ -122,20 +122,20 @@ class UserRepositoryTest {
     void testBanUser() {
         //given
         final boolean isBanned = false;
-        User newUser = TestUtils.getUser();
+        final User newUser = TestUtils.getUser();
         newUser.setBanned(isBanned);
 
-        User savedUser = userRepository.save(newUser);
+        final User savedUser = userRepository.save(newUser);
 
         //when
-        boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
 
         //then
         assertFalse(shouldBeFalse);
 
         //when
         userRepository.banUser(savedUser.getId(), Timestamp.valueOf(LocalDateTime.now()));
-        boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
 
         //then
         assertTrue(shouldBeTrue);
@@ -145,27 +145,27 @@ class UserRepositoryTest {
     void testUnbanUser() {
         //given
         final boolean isBanned = true;
-        User newUser = getUserForTest();
+        final User newUser = getUserForTest();
         newUser.setBanned(isBanned);
 
-        User savedUser = userRepository.save(newUser);
+        final User savedUser = userRepository.save(newUser);
 
         //when
-        boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeTrue = userRepository.isBanned(savedUser.getId());
 
         //then
         assertTrue(shouldBeTrue);
 
         //when
         userRepository.unbanUser(savedUser.getId(), Timestamp.valueOf(LocalDateTime.now()));
-        boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
+        final boolean shouldBeFalse = userRepository.isBanned(savedUser.getId());
 
         //then
         assertFalse(shouldBeFalse);
     }
 
     private User getUserForTest() {
-        User user = new User();
+        final User user = new User();
         user.setId(0L);
         user.setRole(Roles.ROLE_USER);
         user.setLogin("login");
