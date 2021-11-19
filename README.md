@@ -44,7 +44,7 @@ _NOTE: Functionality for admins and moderators will be implemented on the later 
 - Sonar Cloud _via GitHub Actions_
 
 ### Known issues:
-1. JWT exception can't be handled to send informative message to front side.
+1. Seems everything if fine.
 
 ### TODO:
 1. Fix known issues.
