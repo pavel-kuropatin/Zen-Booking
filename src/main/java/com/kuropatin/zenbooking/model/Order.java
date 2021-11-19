@@ -27,7 +27,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = {
+@EqualsAndHashCode(callSuper = true, exclude = {
         "property", "user", "reviews"
 })
 @Entity
@@ -67,7 +67,7 @@ public class Order extends BasicEntity {
     @JsonManagedReference
     private Set<Review> reviews;
 
-    public void addReview(Review review) {
+    public void addReview(final Review review) {
         this.reviews.add(review);
     }
 

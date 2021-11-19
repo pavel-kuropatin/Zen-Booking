@@ -12,7 +12,7 @@ public class ErrorResponse extends AbstractErrorResponse {
 
     private String message;
 
-    public ErrorResponse(Exception e, HttpStatus status) {
+    public ErrorResponse(final Exception e, final HttpStatus status) {
         super(e, status);
         this.message = e.getMessage();
     }

@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(exclude = "order")
+@EqualsAndHashCode(callSuper = true, exclude = "order")
 @Entity
 @Table(name = "review")
 public class Review extends BasicEntity {

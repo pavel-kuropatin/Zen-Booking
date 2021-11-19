@@ -3,7 +3,7 @@ package com.kuropatin.zenbooking.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ShortInRangeValidator implements ConstraintValidator<ShortInRange, CharSequence> {
+public final class ShortInRangeValidator implements ConstraintValidator<ShortInRange, CharSequence> {
 
     private short min;
     private short max;
@@ -15,12 +15,12 @@ public class ShortInRangeValidator implements ConstraintValidator<ShortInRange, 
     }
 
     @Override
-    public boolean isValid(CharSequence value, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(final CharSequence value, final ConstraintValidatorContext constraintValidatorContext) {
         if (value == null) {
             return false;
         }
         try {
-            short integer = Short.parseShort(value.toString());
+            final short integer = Short.parseShort(value.toString());
             return integer >= min && integer <= max;
         } catch (NumberFormatException e){
             return false;
