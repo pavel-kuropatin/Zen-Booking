@@ -1,6 +1,6 @@
 package com.kuropatin.zenbooking.util;
 
-import com.kuropatin.zenbooking.exception.AppException;
+import com.kuropatin.zenbooking.exception.ApplicationException;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +26,7 @@ public final class CacheNames {
             }
             return cacheNames;
         } catch (ClassNotFoundException | IllegalAccessException e) {
-            throw new AppException(e);
+            throw new ApplicationException(e);
         }
     }
 }

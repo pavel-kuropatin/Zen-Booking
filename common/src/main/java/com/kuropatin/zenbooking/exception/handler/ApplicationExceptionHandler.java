@@ -1,5 +1,21 @@
-package com.kuropatin.zenbooking.exception;
+package com.kuropatin.zenbooking.exception.handler;
 
+import com.kuropatin.zenbooking.exception.ApplicationException;
+import com.kuropatin.zenbooking.exception.BadCredentialsException;
+import com.kuropatin.zenbooking.exception.EmailAlreadyInUseException;
+import com.kuropatin.zenbooking.exception.InsufficientMoneyAmountException;
+import com.kuropatin.zenbooking.exception.LoginAlreadyInUseException;
+import com.kuropatin.zenbooking.exception.MoneyAmountExceededException;
+import com.kuropatin.zenbooking.exception.OrderCannotBeAcceptedException;
+import com.kuropatin.zenbooking.exception.OrderCannotBeCancelledException;
+import com.kuropatin.zenbooking.exception.OrderCannotBeDeclinedException;
+import com.kuropatin.zenbooking.exception.OrderNotFoundException;
+import com.kuropatin.zenbooking.exception.PropertyCannotBeOrderedException;
+import com.kuropatin.zenbooking.exception.PropertyImageNotFoundException;
+import com.kuropatin.zenbooking.exception.PropertyNotFoundException;
+import com.kuropatin.zenbooking.exception.ReviewCannotBeAddedException;
+import com.kuropatin.zenbooking.exception.ReviewNotFoundException;
+import com.kuropatin.zenbooking.exception.UserNotFoundException;
 import com.kuropatin.zenbooking.model.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +23,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public final class CustomExceptionHandler {
+public final class ApplicationExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> badCredentialsHandler(final BadCredentialsException e) {
@@ -84,8 +100,8 @@ public final class CustomExceptionHandler {
         return throwCustomException(e, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AppException.class)
-    public ResponseEntity<Object> appExceptionHandler(final AppException e) {
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<Object> appExceptionHandler(final ApplicationException e) {
         return throwCustomException(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
