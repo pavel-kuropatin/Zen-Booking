@@ -1,6 +1,6 @@
 package com.kuropatin.zenbooking.repository;
 
-import com.kuropatin.zenbooking.exception.AppException;
+import com.kuropatin.zenbooking.exception.ApplicationException;
 import com.kuropatin.zenbooking.model.Property;
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.model.request.PropertySearchCriteria;
@@ -139,7 +139,7 @@ public class JdbcSearch implements SearchRepository {
             params.put(++index, (pageNumber - 1) * perPage);
             return new QueryAndParams(queryBuilder.toString(), params);
         } catch (Exception e) {
-            throw new AppException(e);
+            throw new ApplicationException(e);
         }
     }
 }
