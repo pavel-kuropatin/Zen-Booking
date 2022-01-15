@@ -15,7 +15,7 @@
         <module>web</module>
     </modules>
 
-    <groupId>com.kuropatin</groupId>
+    <groupId>com.kuropatin.zenbooking</groupId>
     <artifactId>zen-booking</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
@@ -41,7 +41,7 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.kuropatin</groupId>
+                <groupId>com.kuropatin.zenbooking</groupId>
                 <artifactId>common</artifactId>
                 <version>1.0</version>
             </dependency>

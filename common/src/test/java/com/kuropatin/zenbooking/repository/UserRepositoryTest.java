@@ -1,12 +1,16 @@
 package com.kuropatin.zenbooking.repository;
 
 import com.kuropatin.zenbooking.model.User;
+import com.kuropatin.zenbooking.test.config.Beans;
 import com.kuropatin.zenbooking.test.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -14,8 +18,11 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled(value = "Cannot autowire UserRepository")
 @DataJpaTest
+@ContextConfiguration(classes = {Beans.class})
+@EntityScan("com.kuropatin.zenbooking")
+@EnableAutoConfiguration
+@EnableJpaRepositories("com.kuropatin.zenbooking")
 class UserRepositoryTest {
 
     @Autowired
