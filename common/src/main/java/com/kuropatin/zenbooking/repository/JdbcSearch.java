@@ -42,8 +42,8 @@ public class JdbcSearch implements SearchRepository {
         try(final Connection connection = hikariDataSource.getConnection();
             final PreparedStatement preparedStatement = connection.prepareStatement(sql)
         ) {
-            for (int i = 1; i <= params.size(); i++) {
-                preparedStatement.setObject(i, params.get(i));
+            for (final Map.Entry<Integer, Object> entry : params.entrySet()) {
+                preparedStatement.setObject(entry.getKey(), entry.getValue());
             }
             try (final ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
