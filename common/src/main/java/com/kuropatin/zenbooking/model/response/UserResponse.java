@@ -1,10 +1,12 @@
 package com.kuropatin.zenbooking.model.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuropatin.zenbooking.model.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.SneakyThrows;
 
 import java.time.LocalDate;
 
@@ -22,4 +24,10 @@ public class UserResponse {
     private String email;
     private String phone;
     private int balance;
+
+    @SneakyThrows
+    @Override
+    public String toString() {
+        return new ObjectMapper().writeValueAsString(this);
+    }
 }
