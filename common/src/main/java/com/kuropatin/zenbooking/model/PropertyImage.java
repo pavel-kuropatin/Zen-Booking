@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,9 +32,4 @@ public class PropertyImage extends BasicEntity {
     @JoinColumn(name = "property_id")
     @JsonBackReference
     private Property property;
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }

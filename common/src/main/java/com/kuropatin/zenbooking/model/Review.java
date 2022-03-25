@@ -6,8 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,9 +38,4 @@ public class Review extends BasicEntity {
     @JoinColumn(name = "order_id")
     @JsonBackReference
     private Order order;
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
-    }
 }
