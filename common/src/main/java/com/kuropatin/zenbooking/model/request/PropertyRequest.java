@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.model.request;
 
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.validation.IntegerInRange;
+import com.kuropatin.zenbooking.validation.NullableBoolean;
 import com.kuropatin.zenbooking.validation.ShortInRange;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
@@ -34,38 +34,38 @@ public class PropertyRequest {
     private String address;
 
     @IntegerInRange(min = 1, max = 1000, message = "Enter price, should be between 1 and 1000")
-    private String price;
+    private Integer price;
 
     @ShortInRange(min = 1, max = 10, message = "Enter number of guests, should be between 1 and 10")
-    protected String guests;
+    protected Short guests;
 
     @ShortInRange(min = 1, max = 10, message = "Enter rooms of rooms, should be between 1 and 10")
-    protected String rooms;
+    protected Short rooms;
 
     @ShortInRange(min = 1, max = 10, message = "Enter number of beds, should be between 1 and 10")
-    protected String beds;
+    protected Short beds;
 
     @NotBlank(message = "Enter if property has kitchen")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    protected String hasKitchen;
+    @NullableBoolean
+    protected Boolean hasKitchen;
 
     @NotBlank(message = "Enter if property has washer")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    protected String hasWasher;
+    @NullableBoolean
+    protected Boolean hasWasher;
 
     @NotBlank(message = "Enter if property has TV")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    protected String hasTv;
+    @NullableBoolean
+    protected Boolean hasTv;
 
     @NotBlank(message = "Enter if property has internet")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    protected String hasInternet;
+    @NullableBoolean
+    protected Boolean hasInternet;
 
     @NotBlank(message = "Enter if pets allowed")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    protected String isPetsAllowed;
+    @NullableBoolean
+    protected Boolean isPetsAllowed;
 
     @NotBlank(message = "Enter if property available for booking")
-    @Pattern(regexp = "^(true|false)$", message = "Should be a boolean value true or false")
-    private String isAvailable;
+    @NullableBoolean
+    private Boolean isAvailable;
 }

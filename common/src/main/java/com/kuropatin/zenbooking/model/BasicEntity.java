@@ -25,7 +25,7 @@ public abstract class BasicEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected long id;
+    protected Long id;
 
     @Column(name = "created")
     protected Timestamp created;

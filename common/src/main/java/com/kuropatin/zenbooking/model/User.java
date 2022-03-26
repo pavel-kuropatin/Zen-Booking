@@ -60,10 +60,10 @@ public class User extends BasicEntity {
     private String phone;
 
     @Column(name = "balance")
-    private int balance = 0;
+    private Integer balance = 0;
 
     @Column(name = "is_banned")
-    private boolean isBanned = false;
+    private Boolean isBanned = false;
 
     @Setter(value = AccessLevel.NONE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

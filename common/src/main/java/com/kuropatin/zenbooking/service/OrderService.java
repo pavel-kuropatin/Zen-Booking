@@ -50,7 +50,7 @@ public class OrderService {
     }
 
     public Order getOrderById(final Long orderId, final Long userId) {
-        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
+        if (orderRepository.existsByIdAndUserId(orderId, userId)) {
             return orderRepository.findOrderByIdAndUserId(orderId, userId);
         } else {
             throw new OrderNotFoundException(orderId);
@@ -63,7 +63,7 @@ public class OrderService {
             InsufficientMoneyAmountException.class
     })
     public Order createOrder(final Long clientId, final Long propertyId, final OrderRequest orderRequest) {
-        if(propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()), propertyId)) {
+        if (propertyService.canPropertyBeOrdered(LocalDate.parse(orderRequest.getStartDate()), LocalDate.parse(orderRequest.getEndDate()), propertyId)) {
             final User client = userService.getUserById(clientId);
             final Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
             final Order order = new Order();
@@ -90,9 +90,9 @@ public class OrderService {
             MoneyAmountExceededException.class
     })
     public SuccessfulResponse cancelOrder(final Long orderId, final Long userId) {
-        if(orderRepository.existsByIdAndUserId(orderId, userId)) {
+        if (orderRepository.existsByIdAndUserId(orderId, userId)) {
             final Order orderToCancel = getOrderById(orderId, userId);
-            if(!orderToCancel.isAccepted() && !orderToCancel.isCancelled()) {
+            if (Boolean.FALSE.equals(orderToCancel.getIsAccepted()) && Boolean.FALSE.equals(orderToCancel.getIsCancelled())) {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice(), timestamp);
                 orderRepository.cancelOrder(orderId, timestamp);
@@ -123,9 +123,9 @@ public class OrderService {
             MoneyAmountExceededException.class
     })
     public SuccessfulResponse acceptOrder(final Long orderId, final Long hostId) {
-        if(orderRepository.existsByIdAndHostId(orderId, hostId)) {
+        if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             final Order orderToAccept = orderRepository.findOrderById(orderId);
-            if(!orderToAccept.isAccepted() && !orderToAccept.isCancelled()) {
+            if (Boolean.FALSE.equals(orderToAccept.getIsAccepted()) && Boolean.FALSE.equals(orderToAccept.getIsCancelled())) {
                 final User host = userService.getUserById(hostId);
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(host, orderToAccept.getTotalPrice(), timestamp);
@@ -147,7 +147,7 @@ public class OrderService {
     public SuccessfulResponse declineOrder(final Long orderId, final Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             final Order orderToDecline = orderRepository.findOrderById(orderId);
-            if (!orderToDecline.isAccepted() && !orderToDecline.isCancelled() && !orderToDecline.isFinished()) {
+            if (Boolean.FALSE.equals(orderToDecline.getIsAccepted()) && Boolean.FALSE.equals(orderToDecline.getIsCancelled()) && Boolean.FALSE.equals(orderToDecline.getIsFinished())) {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice(), timestamp);
                 orderRepository.declineOrder(orderId, timestamp);
@@ -171,7 +171,7 @@ public class OrderService {
 
     public List<OrderResponse> transformToListOrderResponse(final List<Order> orders) {
         final List<OrderResponse> orderResponseList = new ArrayList<>();
-        for(Order order : orders) {
+        for (final Order order : orders) {
             orderResponseList.add(transformToNewOrderResponse(order));
         }
         return orderResponseList;
@@ -182,21 +182,26 @@ public class OrderService {
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
-        orderResponse.setAccepted(order.isAccepted());
-        orderResponse.setCancelled(order.isCancelled());
-        orderResponse.setFinished(order.isFinished());
+        orderResponse.setIsAccepted(order.getIsAccepted());
+        orderResponse.setIsCancelled(order.getIsCancelled());
+        orderResponse.setIsFinished(order.getIsFinished());
         orderResponse.setClientId(order.getUser().getId());
         orderResponse.setHostId(order.getProperty().getUser().getId());
         orderResponse.setPropertyId(order.getProperty().getId());
-        if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+
+        final boolean isAccepted = Boolean.TRUE.equals(orderResponse.getIsAccepted());
+        final boolean isCancelled = Boolean.TRUE.equals(orderResponse.getIsCancelled());
+        final boolean isFinished = Boolean.TRUE.equals(orderResponse.getIsFinished());
+
+        if (!isAccepted && !isCancelled && !isFinished) {
             orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED.label);
-        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && !orderResponse.isFinished()) {
+        } else if (isAccepted && !isCancelled && !isFinished) {
             orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED.label);
-        } else if(!orderResponse.isAccepted() && orderResponse.isCancelled() && orderResponse.isFinished()) {
+        } else if (!isAccepted && isCancelled && isFinished) {
             orderResponse.setStatus(OrderStatus.CANCELLED.label);
-        } else if(!orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+        } else if (!isAccepted && !isCancelled && isFinished) {
             orderResponse.setStatus(OrderStatus.DECLINED.label);
-        } else if(orderResponse.isAccepted() && !orderResponse.isCancelled() && orderResponse.isFinished()) {
+        } else if (isAccepted && !isCancelled && isFinished) {
             orderResponse.setStatus(OrderStatus.FINISHED.label);
         } else {
             orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN.label);
@@ -213,7 +218,7 @@ public class OrderService {
     }
 
     public void autoFinishOrder(final Long id) {
-        if(orderRepository.existsById(id)) {
+        if (orderRepository.existsById(id)) {
             orderRepository.finishOrder(id, ApplicationTimeUtils.getTimestamp());
         } else {
             throw new OrderNotFoundException(MessageFormat.format("Order with id: {0} cannot be finished automatically", id));

@@ -28,7 +28,7 @@ public final class TestUtils {
         user.setEmail("email@gmail.com");
         user.setPhone("+375112223344");
         user.setBalance(200);
-        user.setBanned(false);
+        user.setIsBanned(false);
         user.setCreated(Timestamp.valueOf(LocalDateTime.now()));
         user.setUpdated(Timestamp.valueOf(LocalDateTime.now()));
         return user;
@@ -60,7 +60,7 @@ public final class TestUtils {
 
     public static AmountRequest getAmountRequest() {
         final AmountRequest amountRequest = new AmountRequest();
-        amountRequest.setAmount("123");
+        amountRequest.setAmount(123);
         return amountRequest;
     }
 }

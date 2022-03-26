@@ -32,7 +32,7 @@ public class PropertyImageService {
     }
 
     public PropertyImage getImageOfPropertyByIdAndPropertyIdAndUserId(final Long imageId, final Long propertyId, final Long userId) {
-        if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
+        if (repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
             return repository.findPropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId);
         } else {
             throw new PropertyImageNotFoundException(imageId);
@@ -40,7 +40,7 @@ public class PropertyImageService {
     }
 
     public PropertyImage getImageOfPropertyByIdAndPropertyId(final Long imageId, final Long propertyId) {
-        if(repository.existsByIdAndPropertyId(imageId, propertyId)) {
+        if (repository.existsByIdAndPropertyId(imageId, propertyId)) {
             return repository.findPropertyImageByIdAndPropertyId(imageId, propertyId);
         } else {
             throw new PropertyImageNotFoundException(imageId);
@@ -60,7 +60,7 @@ public class PropertyImageService {
     }
 
     public SuccessfulResponse softDeletePropertyImageByIdAndPropertyIdAndUserId(final Long imageId, final Long propertyId, final Long userId) {
-        if(repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
+        if (repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeletePropertyImage(imageId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
@@ -75,7 +75,7 @@ public class PropertyImageService {
 
     public List<PropertyImageResponse> transformToListPropertyImageResponse(final List<PropertyImage> propertyImages) {
         final List<PropertyImageResponse> propertyImageResponseList = new ArrayList<>();
-        for(PropertyImage propertyImage : propertyImages) {
+        for (final PropertyImage propertyImage : propertyImages) {
             propertyImageResponseList.add(transformToNewPropertyImageResponse(propertyImage));
         }
         return propertyImageResponseList;

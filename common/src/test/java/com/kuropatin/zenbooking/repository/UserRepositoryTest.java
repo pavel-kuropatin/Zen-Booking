@@ -97,7 +97,7 @@ class UserRepositoryTest {
         //given
         final boolean isBanned = true;
         final User newUser = TestUtils.getUser();
-        newUser.setBanned(isBanned);
+        newUser.setIsBanned(isBanned);
 
         final User savedUser = userRepository.save(newUser);
 
@@ -113,7 +113,7 @@ class UserRepositoryTest {
         //given
         final boolean isBanned = false;
         final User newUser = TestUtils.getUser();
-        newUser.setBanned(isBanned);
+        newUser.setIsBanned(isBanned);
 
         final User savedUser = userRepository.save(newUser);
 
@@ -129,7 +129,7 @@ class UserRepositoryTest {
         //given
         final boolean isBanned = false;
         final User newUser = TestUtils.getUser();
-        newUser.setBanned(isBanned);
+        newUser.setIsBanned(isBanned);
 
         final User savedUser = userRepository.save(newUser);
 
@@ -152,7 +152,7 @@ class UserRepositoryTest {
         //given
         final boolean isBanned = true;
         final User newUser = TestUtils.getUser();
-        newUser.setBanned(isBanned);
+        newUser.setIsBanned(isBanned);
 
         final User savedUser = userRepository.save(newUser);
 

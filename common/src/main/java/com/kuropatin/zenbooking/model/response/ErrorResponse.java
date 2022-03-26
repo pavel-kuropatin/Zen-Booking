@@ -16,7 +16,7 @@ import java.util.Map;
 public class ErrorResponse {
 
     private String timestamp;
-    private String status;
+    private Integer status;
     private String exception;
     private String message;
     private Map<String, String> validationErrors;
@@ -24,14 +24,14 @@ public class ErrorResponse {
     public ErrorResponse(final Exception e, final HttpStatus status) {
         final StackTraceElement element = e.getStackTrace()[0];
         this.timestamp = ApplicationTimeUtils.getTimeString();
-        this.status = status.value() + " " + status.getReasonPhrase();
-        this.exception = e.getClass().getName() + " at " + element.getClassName() + ":Line " + element.getLineNumber();
+        this.status = status.value();
+        this.exception = e.getClass().getName() + " at " + element.toString();
         this.message = e.getMessage();
     }
 
     public ErrorResponse(final HttpStatus status, final Map<String, String> validationErrors) {
         this.timestamp = ApplicationTimeUtils.getTimeString();
-        this.status = status.value() + " " + status.getReasonPhrase();
+        this.status = status.value();
         this.validationErrors = new LinkedHashMap<>();
         this.validationErrors.putAll(validationErrors);
     }

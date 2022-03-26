@@ -29,9 +29,9 @@ public final class PropertyMapper implements RowMapper<Property> {
         property.setHasWasher(resultSet.getBoolean("has_washer"));
         property.setHasTv(resultSet.getBoolean("has_tv"));
         property.setHasInternet(resultSet.getBoolean("has_internet"));
-        property.setPetsAllowed(resultSet.getBoolean("is_pets_allowed"));
-        property.setAvailable(resultSet.getBoolean("is_available"));
-        property.setDeleted(resultSet.getBoolean("is_deleted"));
+        property.setIsPetsAllowed(resultSet.getBoolean("is_pets_allowed"));
+        property.setIsAvailable(resultSet.getBoolean("is_available"));
+        property.setIsDeleted(resultSet.getBoolean("is_deleted"));
         property.setCreated(resultSet.getTimestamp("created"));
         property.setUpdated(resultSet.getTimestamp("updated"));
         return property;

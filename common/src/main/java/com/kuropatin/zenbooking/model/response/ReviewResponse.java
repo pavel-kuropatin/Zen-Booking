@@ -12,11 +12,11 @@ import lombok.Setter;
 @Setter
 public class ReviewResponse {
 
-    private long id;
-    private long propertyId;
+    private Long id;
+    private Long propertyId;
     private String summary;
     private String description;
-    private byte rating;
+    private Byte rating;
 
     @Override
     public String toString() {

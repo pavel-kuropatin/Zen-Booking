@@ -24,29 +24,29 @@ public class ReviewService {
     private final ReviewRepository repository;
     private final OrderService orderService;
 
-    public List<Review> getAllReviewsOfUser(Long userId) {
+    public List<Review> getAllReviewsOfUser(final Long userId) {
         return repository.findAllReviewsOfUser(userId);
     }
 
-    public Review getReviewOfUserById(Long reviewId, Long userId) {
-        if(repository.existsReviewByIdAndUserId(reviewId, userId)) {
+    public Review getReviewOfUserById(final Long reviewId, final Long userId) {
+        if (repository.existsReviewByIdAndUserId(reviewId, userId)) {
             return repository.findReviewOfUserById(reviewId, userId);
         } else {
             throw new ReviewNotFoundException(reviewId);
         }
     }
 
-    public Review getById(Long reviewId) {
+    public Review getById(final Long reviewId) {
         return repository.findReviewById(reviewId);
     }
 
-    public Review createReview(ReviewRequest reviewRequest, Long userId, Long orderId) {
-        if(repository.canReviewBeAdded(orderId, userId)) {
+    public Review createReview(final ReviewRequest reviewRequest, final Long userId, final Long orderId) {
+        if (repository.canReviewBeAdded(orderId, userId)) {
             Order order = orderService.getOrderById(orderId, userId);
             Review review = transformToNewReview(reviewRequest);
             order.addReview(review);
             review.setOrder(order);
-            Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             review.setCreated(timestamp);
             review.setUpdated(timestamp);
             return repository.save(review);
@@ -55,9 +55,9 @@ public class ReviewService {
         }
     }
 
-    public SuccessfulResponse softDeleteReview(Long reviewId) {
-        if(repository.existsById(reviewId)) {
-            Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
+    public SuccessfulResponse softDeleteReview(final Long reviewId) {
+        if (repository.existsById(reviewId)) {
+            final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteReview(reviewId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Review with id: {0} successfully deleted", reviewId));
         } else {
@@ -65,30 +65,30 @@ public class ReviewService {
         }
     }
 
-    public Review transformToNewReview(ReviewRequest reviewRequest) {
+    public Review transformToNewReview(final ReviewRequest reviewRequest) {
         return transformToReview(reviewRequest, new Review());
     }
 
-    public Review transformToReview(ReviewRequest reviewRequest, Review review) {
+    public Review transformToReview(final ReviewRequest reviewRequest, final Review review) {
         review.setSummary(reviewRequest.getSummary());
         review.setDescription(reviewRequest.getDescription());
-        review.setRating(Byte.parseByte(reviewRequest.getRating()));
+        review.setRating(reviewRequest.getRating());
         return review;
     }
 
-    public ReviewResponse transformToNewReviewResponse(Review review) {
+    public ReviewResponse transformToNewReviewResponse(final Review review) {
         return transformToReviewResponse(review, new ReviewResponse());
     }
 
-    public List<ReviewResponse> transformToListReviewResponse(List<Review> reviews) {
-        List<ReviewResponse> reviewResponseList = new ArrayList<>();
-        for(Review review : reviews) {
+    public List<ReviewResponse> transformToListReviewResponse(final List<Review> reviews) {
+        final List<ReviewResponse> reviewResponseList = new ArrayList<>();
+        for (final Review review : reviews) {
             reviewResponseList.add(transformToNewReviewResponse(review));
         }
         return reviewResponseList;
     }
 
-    private ReviewResponse transformToReviewResponse(Review review, ReviewResponse reviewResponse) {
+    private ReviewResponse transformToReviewResponse(final Review review, final ReviewResponse reviewResponse) {
         reviewResponse.setId(review.getId());
         reviewResponse.setPropertyId(review.getOrder().getProperty().getId());
         reviewResponse.setSummary(review.getSummary());
