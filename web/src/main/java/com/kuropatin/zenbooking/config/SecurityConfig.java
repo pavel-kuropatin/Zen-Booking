@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -80,32 +79,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
+//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .and()
                 .cors()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilterBean(authenticationManagerBean()), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/profile/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/hosting/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/booking/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/order/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/review/**").hasRole(Roles.ROLE_USER.label)
-                .antMatchers("/moderation/**").hasRole(Roles.ROLE_MODER.label)
-                .antMatchers("/administration/**").hasRole(Roles.ROLE_ADMIN.label)
+                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()
+                .antMatchers("/error/**").permitAll()
+                .antMatchers("/api/v1/register").permitAll()
+                .antMatchers("/api/v1/login").permitAll()
+                .antMatchers("/api/v1/profile/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/api/v1/hosting/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/api/v1/booking/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/api/v1/order/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/api/v1/review/**").hasRole(Roles.ROLE_USER.label)
+                .antMatchers("/api/v1/moderation/**").hasRole(Roles.ROLE_MODER.label)
+                .antMatchers("/api/v1/administration/**").hasRole(Roles.ROLE_ADMIN.label)
                 .anyRequest().authenticated();
-    }
-
-    //For swagger access only
-    @Override
-    public void configure(final WebSecurity web) {
-        web.ignoring().antMatchers(
-                "/swagger-ui/**",
-                "/swagger-resources/**",
-                "/v2/api-docs",
-                "/webjars/**",
-                "/favicon.ico");
     }
 }

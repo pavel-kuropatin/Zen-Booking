@@ -1,11 +1,16 @@
 package com.kuropatin.zenbooking.controller;
 
+import com.kuropatin.zenbooking.model.response.ErrorResponse;
 import com.kuropatin.zenbooking.model.response.OrderResponse;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
+import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.OrderService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,37 +22,81 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
-@RequestMapping("/orders")
+@RequestMapping(path = "/api/v1/orders", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
-@Api(value = "Order Controller", tags = "User Orders", description = "Actions for user orders")
+@Tag(name = "Order Controller", description = "Actions for user orders")
 public class OrderController {
 
     private final OrderService service;
     private final AuthenticationUtils authenticationUtils;
 
-    @ApiOperation(value = "Get list of all active orders of logged user")
+    @Operation(summary = "Get list of all active orders of logged user", description = "Description")
+    @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(schema = @Schema(implementation = UserResponse.class))
+    })
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+            @Content(schema = @Schema(implementation = OrderResponse.class))
+    })
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllActive() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getActiveOrders(userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get list of all finished orders of logged user")
+    @Operation(summary = "Get list of all finished orders of logged user", description = "Description")
+    @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(schema = @Schema(implementation = UserResponse.class))
+    })
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
     @GetMapping("/history")
     public ResponseEntity<List<OrderResponse>> getAllFinished() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getOrderHistory(userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get order with id {orderId} of logged user")
+    @Operation(summary = "Get order of logged user by order id", description = "Description")
+    @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(schema = @Schema(implementation = UserResponse.class))
+    })
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "404", description = "Order Not Found", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponse> getById(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewOrderResponse(service.getOrderById(orderId, userId)), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Cancel order with id {orderId} of logged user")
+    @Operation(summary = "Cancel order of logged user with id {orderId}", description = "Description")
+    @ApiResponse(responseCode = "200", description = "OK", content = {
+            @Content(schema = @Schema(implementation = UserResponse.class))
+    })
+    @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "404", description = "Order Not Found", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
+    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+            @Content(schema = @Schema(implementation = ErrorResponse.class))
+    })
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<SuccessfulResponse> cancel(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
