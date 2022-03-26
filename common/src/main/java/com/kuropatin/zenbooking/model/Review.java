@@ -29,10 +29,10 @@ public class Review extends BasicEntity {
     private String description;
 
     @Column(name = "rating")
-    private byte rating;
+    private Byte rating;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

@@ -13,21 +13,21 @@ import lombok.Setter;
 @Setter
 public class PropertyResponse {
 
-    private long id;
+    private Long id;
     private PropertyType type;
     private String name;
     private String description;
     private String address;
-    private int price;
-    private short guests;
-    private short rooms;
-    private short beds;
-    private boolean hasKitchen;
-    private boolean hasWasher;
-    private boolean hasTv;
-    private boolean hasInternet;
-    private boolean isPetsAllowed;
-    private boolean isAvailable;
+    private Integer price;
+    private Short guests;
+    private Short rooms;
+    private Short beds;
+    private Boolean hasKitchen;
+    private Boolean hasWasher;
+    private Boolean hasTv;
+    private Boolean hasInternet;
+    private Boolean isPetsAllowed;
+    private Boolean isAvailable;
     private String rating;
 
     @Override

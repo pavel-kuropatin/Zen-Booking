@@ -28,10 +28,10 @@ public final class ScheduledTasks {
     @Scheduled(fixedDelay = 60 * 1000, initialDelay = 60 * 1000)
     public void tryToAccept() {
         final List<Order> ordersToAccept = orderService.getOrdersToAutoAccept();
-        if(!ordersToAccept.isEmpty()) {
+        if (!ordersToAccept.isEmpty()) {
             final LocalDateTime now = ApplicationTimeUtils.getLocalDateTime();
-            for (Order order : ordersToAccept) {
-                if(order.getUpdated().toLocalDateTime().isBefore(now.minusMinutes(5))) {
+            for (final Order order : ordersToAccept) {
+                if (order.getUpdated().toLocalDateTime().isBefore(now.minusMinutes(5))) {
                     log.trace(MessageFormat.format("Automatically accept order with id {0}", order.getId()));
                     orderService.acceptOrder(order.getId(), order.getProperty().getUser().getId());
                 }
@@ -48,11 +48,11 @@ public final class ScheduledTasks {
             lastCheckDate = now;
         }
         if (!isCheckedForFinishToday) {
-            StopWatch timer = new StopWatch();
+            final StopWatch timer = new StopWatch();
             timer.start();
             isCheckedForFinishToday = true;
-            List<Order> ordersToFinish = orderService.getOrdersToAutoFinish();
-            for (Order order : ordersToFinish) {
+            final List<Order> ordersToFinish = orderService.getOrdersToAutoFinish();
+            for (final Order order : ordersToFinish) {
                 if(order.getEndDate().isBefore(now)) {
                     log.trace(MessageFormat.format("Automatically finish order with id {0}", order.getId()));
                     orderService.autoFinishOrder(order.getId());

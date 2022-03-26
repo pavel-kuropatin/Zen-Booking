@@ -17,7 +17,7 @@ public class AdminService {
     }
 
     public Admin getAdminByLogin(final String login) {
-        if(existsByLogin(login)) {
+        if (existsByLogin(login)) {
             return repository.findAdminByLoginAndIsSuspendedFalseAndIsDeletedFalse(login);
         } else {
             throw new UserNotFoundException(login);

@@ -28,50 +28,50 @@ public class PropertyService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
 
-    public boolean canPropertyBeOrdered(LocalDate startDate, LocalDate endDate, Long propertyId) {
+    public boolean canPropertyBeOrdered(final LocalDate startDate, final LocalDate endDate, final Long propertyId) {
         return repository.canPropertyBeOrdered(startDate, endDate, propertyId);
     }
 
-    public List<Property> getAllPropertyOfUser(Long userId) {
+    public List<Property> getAllPropertyOfUser(final Long userId) {
         return repository.findAllPropertyOfUser(userId);
     }
 
-    public Property getPropertyByIdAndUserId(Long propertyId, Long userId) {
-        if(repository.existsByIdAndUserId(propertyId, userId)) {
+    public Property getPropertyByIdAndUserId(final Long propertyId, final Long userId) {
+        if (repository.existsByIdAndUserId(propertyId, userId)) {
             return repository.findPropertyByIdAndOwnerId(propertyId, userId);
         } else {
             throw new PropertyNotFoundException(propertyId);
         }
     }
 
-    public Property getPropertyById(Long propertyId, Long userId) {
-        if(repository.existsByIdAndNotUserId(propertyId, userId)) {
+    public Property getPropertyById(final Long propertyId, final Long userId) {
+        if (repository.existsByIdAndNotUserId(propertyId, userId)) {
             return repository.findPropertyByIdAndNotOwnerId(propertyId, userId);
         } else {
             throw new PropertyNotFoundException(propertyId);
         }
     }
 
-    public Property createProperty(Long userId, PropertyRequest propertyRequest) {
-        User user = userService.getUserById(userId);
-        Property property = transformToNewProperty(propertyRequest);
+    public Property createProperty(final Long userId, final PropertyRequest propertyRequest) {
+        final User user = userService.getUserById(userId);
+        final Property property = transformToNewProperty(propertyRequest);
         user.addProperty(property);
         property.setUser(user);
-        Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
+        final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
         property.setCreated(timestamp);
         property.setUpdated(timestamp);
         return repository.save(property);
     }
 
-    public Property updateProperty(Long propertyId, Long userId, PropertyRequest propertyRequest) {
-        Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
+    public Property updateProperty(final Long propertyId, final Long userId, final PropertyRequest propertyRequest) {
+        final Property propertyToUpdate = getPropertyByIdAndUserId(propertyId, userId);
         transformToProperty(propertyRequest, propertyToUpdate);
         propertyToUpdate.setUpdated(ApplicationTimeUtils.getTimestamp());
         return repository.save(propertyToUpdate);
     }
 
-    public SuccessfulResponse softDeletePropertyByIdAndUserId(Long propertyId, Long userId) {
-        if(repository.existsByIdAndUserId(propertyId, userId)) {
+    public SuccessfulResponse softDeletePropertyByIdAndUserId(final Long propertyId, final Long userId) {
+        if (repository.existsByIdAndUserId(propertyId, userId)) {
             Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteProperty(propertyId, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("Property with id: {0} successfully deleted", propertyId));
@@ -80,46 +80,46 @@ public class PropertyService {
         }
     }
 
-    public String getRatingOfProperty(Long propertyId) {
-        Optional<Double> rating = reviewRepository.getRatingOfProperty(propertyId);
+    public String getRatingOfProperty(final Long propertyId) {
+        final Optional<Double> rating = reviewRepository.getRatingOfProperty(propertyId);
         return rating.map(aDouble -> String.valueOf(Math.round(aDouble * 10) / 10.0)).orElse("n/a");
     }
 
-    public Property transformToNewProperty(PropertyRequest propertyRequest) {
+    public Property transformToNewProperty(final PropertyRequest propertyRequest) {
         return transformToProperty(propertyRequest, new Property());
     }
 
-    private Property transformToProperty(PropertyRequest propertyRequest, Property property) {
+    private Property transformToProperty(final PropertyRequest propertyRequest,final  Property property) {
         property.setType(PropertyType.valueOf(propertyRequest.getType()));
         property.setName(propertyRequest.getName());
         property.setDescription(propertyRequest.getDescription());
         property.setAddress(propertyRequest.getAddress());
-        property.setPrice(Integer.parseInt(propertyRequest.getPrice()));
-        property.setGuests(Short.parseShort(propertyRequest.getGuests()));
-        property.setRooms(Short.parseShort(propertyRequest.getRooms()));
-        property.setBeds(Short.parseShort(propertyRequest.getBeds()));
-        property.setHasKitchen(Boolean.parseBoolean(propertyRequest.getHasKitchen()));
-        property.setHasWasher(Boolean.parseBoolean(propertyRequest.getHasWasher()));
-        property.setHasTv(Boolean.parseBoolean(propertyRequest.getHasTv()));
-        property.setHasInternet(Boolean.parseBoolean(propertyRequest.getHasInternet()));
-        property.setPetsAllowed(Boolean.parseBoolean(propertyRequest.getIsPetsAllowed()));
-        property.setAvailable(Boolean.parseBoolean(propertyRequest.getIsAvailable()));
+        property.setPrice(propertyRequest.getPrice());
+        property.setGuests(propertyRequest.getGuests());
+        property.setRooms(propertyRequest.getRooms());
+        property.setBeds(propertyRequest.getBeds());
+        property.setHasKitchen(propertyRequest.getHasKitchen());
+        property.setHasWasher(propertyRequest.getHasWasher());
+        property.setHasTv(propertyRequest.getHasTv());
+        property.setHasInternet(propertyRequest.getHasInternet());
+        property.setIsPetsAllowed(propertyRequest.getIsPetsAllowed());
+        property.setIsAvailable(propertyRequest.getIsAvailable());
         return property;
     }
 
-    public PropertyResponse transformToNewPropertyResponse(Property property) {
+    public PropertyResponse transformToNewPropertyResponse(final Property property) {
         return transformToPropertyResponse(property, new PropertyResponse());
     }
 
-    public List<PropertyResponse> transformToListPropertyResponse(List<Property> properties) {
-        List<PropertyResponse> propertyResponseList = new ArrayList<>();
-        for(Property property : properties) {
+    public List<PropertyResponse> transformToListPropertyResponse(final List<Property> properties) {
+        final List<PropertyResponse> propertyResponseList = new ArrayList<>();
+        for (final Property property : properties) {
             propertyResponseList.add(transformToNewPropertyResponse(property));
         }
         return propertyResponseList;
     }
 
-    private PropertyResponse transformToPropertyResponse(Property property, PropertyResponse propertyResponse) {
+    private PropertyResponse transformToPropertyResponse(final Property property, final PropertyResponse propertyResponse) {
         propertyResponse.setId(property.getId());
         propertyResponse.setType(property.getType());
         propertyResponse.setName(property.getName());
@@ -129,12 +129,12 @@ public class PropertyService {
         propertyResponse.setGuests(property.getGuests());
         propertyResponse.setRooms(property.getRooms());
         propertyResponse.setBeds(property.getBeds());
-        propertyResponse.setHasKitchen(property.isHasKitchen());
-        propertyResponse.setHasWasher(property.isHasWasher());
-        propertyResponse.setHasTv(property.isHasTv());
-        propertyResponse.setHasInternet(property.isHasInternet());
-        propertyResponse.setPetsAllowed(property.isPetsAllowed());
-        propertyResponse.setAvailable(property.isAvailable());
+        propertyResponse.setHasKitchen(property.getHasKitchen());
+        propertyResponse.setHasWasher(property.getHasWasher());
+        propertyResponse.setHasTv(property.getHasTv());
+        propertyResponse.setHasInternet(property.getHasInternet());
+        propertyResponse.setIsPetsAllowed(property.getIsPetsAllowed());
+        propertyResponse.setIsAvailable(property.getIsAvailable());
         propertyResponse.setRating(getRatingOfProperty(property.getId()));
         return propertyResponse;
     }

@@ -35,8 +35,8 @@ public class Admin extends BasicEntity {
     private String displayedName;
 
     @Column(name = "is_suspended")
-    private boolean isSuspended = false;
+    private Boolean isSuspended = false;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 }

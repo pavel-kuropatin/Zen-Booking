@@ -47,37 +47,37 @@ public class Property extends BasicEntity {
     private String address;
 
     @Column(name = "price")
-    private int price;
+    private Integer price;
 
     @Column(name = "guests")
-    private short guests;
+    private Short guests;
 
     @Column(name = "rooms")
-    private short rooms;
+    private Short rooms;
 
     @Column(name = "beds")
-    private short beds;
+    private Short beds;
 
     @Column(name = "has_kitchen")
-    private boolean hasKitchen;
+    private Boolean hasKitchen;
 
     @Column(name = "has_washer")
-    private boolean hasWasher;
+    private Boolean hasWasher;
 
     @Column(name = "has_tv")
-    private boolean hasTv;
+    private Boolean hasTv;
 
     @Column(name = "has_internet")
-    private boolean hasInternet;
+    private Boolean hasInternet;
 
     @Column(name = "is_pets_allowed")
-    private boolean isPetsAllowed;
+    private Boolean isPetsAllowed;
 
     @Column(name = "is_available")
-    private boolean isAvailable;
+    private Boolean isAvailable;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

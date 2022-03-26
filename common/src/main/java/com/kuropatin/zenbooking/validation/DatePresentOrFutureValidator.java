@@ -17,7 +17,7 @@ public final class DatePresentOrFutureValidator implements ConstraintValidator<D
         try {
             final LocalDate date = LocalDate.parse(value);
             return date.isEqual(ApplicationTimeUtils.getLocalDate()) || date.isAfter(ApplicationTimeUtils.getLocalDate());
-        } catch (DateTimeParseException e){
+        } catch (DateTimeParseException e) {
             return false;
         }
     }
