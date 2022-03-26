@@ -1,6 +1,7 @@
 package com.kuropatin.zenbooking.model.response;
 
 import com.kuropatin.zenbooking.model.PropertyType;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +29,9 @@ public class PropertyResponse {
     private boolean isPetsAllowed;
     private boolean isAvailable;
     private String rating;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }

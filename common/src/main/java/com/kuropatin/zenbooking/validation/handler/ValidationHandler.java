@@ -23,10 +23,10 @@ public final class ValidationHandler extends ResponseEntityExceptionHandler {
     @Override
     @NonNull
     protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException e, @NonNull final HttpHeaders headers, @NonNull final HttpStatus status, @NonNull final WebRequest request) {
-        final Map<String, String> errors = new LinkedHashMap<>();
+        final Map<String, String> validationErrors = new LinkedHashMap<>();
         e.getBindingResult().getAllErrors().forEach(
-                error -> errors.put(((FieldError) error).getField(), error.getDefaultMessage())
+                error -> validationErrors.put(((FieldError) error).getField(), error.getDefaultMessage())
         );
-        return new ResponseEntity<>(new ErrorResponse(e, status, errors), status);
+        return new ResponseEntity<>(new ErrorResponse(status, validationErrors), status);
     }
 }

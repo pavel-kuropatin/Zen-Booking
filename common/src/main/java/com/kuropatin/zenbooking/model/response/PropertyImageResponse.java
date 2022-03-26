@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model.response;
 
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,9 @@ public class PropertyImageResponse {
 
     private long id;
     private String imgUrl;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }

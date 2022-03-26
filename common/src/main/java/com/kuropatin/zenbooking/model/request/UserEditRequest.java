@@ -40,6 +40,6 @@ public class UserEditRequest {
 
     @NotBlank(message = "Enter phone number")
     @Size(max = 20, message = "Phone number should be 20 characters or less")
-    @Pattern(regexp = "^[+]\\d+$", message = "Phone number should start with + and contain only numbers")
+    @Pattern(regexp = "^[+375]\\d+$", message = "Phone number should start with +375 code and contain only numbers")
     private String phone;
 }

@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model.response;
 
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +17,9 @@ public class ReviewResponse {
     private String summary;
     private String description;
     private byte rating;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }
