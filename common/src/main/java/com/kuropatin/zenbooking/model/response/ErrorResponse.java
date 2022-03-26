@@ -19,7 +19,7 @@ public class ErrorResponse {
     private String status;
     private String exception;
     private String message;
-    private Map<String, String> errors;
+    private Map<String, String> validationErrors;
 
     public ErrorResponse(final Exception e, final HttpStatus status) {
         final StackTraceElement element = e.getStackTrace()[0];
@@ -29,13 +29,11 @@ public class ErrorResponse {
         this.message = e.getMessage();
     }
 
-    public ErrorResponse(final Exception e, final HttpStatus status, final Map<String, String> errors) {
-        final StackTraceElement element = e.getStackTrace()[0];
+    public ErrorResponse(final HttpStatus status, final Map<String, String> validationErrors) {
         this.timestamp = ApplicationTimeUtils.getTimeString();
         this.status = status.value() + " " + status.getReasonPhrase();
-        this.exception = e.getClass().getName() + " at " + element.getClassName() + ":Line " + element.getLineNumber();
-        this.errors = new LinkedHashMap<>();
-        this.errors.putAll(errors);
+        this.validationErrors = new LinkedHashMap<>();
+        this.validationErrors.putAll(validationErrors);
     }
 
     @Override
