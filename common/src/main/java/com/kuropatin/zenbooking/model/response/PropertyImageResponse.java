@@ -1,11 +1,10 @@
 package com.kuropatin.zenbooking.model.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,9 +15,8 @@ public class PropertyImageResponse {
     private long id;
     private String imgUrl;
 
-    @SneakyThrows
     @Override
     public String toString() {
-        return new ObjectMapper().writeValueAsString(this);
+        return ToStringUtils.toJsonString(this);
     }
 }

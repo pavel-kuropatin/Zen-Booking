@@ -1,11 +1,10 @@
 package com.kuropatin.zenbooking.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kuropatin.zenbooking.util.ApplicationTimeUtils;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 
 import java.util.LinkedHashMap;
@@ -39,9 +38,8 @@ public class ErrorResponse {
         this.errors.putAll(errors);
     }
 
-    @SneakyThrows
     @Override
     public String toString() {
-        return new ObjectMapper().writeValueAsString(this);
+        return ToStringUtils.toJsonString(this);
     }
 }

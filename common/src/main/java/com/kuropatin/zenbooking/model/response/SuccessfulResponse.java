@@ -1,9 +1,8 @@
 package com.kuropatin.zenbooking.model.response;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 
 import java.sql.Timestamp;
@@ -22,9 +21,8 @@ public class SuccessfulResponse {
         this.message = message;
     }
 
-    @SneakyThrows
     @Override
     public String toString() {
-        return new ObjectMapper().writeValueAsString(this);
+        return ToStringUtils.toJsonString(this);
     }
 }
