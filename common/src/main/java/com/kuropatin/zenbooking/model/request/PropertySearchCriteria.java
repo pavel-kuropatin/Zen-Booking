@@ -4,6 +4,8 @@ import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.validation.DatePresentOrFuture;
 import com.kuropatin.zenbooking.validation.EmptyOrBigger;
 import com.kuropatin.zenbooking.validation.EmptyOrIntegerInRange;
+import com.kuropatin.zenbooking.validation.EmptyOrShortInRange;
+import com.kuropatin.zenbooking.validation.NullableBoolean;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @NoArgsConstructor
@@ -28,46 +29,46 @@ public class PropertySearchCriteria {
     private String address = "";
 
     @EmptyOrIntegerInRange(min = 1, max = 1000, message = "Minimum price should be empty or between 1 and 1000")
-    private String priceMin = "";
+    private Integer priceMin;
 
     @EmptyOrIntegerInRange(min = 1, max = 1000, message = "Maximum price should be empty or between 1 and 1000")
-    private String priceMax = "";
+    private Integer priceMax;
 
-    @EmptyOrIntegerInRange(min = 1, max = 10, message = "Number of guests should be empty or between 1 and 10")
-    protected String guests = "";
+    @EmptyOrShortInRange(min = 1, max = 10, message = "Number of guests should be empty or between 1 and 10")
+    protected Short guests;
 
-    @EmptyOrIntegerInRange(min = 1, max = 10, message = "Number of rooms should be empty or between 1 and 10")
-    protected String rooms = "";
+    @EmptyOrShortInRange(min = 1, max = 10, message = "Number of rooms should be empty or between 1 and 10")
+    protected Short rooms;
 
-    @EmptyOrIntegerInRange(min = 1, max = 10, message = "Number of beds should be empty or between 1 and 10")
-    protected String beds = "";
+    @EmptyOrShortInRange(min = 1, max = 10, message = "Number of beds should be empty or between 1 and 10")
+    protected Short beds;
 
-    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
-    protected String hasKitchen = "";
+    @NullableBoolean
+    protected Boolean hasKitchen;
 
-    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
-    protected String hasWasher = "";
+    @NullableBoolean
+    protected Boolean hasWasher;
 
-    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
-    protected String hasTv = "";
+    @NullableBoolean
+    protected Boolean hasTv;
 
-    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
-    protected String hasInternet = "";
+    @NullableBoolean
+    protected Boolean hasInternet;
 
-    @Pattern(regexp = "^(|true|false)$", message = "Should be empty or a boolean value true or false")
-    protected String isPetsAllowed = "";
+    @NullableBoolean
+    protected Boolean isPetsAllowed;
 
     @NotBlank(message = "Enter start date")
     @DatePresentOrFuture
-    private String startDate = "";
+    private String startDate;
 
     @NotBlank(message = "Enter end date")
     @DatePresentOrFuture
-    private String endDate = "";
+    private String endDate;
 
     @EmptyOrIntegerInRange(min = 1, max = 100, message = "Number of property per page should be empty or between 1 and 100")
-    private String perPage = "";
+    private Integer perPage;
 
     @EmptyOrBigger(min = 0, message = "Page number should be empty or bigger than 0")
-    private String pageNumber = "";
+    private Integer pageNumber;
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class PropertyImageResponse {
 
-    private long id;
+    private Long id;
     private String imgUrl;
 
     @Override

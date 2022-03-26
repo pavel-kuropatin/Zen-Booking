@@ -11,5 +11,5 @@ import lombok.Setter;
 public class AmountRequest {
 
     @IntegerInRange(min = 1, max = 1000, message = "Enter amount to deposit, should be between 1 and 1000")
-    private String amount;
+    private Integer amount;
 }

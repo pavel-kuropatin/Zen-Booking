@@ -7,6 +7,7 @@ import com.kuropatin.zenbooking.model.request.PropertySearchCriteria;
 import com.kuropatin.zenbooking.repository.mapper.PropertyMapper;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -45,57 +46,53 @@ public class JdbcTemplateSearch implements SearchRepository {
                     "AND p.is_available = true "
             );
             params.add(userId);
-            if (!criteria.getAddress().isEmpty()) {
+            if (StringUtils.isNotBlank(criteria.getAddress())) {
                 queryBuilder.append("AND LOWER(p.address) LIKE LOWER('%' || ? || '%') ");
                 params.add(criteria.getAddress());
             }
-            if (!criteria.getType().equals(PropertyType.NOT_SPECIFIED.toString())) {
+            if (StringUtils.isNotBlank(criteria.getType()) && !criteria.getType().equals(PropertyType.NOT_SPECIFIED.toString())) {
                 queryBuilder.append("AND p.type = ? ");
                 params.add(criteria.getType());
             }
-            if (!criteria.getPriceMin().isEmpty()) {
+            if (criteria.getPriceMin() != null) {
                 queryBuilder.append("AND p.price >= ? ");
-                params.add(Integer.parseInt(criteria.getPriceMin()));
+                params.add(criteria.getPriceMin());
             }
-            if (!criteria.getPriceMax().isEmpty()) {
+            if (criteria.getPriceMax() != null) {
                 queryBuilder.append("AND p.price <= ? ");
-                params.add(Integer.parseInt(criteria.getPriceMax()));
+                params.add(criteria.getPriceMax());
             }
-            if (!criteria.getGuests().isEmpty()) {
+            if (criteria.getGuests() != null) {
                 queryBuilder.append("AND p.guests >= ? ");
-                params.add(Short.parseShort(criteria.getGuests()));
+                params.add(criteria.getGuests());
             }
-            if (!criteria.getRooms().isEmpty()) {
+            if (criteria.getRooms() != null) {
                 queryBuilder.append("AND p.rooms >= ? ");
-                params.add(Short.parseShort(criteria.getRooms()));
+                params.add(criteria.getRooms());
             }
-            if (!criteria.getBeds().isEmpty()) {
+            if (criteria.getBeds() != null) {
                 queryBuilder.append("AND p.beds >= ? ");
-                params.add(Short.parseShort(criteria.getBeds()));
+                params.add(criteria.getBeds());
             }
-            if (!criteria.getHasKitchen().isEmpty() && Boolean.parseBoolean(criteria.getHasKitchen())) {
+            if (Boolean.TRUE.equals(criteria.getHasKitchen())) {
                 queryBuilder.append("AND p.has_kitchen = ? ");
-                params.add(Boolean.parseBoolean(criteria.getHasKitchen()));
+                params.add(criteria.getHasKitchen());
             }
-            if (!criteria.getHasWasher().isEmpty() && Boolean.parseBoolean(criteria.getHasWasher())) {
+            if (Boolean.TRUE.equals(criteria.getHasWasher())) {
                 queryBuilder.append("AND p.has_washer = ? ");
-                params.add(Boolean.parseBoolean(criteria.getHasWasher()));
+                params.add(criteria.getHasWasher());
             }
-            if (!criteria.getHasTv().isEmpty() && Boolean.parseBoolean(criteria.getHasTv())) {
+            if (Boolean.TRUE.equals(criteria.getHasTv())) {
                 queryBuilder.append("AND p.has_tv = ? ");
-                params.add(Boolean.parseBoolean(criteria.getHasTv()));
+                params.add(criteria.getHasTv());
             }
-            if (!criteria.getHasInternet().isEmpty() && Boolean.parseBoolean(criteria.getHasInternet())) {
+            if (Boolean.TRUE.equals(criteria.getHasInternet())) {
                 queryBuilder.append("AND p.has_internet = ? ");
-                params.add(Boolean.parseBoolean(criteria.getHasInternet()));
+                params.add(criteria.getHasInternet());
             }
-            if (!criteria.getIsPetsAllowed().isEmpty() && Boolean.parseBoolean(criteria.getIsPetsAllowed())) {
+            if (Boolean.TRUE.equals(criteria.getIsPetsAllowed())) {
                 queryBuilder.append("AND p.is_pets_allowed = ? ");
-                params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
-            }
-            if (!criteria.getPerPage().isEmpty()) {
-                queryBuilder.append("AND p.is_pets_allowed = ? ");
-                params.add(Boolean.parseBoolean(criteria.getIsPetsAllowed()));
+                params.add(criteria.getIsPetsAllowed());
             }
             queryBuilder.append(
                     "AND p.id NOT IN ( " +
@@ -105,9 +102,9 @@ public class JdbcTemplateSearch implements SearchRepository {
                     "AND (to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
                     "OR to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
                     "OR o.start_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd') " +
-                    "OR o.end_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd'))) " +
-                    "ORDER BY p.price ASC " +
-                    "LIMIT ? OFFSET ?"
+                            "OR o.end_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd'))) " +
+                            "ORDER BY p.price ASC " +
+                            "LIMIT ? OFFSET ?"
             );
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
@@ -115,8 +112,8 @@ public class JdbcTemplateSearch implements SearchRepository {
             params.add(criteria.getEndDate());
             params.add(criteria.getStartDate());
             params.add(criteria.getEndDate());
-            final int perPage = criteria.getPerPage().isEmpty() ? 10 : Integer.parseInt(criteria.getPerPage());
-            final int pageNumber = criteria.getPageNumber().isEmpty() ? 1 : Integer.parseInt(criteria.getPageNumber());
+            final int perPage = criteria.getPerPage() == null ? 10 : criteria.getPerPage();
+            final int pageNumber = criteria.getPageNumber() == null ? 1 : criteria.getPageNumber();
             params.add(perPage);
             params.add((pageNumber - 1) * perPage);
             return new QueryAndParams(queryBuilder.toString(), params);

@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public User getUserById(final Long id) {
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             return repository.findUserByIdAndIsBannedFalse(id);
         } else {
             throw new UserNotFoundException(id);
@@ -43,7 +43,7 @@ public class UserService {
     }
 
     public User getUserByLogin(final String login) {
-        if(existsByLogin(login)) {
+        if (existsByLogin(login)) {
             return repository.findUserByLoginAndIsBannedFalse(login);
         } else {
             throw new UserNotFoundException(login);
@@ -51,10 +51,10 @@ public class UserService {
     }
 
     public User createUser(final UserCreateRequest userCreateRequest) {
-        if(repository.isLoginInUse(userCreateRequest.getLogin())) {
+        if (repository.isLoginInUse(userCreateRequest.getLogin())) {
             throw new LoginAlreadyInUseException(userCreateRequest.getLogin());
         }
-        if(repository.isEmailInUse(userCreateRequest.getEmail())) {
+        if (repository.isEmailInUse(userCreateRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userCreateRequest.getEmail());
         }
         final User user = transformToNewUser(userCreateRequest);
@@ -65,7 +65,7 @@ public class UserService {
 
     public User updateUser(final Long id, final UserEditRequest userEditRequest) {
         final User userToUpdate = getUserById(id);
-        if(!userToUpdate.getEmail().equals(userEditRequest.getEmail()) && repository.isEmailInUse(userEditRequest.getEmail())) {
+        if (!userToUpdate.getEmail().equals(userEditRequest.getEmail()) && repository.isEmailInUse(userEditRequest.getEmail())) {
             throw new EmailAlreadyInUseException(userEditRequest.getEmail());
         }
         transformToUser(userEditRequest, userToUpdate);
@@ -74,11 +74,11 @@ public class UserService {
     }
 
     public User deposit(final Long id, final AmountRequest amountRequest) {
-        if(repository.isBanned(id)) {
+        if (repository.isBanned(id)) {
             throw new UserNotFoundException(id);
         }
         final User user = getUserById(id);
-        user.setBalance(user.getBalance() + Integer.parseInt(amountRequest.getAmount()));
+        user.setBalance(user.getBalance() + amountRequest.getAmount());
         user.setUpdated(ApplicationTimeUtils.getTimestamp());
         return repository.save(user);
     }
@@ -88,7 +88,7 @@ public class UserService {
             MoneyAmountExceededException.class
     })
     public void pay(final User user, final int amount, final Timestamp timestamp) {
-        if(user.getBalance() >= amount) {
+        if (user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
             user.setUpdated(timestamp);
             repository.save(user);
@@ -113,7 +113,7 @@ public class UserService {
     }
 
     public SuccessfulResponse banUser(final Long id) {
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.banUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
@@ -123,7 +123,7 @@ public class UserService {
     }
 
     public SuccessfulResponse unbanUser(final Long id) {
-        if(repository.existsById(id)) {
+        if (repository.existsById(id)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.unbanUser(id, timestamp);
             return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
@@ -132,14 +132,13 @@ public class UserService {
         }
     }
 
-    public User transformToUser(final UserEditRequest userEditRequest, final User user) {
+    public void transformToUser(final UserEditRequest userEditRequest, final User user) {
         user.setName(userEditRequest.getName());
         user.setSurname(userEditRequest.getSurname());
         user.setGender(Gender.valueOf(userEditRequest.getGender()));
         user.setBirthDate(LocalDate.parse(userEditRequest.getBirthDate()));
         user.setEmail(userEditRequest.getEmail());
         user.setPhone(userEditRequest.getPhone());
-        return user;
     }
 
     public User transformToNewUser(final UserCreateRequest userCreateRequest) {
