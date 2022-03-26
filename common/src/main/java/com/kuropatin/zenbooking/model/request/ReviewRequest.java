@@ -22,5 +22,5 @@ public class ReviewRequest {
     private String description;
 
     @ShortInRange(min = 1, max = 5, message = "Rating should be between 1 and 10")
-    private String rating;
+    private Byte rating;
 }

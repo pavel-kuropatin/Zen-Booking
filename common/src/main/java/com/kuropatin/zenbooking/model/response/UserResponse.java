@@ -15,14 +15,14 @@ import java.time.LocalDate;
 @Setter
 public class UserResponse {
 
-    private long id;
+    private Long id;
     private String name;
     private String surname;
     private Gender gender;
     private LocalDate birthDate;
     private String email;
     private String phone;
-    private int balance;
+    private Integer balance;
 
     @Override
     public String toString() {

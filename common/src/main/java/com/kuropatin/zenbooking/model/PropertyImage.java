@@ -26,7 +26,7 @@ public class PropertyImage extends BasicEntity {
     private String imgUrl;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
     @ManyToOne
     @JoinColumn(name = "property_id")

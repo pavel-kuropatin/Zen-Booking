@@ -14,16 +14,16 @@ import java.time.LocalDate;
 @Setter
 public class OrderResponse {
 
-    private long id;
-    private int totalPrice;
+    private Long id;
+    private Integer totalPrice;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isAccepted;
-    private boolean isCancelled;
-    private boolean isFinished;
-    private long clientId;
-    private long hostId;
-    private long propertyId;
+    private Boolean isAccepted;
+    private Boolean isCancelled;
+    private Boolean isFinished;
+    private Long clientId;
+    private Long hostId;
+    private Long propertyId;
     private String status;
 
     @Override

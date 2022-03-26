@@ -33,7 +33,7 @@ import java.util.Set;
 public class Order extends BasicEntity {
 
     @Column(name = "total_price")
-    private int totalPrice;
+    private Integer totalPrice;
 
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -42,13 +42,13 @@ public class Order extends BasicEntity {
     private LocalDate endDate;
 
     @Column(name = "is_accepted")
-    private boolean isAccepted = false;
+    private Boolean isAccepted = false;
 
     @Column(name = "is_cancelled")
-    private boolean isCancelled = false;
+    private Boolean isCancelled = false;
 
     @Column(name = "is_finished")
-    private boolean isFinished = false;
+    private Boolean isFinished = false;
 
     @OneToOne
     @JoinColumn(name = "property_id")
