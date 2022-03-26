@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1/profile", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/profile")
 @RequiredArgsConstructor
 @Tag(name = "Profile Controller", description = "Actions for user profile")
 public class ProfileController {
@@ -43,7 +43,7 @@ public class ProfileController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> getUserInfo() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewUserResponse(service.getUserById(userId)), HttpStatus.OK);
@@ -62,7 +62,7 @@ public class ProfileController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> updateUserInfo(@Valid @RequestBody final UserEditRequest userEditRequest) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
@@ -81,7 +81,7 @@ public class ProfileController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping("/deposit")
+    @PutMapping(path = "/deposit", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> deposit(@Valid @RequestBody final AmountRequest amountRequest) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.OK);

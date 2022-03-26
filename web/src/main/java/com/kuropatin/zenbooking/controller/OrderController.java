@@ -25,7 +25,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1/orders", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 @Tag(name = "Order Controller", description = "Actions for user orders")
 public class OrderController {
@@ -43,7 +43,7 @@ public class OrderController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = OrderResponse.class))
     })
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getAllActive() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getActiveOrders(userId)), HttpStatus.OK);
@@ -59,7 +59,7 @@ public class OrderController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/history")
+    @GetMapping(path = "/history", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getAllFinished() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToListOrderResponse(service.getOrderHistory(userId)), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class OrderController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/{orderId}")
+    @GetMapping(path = "/{orderId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> getById(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.transformToNewOrderResponse(service.getOrderById(orderId, userId)), HttpStatus.OK);
@@ -97,7 +97,7 @@ public class OrderController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping("/{orderId}/cancel")
+    @PutMapping(path = "/{orderId}/cancel", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> cancel(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(service.cancelOrder(orderId, userId), HttpStatus.OK);
