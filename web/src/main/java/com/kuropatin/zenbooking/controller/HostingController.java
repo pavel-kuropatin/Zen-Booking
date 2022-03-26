@@ -35,7 +35,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1/hosting", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/hosting")
 @RequiredArgsConstructor
 @Tag(name = "Hosting Controller", description = "Actions for managing user property and requests")
 public class HostingController {
@@ -55,7 +55,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/property")
+    @GetMapping(path = "/property", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PropertyResponse>> getAllPropertyOfUser() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToListPropertyResponse(propertyService.getAllPropertyOfUser(userId)), HttpStatus.OK);
@@ -74,7 +74,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/property/{propertyId}")
+    @GetMapping(path = "/property/{propertyId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
@@ -90,7 +90,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping("/property")
+    @PostMapping(path = "/property", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyResponse> createProperty(@Valid @RequestBody final PropertyRequest propertyRequest) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.createProperty(userId, propertyRequest)), HttpStatus.CREATED);
@@ -109,7 +109,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping("/property/{propertyId}")
+    @PutMapping(path = "/property/{propertyId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyResponse> updateProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyRequest propertyRequest) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.updateProperty(propertyId, userId, propertyRequest)), HttpStatus.OK);
@@ -128,7 +128,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @DeleteMapping("/property/{propertyId}")
+    @DeleteMapping(path = "/property/{propertyId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> deletePropertyById(@PathVariable final Long propertyId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.softDeletePropertyByIdAndUserId(propertyId, userId), HttpStatus.OK);
@@ -147,7 +147,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/property/{propertyId}/images")
+    @GetMapping(path = "/property/{propertyId}/images", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyByIdAndUserId(propertyId, userId)), HttpStatus.OK);
@@ -169,7 +169,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/property/{propertyId}/images/{imageId}")
+    @GetMapping(path = "/property/{propertyId}/images/{imageId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyIdAndUserId(imageId, propertyId, userId)), HttpStatus.OK);
@@ -188,7 +188,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping("/property/{propertyId}/images")
+    @PostMapping(path = "/property/{propertyId}/images", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyImageResponse> createImageOfProperty(@PathVariable final Long propertyId, @Valid @RequestBody final PropertyImageRequest propertyImageRequest) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.create(propertyId, userId, propertyImageRequest)), HttpStatus.CREATED);
@@ -210,7 +210,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @DeleteMapping("/property/{propertyId}/images/{imageId}")
+    @DeleteMapping(path = "/property/{propertyId}/images/{imageId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> deleteImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyImageService.softDeletePropertyImageByIdAndPropertyIdAndUserId(imageId, propertyId, userId), HttpStatus.OK);
@@ -226,7 +226,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/requests")
+    @GetMapping(path = "/requests", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getAllOrderRequests() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getAllOrderRequestsOfUser(userId)), HttpStatus.OK);
@@ -245,7 +245,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/requests/{orderId}")
+    @GetMapping(path = "/requests/{orderId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> getOrderRequestById(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.getOrderRequestByIdAndUserId(orderId, userId)), HttpStatus.OK);
@@ -264,7 +264,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping("/requests/{orderId}/accept")
+    @PutMapping(path = "/requests/{orderId}/accept", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> acceptOrder(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.acceptOrder(orderId, userId), HttpStatus.OK);
@@ -283,7 +283,7 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping("/requests/{orderId}/decline")
+    @PutMapping(path = "/requests/{orderId}/decline", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> declineOrder(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.declineOrder(orderId, userId), HttpStatus.OK);

@@ -33,7 +33,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1/booking", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/booking")
 @RequiredArgsConstructor
 @Tag(name = "Booking Controller", description = "Searching and browsing property for order")
 public class BookingController {
@@ -54,7 +54,7 @@ public class BookingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PropertyResponse>> searchProperty(@Valid @RequestBody final PropertySearchCriteria searchCriteria) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToListPropertyResponse(searchService.searchProperty(userId, searchCriteria)), HttpStatus.OK);
@@ -73,7 +73,7 @@ public class BookingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/{propertyId}")
+    @GetMapping(path = "/{propertyId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyResponse> getPropertyById(@PathVariable final Long propertyId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(propertyService.transformToNewPropertyResponse(propertyService.getPropertyById(propertyId, userId)), HttpStatus.OK);
@@ -92,7 +92,7 @@ public class BookingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping("/{propertyId}")
+    @PostMapping(path = "/{propertyId}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> orderProperty(@Valid @RequestBody final OrderRequest orderRequest, @PathVariable final Long propertyId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToNewOrderResponse(orderService.createOrder(userId, propertyId, orderRequest)), HttpStatus.CREATED);
@@ -111,7 +111,7 @@ public class BookingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/{propertyId}/images")
+    @GetMapping(path = "/{propertyId}/images", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PropertyImageResponse>> getAllImagesOfProperty(@PathVariable final Long propertyId) {
         return new ResponseEntity<>(propertyImageService.transformToListPropertyImageResponse(propertyImageService.getAllImagesOfPropertyById(propertyId)), HttpStatus.OK);
     }
@@ -132,7 +132,7 @@ public class BookingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/{propertyId}/images/{imageId}")
+    @GetMapping(path = "/{propertyId}/images/{imageId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PropertyImageResponse> getImageOfPropertyById(@PathVariable final Long propertyId, @PathVariable final Long imageId) {
         return new ResponseEntity<>(propertyImageService.transformToNewPropertyImageResponse(propertyImageService.getImageOfPropertyByIdAndPropertyId(imageId, propertyId)), HttpStatus.OK);
     }

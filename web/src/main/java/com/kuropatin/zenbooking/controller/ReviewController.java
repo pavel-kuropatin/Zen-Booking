@@ -29,7 +29,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1/reviews", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1/reviews")
 @RequiredArgsConstructor
 @Tag(name = "Review Controller", description = "Actions for user reviews")
 public class ReviewController {
@@ -48,7 +48,7 @@ public class ReviewController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ReviewResponse>> getAllReviewsOfUser() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToListReviewResponse(reviewService.getAllReviewsOfUser(userId)), HttpStatus.OK);
@@ -67,7 +67,7 @@ public class ReviewController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/{reviewId}")
+    @GetMapping(path = "/{reviewId}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewResponse> getReviewOfUserById(@PathVariable final Long reviewId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.getReviewOfUserById(reviewId, userId)), HttpStatus.OK);
@@ -83,7 +83,7 @@ public class ReviewController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @GetMapping("/available-for-review")
+    @GetMapping(path = "/available-for-review", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getOrdersToAddReview() {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(orderService.transformToListOrderResponse(orderService.getOrdersToAddReview(userId)), HttpStatus.OK);
@@ -102,7 +102,7 @@ public class ReviewController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping("/available-for-review/{orderId}/add")
+    @PostMapping(path = "/available-for-review/{orderId}/add", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ReviewResponse> addReview(@Valid @RequestBody final ReviewRequest reviewRequest, @PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
         return new ResponseEntity<>(reviewService.transformToNewReviewResponse(reviewService.createReview(reviewRequest, userId, orderId)), HttpStatus.CREATED);

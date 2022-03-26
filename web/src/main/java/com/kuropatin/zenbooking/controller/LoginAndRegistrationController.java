@@ -25,7 +25,7 @@ import javax.validation.Valid;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/api/v1", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 @Tag(name = "Login And Registration Controller", description = "Login and registration of users")
 public class LoginAndRegistrationController {
@@ -43,7 +43,7 @@ public class LoginAndRegistrationController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PostMapping("/login")
+    @PostMapping(path = "/login", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody final LoginRequest loginRequest) {
         return new ResponseEntity<>(loginService.login(loginRequest), HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class LoginAndRegistrationController {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
     @Operation(summary = "Registration of new user", description = "Description")
-    @PostMapping("/register")
+    @PostMapping(path = "/register", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> create(@Valid @RequestBody final UserCreateRequest userCreateRequest) {
         return new ResponseEntity<>(userService.transformToNewUserResponse(userService.createUser(userCreateRequest)), HttpStatus.CREATED);
     }
