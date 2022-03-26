@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
+        <groupId>com.kuropatin.zenbooking</groupId>
         <artifactId>zen-booking</artifactId>
-        <groupId>com.kuropatin</groupId>
         <version>1.0</version>
     </parent>
 
@@ -15,12 +15,12 @@
     <packaging>jar</packaging>
 
     <properties>
-        <sonar.moduleKey>${artifactId}</sonar.moduleKey>
+        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.kuropatin</groupId>
+            <groupId>com.kuropatin.zenbooking</groupId>
             <artifactId>common</artifactId>
         </dependency>
         <dependency>

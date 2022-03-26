@@ -22,7 +22,7 @@ public final class LoggingUtils {
             log.trace(baseMethod + " finished in " + timer.getTotalTimeMillis() + " ms");
             return proceed;
         } catch (final Throwable e) {
-            throw new ApplicationException(e.getClass() + e.getMessage());
+            throw new ApplicationException(e);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model.response;
 
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,9 @@ public class OrderResponse {
     private long hostId;
     private long propertyId;
     private String status;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }

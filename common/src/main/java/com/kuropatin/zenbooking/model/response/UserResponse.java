@@ -1,6 +1,7 @@
 package com.kuropatin.zenbooking.model.response;
 
 import com.kuropatin.zenbooking.model.Gender;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,9 @@ public class UserResponse {
     private String email;
     private String phone;
     private int balance;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }
