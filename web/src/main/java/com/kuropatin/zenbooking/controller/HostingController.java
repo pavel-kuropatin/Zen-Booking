@@ -7,12 +7,12 @@ import com.kuropatin.zenbooking.model.response.OrderResponse;
 import com.kuropatin.zenbooking.model.response.PropertyImageResponse;
 import com.kuropatin.zenbooking.model.response.PropertyResponse;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
-import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.OrderService;
 import com.kuropatin.zenbooking.service.PropertyImageService;
 import com.kuropatin.zenbooking.service.PropertyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -47,7 +47,7 @@ public class HostingController {
 
     @Operation(summary = "Get all property of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = PropertyResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -63,7 +63,7 @@ public class HostingController {
 
     @Operation(summary = "Get property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -82,7 +82,7 @@ public class HostingController {
 
     @Operation(summary = "Create property for logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -98,7 +98,7 @@ public class HostingController {
 
     @Operation(summary = "Update property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -117,7 +117,7 @@ public class HostingController {
 
     @Operation(summary = "Delete property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = SuccessfulResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -136,7 +136,7 @@ public class HostingController {
 
     @Operation(summary = "Get all images of property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = PropertyImageResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -155,7 +155,7 @@ public class HostingController {
 
     @Operation(summary = "Get image with id {imageId} of property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyImageResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -177,7 +177,7 @@ public class HostingController {
 
     @Operation(summary = "Create image of property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyImageResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -196,7 +196,7 @@ public class HostingController {
 
     @Operation(summary = "Delete image with id {imageId} of property with id {propertyId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = SuccessfulResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -218,7 +218,7 @@ public class HostingController {
 
     @Operation(summary = "Get all order requests of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = OrderResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -234,7 +234,7 @@ public class HostingController {
 
     @Operation(summary = "Get order request with id {orderId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = OrderResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -253,7 +253,7 @@ public class HostingController {
 
     @Operation(summary = "Accept order request with id {orderId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = SuccessfulResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -272,7 +272,7 @@ public class HostingController {
 
     @Operation(summary = "Decline order request with id {orderId} of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = SuccessfulResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))

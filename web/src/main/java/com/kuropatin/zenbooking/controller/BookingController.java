@@ -6,13 +6,13 @@ import com.kuropatin.zenbooking.model.response.ErrorResponse;
 import com.kuropatin.zenbooking.model.response.OrderResponse;
 import com.kuropatin.zenbooking.model.response.PropertyImageResponse;
 import com.kuropatin.zenbooking.model.response.PropertyResponse;
-import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.OrderService;
 import com.kuropatin.zenbooking.service.PropertyImageService;
 import com.kuropatin.zenbooking.service.PropertyService;
 import com.kuropatin.zenbooking.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +46,7 @@ public class BookingController {
 
     @Operation(summary = "Search property that available for order", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = PropertyResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -62,7 +62,7 @@ public class BookingController {
 
     @Operation(summary = "Browse found property with id {propertyId}", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -81,7 +81,7 @@ public class BookingController {
 
     @Operation(summary = "Order found property", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = OrderResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -100,7 +100,7 @@ public class BookingController {
 
     @Operation(summary = "Browse all images of found property", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = PropertyImageResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -118,7 +118,7 @@ public class BookingController {
 
     @Operation(summary = "Browse image with id {imageId} of found property", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = PropertyImageResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
