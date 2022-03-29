@@ -3,10 +3,10 @@ package com.kuropatin.zenbooking.controller;
 import com.kuropatin.zenbooking.model.response.ErrorResponse;
 import com.kuropatin.zenbooking.model.response.OrderResponse;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
-import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +35,7 @@ public class OrderController {
 
     @Operation(summary = "Get list of all active orders of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = OrderResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -51,7 +51,7 @@ public class OrderController {
 
     @Operation(summary = "Get list of all finished orders of logged user", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(array = @ArraySchema(schema = @Schema(implementation = OrderResponse.class)))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -67,7 +67,7 @@ public class OrderController {
 
     @Operation(summary = "Get order of logged user by order id", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = OrderResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
@@ -86,7 +86,7 @@ public class OrderController {
 
     @Operation(summary = "Cancel order of logged user with id {orderId}", description = "Description")
     @ApiResponse(responseCode = "200", description = "OK", content = {
-            @Content(schema = @Schema(implementation = UserResponse.class))
+            @Content(schema = @Schema(implementation = SuccessfulResponse.class))
     })
     @ApiResponse(responseCode = "401", description = "Unauthorized", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
