@@ -9,17 +9,24 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ToStringUtils {
+public final class ToStringUtils {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final DefaultPrettyPrinter PRETTY_PRINTER = new DefaultPrettyPrinter()
+            .withObjectIndenter(new DefaultIndenter().withIndent("    "))
+            .withArrayIndenter(new DefaultIndenter().withIndent("    "));
 
     public static String toJsonString(final Object object) {
-        final DefaultPrettyPrinter.Indenter indenter = new DefaultIndenter().withIndent("  ");
-        final DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
-        printer.indentObjectsWith(indenter);
-        printer.indentArraysWith(indenter);
+        return toJsonString(object, JsonStyle.DEFAULT);
+    }
+
+    public static String toJsonString(final Object object, final JsonStyle jsonStyle) {
         try {
-            return objectMapper.writer(printer).writeValueAsString(object);
+            if (jsonStyle == JsonStyle.PRETTY) {
+                return MAPPER.writer(PRETTY_PRINTER).writeValueAsString(object);
+            } else {
+                return MAPPER.writeValueAsString(object);
+            }
         } catch (JsonProcessingException e) {
             throw new ApplicationException(e);
         }

@@ -41,4 +41,10 @@
         <appender-ref ref="Console" />
     </logger>
 
+    <!-- LOG transactions -->
+    <logger name="org.springframework.transaction" level="trace" additivity="false">
+        <appender-ref ref="RollingFile" />
+        <appender-ref ref="Console" />
+    </logger>
+
 </configuration>

@@ -19,13 +19,13 @@ public final class CacheNames {
 
     public static String[] getCacheNames() {
         try {
-            final Field[] fields = Class.forName(CacheNames.class.getName()).getDeclaredFields();
+            final Field[] fields = CacheNames.class.getDeclaredFields();
             final String[] cacheNames = new String[fields.length];
             for (int i = 0; i < fields.length; i++) {
                 cacheNames[i] = (String) fields[i].get(fields[i].getName());
             }
             return cacheNames;
-        } catch (ClassNotFoundException | IllegalAccessException e) {
+        } catch (IllegalAccessException e) {
             throw new ApplicationException(e);
         }
     }
