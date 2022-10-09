@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.Hibernate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,23 +15,30 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = true, exclude = {
-        "user", "propertyImages", "order"
-})
 @Entity
 @Table(name = "property")
-public class Property extends BasicEntity {
+public class Property {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected Long id;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
@@ -79,6 +86,12 @@ public class Property extends BasicEntity {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @Column(name = "created")
+    protected Timestamp created;
+
+    @Column(name = "updated")
+    protected Timestamp updated;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference
@@ -95,5 +108,18 @@ public class Property extends BasicEntity {
 
     public void addPropertyImage(final PropertyImage propertyImage) {
         this.propertyImages.add(propertyImage);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Property property = (Property) o;
+        return id != null && Objects.equals(id, property.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
