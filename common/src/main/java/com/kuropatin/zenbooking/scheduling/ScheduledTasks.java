@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +31,7 @@ public final class ScheduledTasks {
             final LocalDateTime now = ApplicationTimeUtils.getLocalDateTime();
             for (final Order order : ordersToAccept) {
                 if (order.getUpdated().toLocalDateTime().isBefore(now.minusMinutes(5))) {
-                    log.trace(MessageFormat.format("Automatically accept order with id {0}", order.getId()));
+                    log.trace(String.format("Automatically accept order with id %s", order.getId()));
                     orderService.acceptOrder(order.getId(), order.getProperty().getUser().getId());
                 }
             }
@@ -53,8 +52,8 @@ public final class ScheduledTasks {
             isCheckedForFinishToday = true;
             final List<Order> ordersToFinish = orderService.getOrdersToAutoFinish();
             for (final Order order : ordersToFinish) {
-                if(order.getEndDate().isBefore(now)) {
-                    log.trace(MessageFormat.format("Automatically finish order with id {0}", order.getId()));
+                if (order.getEndDate().isBefore(now)) {
+                    log.trace(String.format("Automatically finish order with id %s", order.getId()));
                     orderService.autoFinishOrder(order.getId());
                 }
             }

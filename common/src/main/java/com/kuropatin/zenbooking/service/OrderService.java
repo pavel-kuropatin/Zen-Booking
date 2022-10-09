@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -98,7 +97,7 @@ public class OrderService {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice(), timestamp);
                 orderRepository.cancelOrder(orderId, timestamp);
-                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully cancelled", orderId));
+                return new SuccessfulResponse(timestamp, String.format("Order with id: %s successfully cancelled", orderId));
             } else {
                 throw new OrderCannotBeCancelledException(orderId);
             }
@@ -132,7 +131,7 @@ public class OrderService {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(host, orderToAccept.getTotalPrice(), timestamp);
                 orderRepository.acceptOrder(orderId, timestamp);
-                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully accepted", orderId));
+                return new SuccessfulResponse(timestamp, String.format("Order with id: %s successfully accepted", orderId));
             } else {
                 throw new OrderCannotBeAcceptedException(orderId);
             }
@@ -153,7 +152,7 @@ public class OrderService {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice(), timestamp);
                 orderRepository.rejectOrder(orderId, timestamp);
-                return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully declined", orderId));
+                return new SuccessfulResponse(timestamp, String.format("Order with id: %s successfully declined", orderId));
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);
             }
@@ -203,7 +202,7 @@ public class OrderService {
         if (orderRepository.existsById(id)) {
             orderRepository.finishOrder(id, ApplicationTimeUtils.getTimestamp());
         } else {
-            throw new OrderNotFoundException(MessageFormat.format("Order with id: {0} cannot be finished automatically", id));
+            throw new OrderNotFoundException(String.format("Order with id: %s cannot be finished automatically", id));
         }
     }
 }

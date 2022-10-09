@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +73,7 @@ public class PropertyService {
         if (repository.existsByIdAndUserId(propertyId, userId)) {
             Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteProperty(propertyId, timestamp);
-            return new SuccessfulResponse(timestamp, MessageFormat.format("Property with id: {0} successfully deleted", propertyId));
+            return new SuccessfulResponse(timestamp, String.format("Property with id: %s successfully deleted", propertyId));
         } else {
             throw new PropertyNotFoundException(propertyId);
         }
@@ -89,7 +88,7 @@ public class PropertyService {
         return transformToProperty(propertyRequest, new Property());
     }
 
-    private Property transformToProperty(final PropertyRequest propertyRequest,final  Property property) {
+    private Property transformToProperty(final PropertyRequest propertyRequest, final Property property) {
         property.setType(PropertyType.valueOf(propertyRequest.getType()));
         property.setName(propertyRequest.getName());
         property.setDescription(propertyRequest.getDescription());

@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class ReviewService {
         if (repository.existsById(reviewId)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeleteReview(reviewId, timestamp);
-            return new SuccessfulResponse(timestamp, MessageFormat.format("Review with id: {0} successfully deleted", reviewId));
+            return new SuccessfulResponse(timestamp, String.format("Review with id: %s successfully deleted", reviewId));
         } else {
             throw new ReviewNotFoundException(reviewId);
         }

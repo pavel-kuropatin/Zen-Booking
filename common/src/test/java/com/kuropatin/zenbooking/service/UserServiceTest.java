@@ -22,7 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -80,7 +79,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.getUserById(id))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining(MessageFormat.format("Could not find user with id: {0}", id));
+                .hasMessageContaining(String.format("Could not find user with id: %s", id));
     }
 
     @Test
@@ -105,7 +104,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.getUserByLogin(login))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining(MessageFormat.format("Could not find user with login: {0}", login));
+                .hasMessageContaining(String.format("Could not find user with login: %s", login));
     }
 
     @Test
@@ -151,7 +150,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.createUser(userCreateRequest))
                 .isInstanceOf(LoginAlreadyInUseException.class)
-                .hasMessageContaining(MessageFormat.format("Login {0} already in use", login));
+                .hasMessageContaining(String.format("Login %s already in use", login));
     }
 
     @Test
@@ -167,7 +166,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.createUser(userCreateRequest))
                 .isInstanceOf(EmailAlreadyInUseException.class)
-                .hasMessageContaining(MessageFormat.format("Email {0} already in use", email));
+                .hasMessageContaining(String.format("Email %s already in use", email));
     }
 
     @Test
@@ -207,7 +206,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.updateUser(id, userEditRequest))
                 .isInstanceOf(EmailAlreadyInUseException.class)
-                .hasMessageContaining(MessageFormat.format("Email {0} already in use", email));
+                .hasMessageContaining(String.format("Email %s already in use", email));
     }
 
     @Test
@@ -239,7 +238,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.deposit(id, amountRequest))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining(MessageFormat.format("Could not find user with id: {0}", id));
+                .hasMessageContaining(String.format("Could not find user with id: %s", id));
     }
 
     @Test
@@ -331,7 +330,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.banUser(id))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining(MessageFormat.format("Could not find user with id: {0}", id));
+                .hasMessageContaining(String.format("Could not find user with id: %s", id));
     }
 
     @Test
@@ -359,7 +358,7 @@ class UserServiceTest {
         //when, then
         assertThatThrownBy(() -> userService.unbanUser(id))
                 .isInstanceOf(UserNotFoundException.class)
-                .hasMessageContaining(MessageFormat.format("Could not find user with id: {0}", id));
+                .hasMessageContaining(String.format("Could not find user with id: %s", id));
     }
 
     @Test

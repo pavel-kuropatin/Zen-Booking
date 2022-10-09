@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +62,7 @@ public class PropertyImageService {
         if (repository.existsByIdAndPropertyIdAndUserId(imageId, propertyId, userId)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.softDeletePropertyImage(imageId, timestamp);
-            return new SuccessfulResponse(timestamp, MessageFormat.format("Image with id: {0} successfully deleted", imageId));
+            return new SuccessfulResponse(timestamp, String.format("Image with id: %s successfully deleted", imageId));
         } else {
             throw new PropertyImageNotFoundException(imageId);
         }

@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.text.MessageFormat;
 
 @Repository
 @RequiredArgsConstructor
@@ -115,7 +114,7 @@ public class UserService {
         if (repository.existsById(id)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.banUser(id, timestamp);
-            return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} was banned", id));
+            return new SuccessfulResponse(timestamp, String.format("User with id: %s was banned", id));
         } else {
             throw new UserNotFoundException(id);
         }
@@ -125,7 +124,7 @@ public class UserService {
         if (repository.existsById(id)) {
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             repository.unbanUser(id, timestamp);
-            return new SuccessfulResponse(timestamp, MessageFormat.format("User with id: {0} is no longer banned", id));
+            return new SuccessfulResponse(timestamp, String.format("User with id: %s is no longer banned", id));
         } else {
             throw new UserNotFoundException(id);
         }
