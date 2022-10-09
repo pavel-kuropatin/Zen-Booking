@@ -23,7 +23,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
@@ -132,7 +131,7 @@ class UserServiceTest {
         assertEquals(capturedUser.getName(), userCreateRequest.getName());
         assertEquals(capturedUser.getSurname(), userCreateRequest.getSurname());
         assertEquals(capturedUser.getGender(), Gender.valueOf(userCreateRequest.getGender()));
-        assertEquals(capturedUser.getBirthDate(), LocalDate.parse(userCreateRequest.getBirthDate()));
+        assertEquals(capturedUser.getBirthDate(), userCreateRequest.getBirthDate());
         assertEquals(capturedUser.getEmail(), userCreateRequest.getEmail());
         assertEquals(capturedUser.getPhone(), userCreateRequest.getPhone());
         assertNotNull(capturedUser.getCreated());
@@ -189,7 +188,7 @@ class UserServiceTest {
         assertEquals(userEditRequest.getName(), capturedUser.getName());
         assertEquals(userEditRequest.getSurname(), capturedUser.getSurname());
         assertEquals(Gender.valueOf(userEditRequest.getGender()), capturedUser.getGender());
-        assertEquals(LocalDate.parse(userEditRequest.getBirthDate()), capturedUser.getBirthDate());
+        assertEquals(userEditRequest.getBirthDate(), capturedUser.getBirthDate());
         assertEquals(userEditRequest.getEmail(), capturedUser.getEmail());
         assertEquals(userEditRequest.getPhone(), capturedUser.getPhone());
     }
@@ -376,7 +375,7 @@ class UserServiceTest {
         assertEquals(user.getName(), userEditRequest.getName());
         assertEquals(user.getSurname(), userEditRequest.getSurname());
         assertEquals(user.getGender(), Gender.valueOf(userEditRequest.getGender()));
-        assertEquals(user.getBirthDate(), LocalDate.parse(userEditRequest.getBirthDate()));
+        assertEquals(user.getBirthDate(), userEditRequest.getBirthDate());
         assertEquals(user.getEmail(), userEditRequest.getEmail());
         assertEquals(user.getPhone(), userEditRequest.getPhone());
     }
@@ -395,7 +394,7 @@ class UserServiceTest {
         assertEquals(transformedUser.getName(), userCreateRequest.getName());
         assertEquals(transformedUser.getSurname(), userCreateRequest.getSurname());
         assertEquals(transformedUser.getGender(), Gender.valueOf(userCreateRequest.getGender()));
-        assertEquals(transformedUser.getBirthDate(), LocalDate.parse(userCreateRequest.getBirthDate()));
+        assertEquals(transformedUser.getBirthDate(), userCreateRequest.getBirthDate());
         assertEquals(transformedUser.getEmail(), userCreateRequest.getEmail());
         assertEquals(transformedUser.getPhone(), userCreateRequest.getPhone());
     }

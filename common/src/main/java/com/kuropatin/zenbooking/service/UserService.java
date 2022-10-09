@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.text.MessageFormat;
-import java.time.LocalDate;
 
 @Repository
 @RequiredArgsConstructor
@@ -136,7 +135,7 @@ public class UserService {
         user.setName(userEditRequest.getName());
         user.setSurname(userEditRequest.getSurname());
         user.setGender(Gender.valueOf(userEditRequest.getGender()));
-        user.setBirthDate(LocalDate.parse(userEditRequest.getBirthDate()));
+        user.setBirthDate(userEditRequest.getBirthDate());
         user.setEmail(userEditRequest.getEmail());
         user.setPhone(userEditRequest.getPhone());
     }
@@ -151,7 +150,7 @@ public class UserService {
         user.setName(userCreateRequest.getName());
         user.setSurname(userCreateRequest.getSurname());
         user.setGender(Gender.valueOf(userCreateRequest.getGender()));
-        user.setBirthDate(LocalDate.parse(userCreateRequest.getBirthDate()));
+        user.setBirthDate(userCreateRequest.getBirthDate());
         user.setEmail(userCreateRequest.getEmail());
         user.setPhone(userCreateRequest.getPhone());
         return user;
@@ -170,6 +169,7 @@ public class UserService {
         userResponse.setEmail(user.getEmail());
         userResponse.setPhone(user.getPhone());
         userResponse.setBalance(user.getBalance());
+        userResponse.setLastLogin(user.getLastLogin());
         return userResponse;
     }
 }

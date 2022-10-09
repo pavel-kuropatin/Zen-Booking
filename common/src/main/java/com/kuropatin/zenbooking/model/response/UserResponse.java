@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -23,6 +24,7 @@ public class UserResponse {
     private String email;
     private String phone;
     private Integer balance;
+    private Timestamp lastLogin;
 
     @Override
     public String toString() {

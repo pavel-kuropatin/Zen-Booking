@@ -21,9 +21,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final AdminService adminService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(userService.existsByLogin(username)) {
-            User user = userService.getUserByLogin(username);
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+        if (userService.existsByLogin(username)) {
+            final User user = userService.getUserByLogin(username);
             return new SecurityUser(
                     user.getId(),
                     user.getLogin(),
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                     AuthorityUtils.createAuthorityList(String.valueOf(user.getRole()))
             );
         } else if (adminService.existsByLogin(username)) {
-            Admin admin = adminService.getAdminByLogin(username);
+            final Admin admin = adminService.getAdminByLogin(username);
             return new SecurityUser(
                     admin.getId(),
                     admin.getLogin(),

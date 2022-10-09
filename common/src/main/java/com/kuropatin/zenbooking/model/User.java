@@ -35,11 +35,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Roles role = Roles.ROLE_USER;
+    private Roles role;
 
     @Column(name = "login")
     private String login;
@@ -55,7 +55,7 @@ public class User {
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender = Gender.UNDEFINED;
+    private Gender gender;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -70,13 +70,16 @@ public class User {
     private Integer balance = 0;
 
     @Column(name = "is_banned")
-    private Boolean isBanned = false;
+    private Boolean isBanned;
+
+    @Column(name = "last_login")
+    private Timestamp lastLogin;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @Setter(value = AccessLevel.NONE)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)

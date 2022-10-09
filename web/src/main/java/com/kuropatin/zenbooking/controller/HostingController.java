@@ -283,9 +283,9 @@ public class HostingController {
     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
-    @PutMapping(path = "/requests/{orderId}/decline", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessfulResponse> declineOrder(@PathVariable final Long orderId) {
+    @PutMapping(path = "/requests/{orderId}/reject", produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessfulResponse> rejectOrder(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(orderService.declineOrder(orderId, userId), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.rejectOrder(orderId, userId), HttpStatus.OK);
     }
 }

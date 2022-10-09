@@ -118,8 +118,7 @@ public class JdbcSearch implements SearchRepository {
             queryBuilder.append(
                     "AND p.id NOT IN ( " +
                     "SELECT DISTINCT o.property_id FROM orders o " +
-                    "WHERE o.is_cancelled = false " +
-                    "AND o.is_finished = false " +
+                    "WHERE o.status = 'NEW' " +
                     "AND (to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
                     "OR to_date(?, 'yyyy-mm-dd') BETWEEN o.start_date AND o.end_date " +
                     "OR o.start_date BETWEEN to_date(?, 'yyyy-mm-dd') AND to_date(?, 'yyyy-mm-dd') " +

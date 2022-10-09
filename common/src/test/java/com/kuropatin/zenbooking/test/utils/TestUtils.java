@@ -6,15 +6,15 @@ import com.kuropatin.zenbooking.model.User;
 import com.kuropatin.zenbooking.model.request.AmountRequest;
 import com.kuropatin.zenbooking.model.request.UserCreateRequest;
 import com.kuropatin.zenbooking.model.request.UserEditRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class TestUtils {
-
-    private TestUtils() {
-    }
 
     public static User getUser() {
         final User user = new User();
@@ -41,7 +41,7 @@ public final class TestUtils {
         userCreateRequest.setName("Name");
         userCreateRequest.setSurname("Surname");
         userCreateRequest.setGender("UNDEFINED");
-        userCreateRequest.setBirthDate("1990-01-01");
+        userCreateRequest.setBirthDate(LocalDate.parse("1990-01-01"));
         userCreateRequest.setEmail("email@gmail.com");
         userCreateRequest.setPhone("+375999999999");
         return userCreateRequest;
@@ -52,7 +52,7 @@ public final class TestUtils {
         userEditRequest.setName("New Name");
         userEditRequest.setSurname("NewSurname");
         userEditRequest.setGender("MALE");
-        userEditRequest.setBirthDate("1991-12-12");
+        userEditRequest.setBirthDate(LocalDate.parse("1991-12-12"));
         userEditRequest.setEmail("new-email@gmail.com");
         userEditRequest.setPhone("+375111111111");
         return userEditRequest;

@@ -25,7 +25,7 @@ public interface ReviewRepository extends CrudRepository<Review, Long> {
 
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Order o " +
-                   "WHERE o.id = ?1 AND o.user.id = ?2 AND o.isFinished = true AND o.isAccepted = true AND o.isCancelled = false")
+                   "WHERE o.id = ?1 AND o.user.id = ?2 AND o.status = com.kuropatin.zenbooking.model.OrderStatus.FINISHED")
     boolean canReviewBeAdded(final Long orderId, final Long userId);
 
     @Cacheable(value = CacheNames.DOUBLE, key = "'getRatingOfProperty'+#propertyId")

@@ -5,9 +5,8 @@ import com.kuropatin.zenbooking.util.ApplicationTimeUtils;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
-public final class AgeXPlusValidator implements ConstraintValidator<AgeXPlus, CharSequence> {
+public final class AgeXPlusValidator implements ConstraintValidator<AgeXPlus, LocalDate> {
 
     private int minAge;
 
@@ -17,15 +16,10 @@ public final class AgeXPlusValidator implements ConstraintValidator<AgeXPlus, Ch
     }
 
     @Override
-    public boolean isValid(final CharSequence date, final ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(final LocalDate date, final ConstraintValidatorContext constraintValidatorContext) {
         if (date == null) {
             return false;
         }
-        try {
-            final LocalDate birthDate = LocalDate.parse(date);
-            return birthDate.plusYears(minAge).isBefore(ApplicationTimeUtils.getLocalDate()) || birthDate.plusYears(minAge).isEqual(ApplicationTimeUtils.getLocalDate());
-        } catch (DateTimeParseException e){
-            return false;
-        }
+        return date.plusYears(minAge).isBefore(ApplicationTimeUtils.getLocalDate()) || date.plusYears(minAge).isEqual(ApplicationTimeUtils.getLocalDate());
     }
 }

@@ -38,11 +38,11 @@ public class Property {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    private PropertyType type = PropertyType.NOT_SPECIFIED;
+    private PropertyType type;
 
     @Column(name = "name")
     private String name;
@@ -87,10 +87,10 @@ public class Property {
     private Boolean isDeleted;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

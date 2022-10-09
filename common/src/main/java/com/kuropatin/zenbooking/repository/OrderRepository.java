@@ -23,27 +23,27 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "SELECT CASE WHEN COUNT(o.id) > 0 THEN TRUE ELSE FALSE END " +
                    "FROM Order o " +
                    "INNER JOIN Property p on p.id = o.property.id AND o.id = ?1 AND p.user.id = ?2 " +
-                   "WHERE o.isFinished = false")
+                   "WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.NEW")
     boolean existsByIdAndHostId(final Long orderId, final Long hostId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findAllActiveOrdersOfUser'+#userId")
     @Query(value = "SELECT o " +
                    "FROM Order o " +
-                   "WHERE o.isCancelled = false AND o.isFinished = false AND o.user.id = ?1 " +
+                   "WHERE o.status IN (com.kuropatin.zenbooking.model.OrderStatus.NEW, com.kuropatin.zenbooking.model.OrderStatus.ACCEPTED) AND o.user.id = ?1 " +
                    "ORDER BY o.id")
     List<Order> findAllActiveOrdersOfUser(final Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findAllFinishedOrdersOfUser'+#userId")
     @Query(value = "SELECT o " +
                    "FROM Order o " +
-                   "WHERE o.isFinished = true AND o.user.id = ?1 " +
+                   "WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.FINISHED AND o.user.id = ?1 " +
                    "ORDER BY o.id DESC")
     List<Order> findAllFinishedOrdersOfUser(final Long userId);
 
     @Cacheable(value = CacheNames.ORDER, key = "'findOrdersToAddReview'+#userId")
     @Query(value = "SELECT o " +
                    "FROM Order o " +
-                   "WHERE o.isAccepted = true AND o.isCancelled = false AND o.isFinished = true AND o.user.id = ?1 " +
+                   "WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.FINISHED AND o.user.id = ?1 " +
                    "AND o.id NOT IN(SELECT r.order.id " +
                                    "FROM Review r " +
                                    "WHERE r.isDeleted = false AND r.order.user.id = ?1)" +
@@ -63,7 +63,7 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "SELECT o " +
                    "FROM Order o " +
                    "INNER JOIN Property p on p.id = o.property.id AND p.user.id = ?1 " +
-                   "WHERE o.isCancelled = false AND o.isFinished = false " +
+                   "WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.NEW " +
                    "ORDER BY o.startDate")
     List<Order> findAllOrderRequests(final Long userId);
 
@@ -71,41 +71,41 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     @Query(value = "SELECT o " +
                    "FROM Order o " +
                    "INNER JOIN Property p on p.id = o.property.id AND o.id = ?1 AND p.user.id = ?2 " +
-                   "WHERE o.isCancelled = false AND o.isFinished = false " +
+                   "WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.NEW " +
                    "ORDER BY o.startDate")
     Order findOrderRequestByIdAndHostId(final Long orderId, final Long userId);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE Order o " +
-                   "SET o.isCancelled = true, o.isFinished = true, o.updated = ?2 " +
+                   "SET o.status = com.kuropatin.zenbooking.model.OrderStatus.CANCELLED, o.updated = ?2 " +
                    "WHERE o.id = ?1")
     void cancelOrder(final Long orderId, final Timestamp updated);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE Order o " +
-                   "SET o.isAccepted = true, o.updated = ?2 " +
+                   "SET o.status = com.kuropatin.zenbooking.model.OrderStatus.ACCEPTED, o.updated = ?2 " +
                    "WHERE o.id = ?1")
     void acceptOrder(final Long orderId, final Timestamp updated);
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE Order o " +
-                   "SET o.isAccepted = false, o.isFinished = true, o.updated = ?2 " +
+                   "SET o.status = com.kuropatin.zenbooking.model.OrderStatus.REJECTED, o.updated = ?2 " +
                    "WHERE o.id = ?1")
-    void declineOrder(final Long orderId, final Timestamp updated);
+    void rejectOrder(final Long orderId, final Timestamp updated);
 
-    @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = false AND o.isFinished = false")
+    @Query(value = "SELECT o FROM Order o WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.NEW")
     List<Order> findOrdersToAutoAccept();
 
-    @Query(value = "SELECT o FROM Order o WHERE o.isAccepted = true AND o.isFinished = false")
+    @Query(value = "SELECT o FROM Order o WHERE o.status = com.kuropatin.zenbooking.model.OrderStatus.ACCEPTED")
     List<Order> findOrdersToAutoFinish();
 
     @Modifying
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
     @Query(value = "UPDATE Order o " +
-                   "SET o.isFinished = true, o.updated = ?2 " +
+                   "SET o.status = com.kuropatin.zenbooking.model.OrderStatus.FINISHED, o.updated = ?2 " +
                    "WHERE o.id = ?1")
     void finishOrder(final Long id, final Timestamp updated);
 }

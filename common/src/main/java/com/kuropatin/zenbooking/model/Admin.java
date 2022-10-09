@@ -28,11 +28,11 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Roles role = Roles.ROLE_MODER;
+    private Roles role;
 
     @Column(name = "login")
     private String login;
@@ -44,16 +44,19 @@ public class Admin {
     private String displayedName;
 
     @Column(name = "is_suspended")
-    private Boolean isSuspended = false;
+    private Boolean isSuspended;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
+
+    @Column(name = "last_login")
+    private Timestamp lastLogin;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @Override
     public boolean equals(Object o) {

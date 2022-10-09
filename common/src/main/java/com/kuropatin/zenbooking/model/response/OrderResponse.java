@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model.response;
 
+import com.kuropatin.zenbooking.model.OrderStatus;
 import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,13 +19,10 @@ public class OrderResponse {
     private Integer totalPrice;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Boolean isAccepted;
-    private Boolean isCancelled;
-    private Boolean isFinished;
+    private OrderStatus status;
     private Long clientId;
     private Long hostId;
     private Long propertyId;
-    private String status;
 
     @Override
     public String toString() {

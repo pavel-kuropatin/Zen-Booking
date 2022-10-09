@@ -23,25 +23,25 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "property_image")
+@Table(name = "property_images")
 public class PropertyImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "img_url")
     private String imgUrl;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name = "property_id")

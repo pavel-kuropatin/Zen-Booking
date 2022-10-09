@@ -12,6 +12,8 @@ import org.hibernate.Hibernate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,7 +39,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "total_price")
     private Integer totalPrice;
@@ -48,20 +50,15 @@ public class Order {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @Column(name = "is_accepted")
-    private Boolean isAccepted = false;
-
-    @Column(name = "is_cancelled")
-    private Boolean isCancelled = false;
-
-    @Column(name = "is_finished")
-    private Boolean isFinished = false;
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @OneToOne
     @JoinColumn(name = "property_id")

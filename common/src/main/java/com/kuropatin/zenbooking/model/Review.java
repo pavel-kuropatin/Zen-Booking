@@ -23,13 +23,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "review")
+@Table(name = "reviews")
 public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    protected Long id;
+    private Long id;
 
     @Column(name = "summary")
     private String summary;
@@ -41,13 +41,13 @@ public class Review {
     private Byte rating;
 
     @Column(name = "is_deleted")
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
     @Column(name = "created")
-    protected Timestamp created;
+    private Timestamp created;
 
     @Column(name = "updated")
-    protected Timestamp updated;
+    private Timestamp updated;
 
     @ManyToOne
     @JoinColumn(name = "order_id")

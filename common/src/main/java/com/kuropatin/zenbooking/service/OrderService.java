@@ -67,15 +67,17 @@ public class OrderService {
             final User client = userService.getUserById(clientId);
             final Property propertyToOrder = propertyService.getPropertyById(propertyId, clientId);
             final Order order = new Order();
-            order.setStartDate(LocalDate.parse(orderRequest.getStartDate()));
-            order.setEndDate(LocalDate.parse(orderRequest.getEndDate()));
-            order.setTotalPrice(calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate()));
             final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
             userService.pay(client, order.getTotalPrice(), timestamp);
+            final int totalPrice = calculateTotalPrice(propertyToOrder.getPrice(), order.getStartDate(), order.getEndDate());
+            order.setStartDate(LocalDate.parse(orderRequest.getStartDate()));
+            order.setEndDate(LocalDate.parse(orderRequest.getEndDate()));
+            order.setTotalPrice(totalPrice);
             order.setCreated(timestamp);
             order.setUpdated(timestamp);
             order.setUser(client);
             order.setProperty(propertyToOrder);
+            order.setStatus(OrderStatus.NEW);
             client.addOrder(order);
             propertyToOrder.setOrder(order);
             return orderRepository.save(order);
@@ -92,7 +94,7 @@ public class OrderService {
     public SuccessfulResponse cancelOrder(final Long orderId, final Long userId) {
         if (orderRepository.existsByIdAndUserId(orderId, userId)) {
             final Order orderToCancel = getOrderById(orderId, userId);
-            if (Boolean.FALSE.equals(orderToCancel.getIsAccepted()) && Boolean.FALSE.equals(orderToCancel.getIsCancelled())) {
+            if (orderToCancel.getStatus().equals(OrderStatus.NEW)) {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToCancel.getUser(), orderToCancel.getTotalPrice(), timestamp);
                 orderRepository.cancelOrder(orderId, timestamp);
@@ -125,7 +127,7 @@ public class OrderService {
     public SuccessfulResponse acceptOrder(final Long orderId, final Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             final Order orderToAccept = orderRepository.findOrderById(orderId);
-            if (Boolean.FALSE.equals(orderToAccept.getIsAccepted()) && Boolean.FALSE.equals(orderToAccept.getIsCancelled())) {
+            if (orderToAccept.getStatus().equals(OrderStatus.NEW)) {
                 final User host = userService.getUserById(hostId);
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(host, orderToAccept.getTotalPrice(), timestamp);
@@ -144,13 +146,13 @@ public class OrderService {
             UserNotFoundException.class,
             MoneyAmountExceededException.class
     })
-    public SuccessfulResponse declineOrder(final Long orderId, final Long hostId) {
+    public SuccessfulResponse rejectOrder(final Long orderId, final Long hostId) {
         if (orderRepository.existsByIdAndHostId(orderId, hostId)) {
             final Order orderToDecline = orderRepository.findOrderById(orderId);
-            if (Boolean.FALSE.equals(orderToDecline.getIsAccepted()) && Boolean.FALSE.equals(orderToDecline.getIsCancelled()) && Boolean.FALSE.equals(orderToDecline.getIsFinished())) {
+            if (orderToDecline.getStatus().equals(OrderStatus.NEW)) {
                 final Timestamp timestamp = ApplicationTimeUtils.getTimestamp();
                 userService.transferMoney(orderToDecline.getUser(), orderToDecline.getTotalPrice(), timestamp);
-                orderRepository.declineOrder(orderId, timestamp);
+                orderRepository.rejectOrder(orderId, timestamp);
                 return new SuccessfulResponse(timestamp, MessageFormat.format("Order with id: {0} successfully declined", orderId));
             } else {
                 throw new OrderCannotBeDeclinedException(orderId);
@@ -182,30 +184,10 @@ public class OrderService {
         orderResponse.setTotalPrice(order.getTotalPrice());
         orderResponse.setStartDate(order.getStartDate());
         orderResponse.setEndDate(order.getEndDate());
-        orderResponse.setIsAccepted(order.getIsAccepted());
-        orderResponse.setIsCancelled(order.getIsCancelled());
-        orderResponse.setIsFinished(order.getIsFinished());
+        orderResponse.setStatus(order.getStatus());
         orderResponse.setClientId(order.getUser().getId());
         orderResponse.setHostId(order.getProperty().getUser().getId());
         orderResponse.setPropertyId(order.getProperty().getId());
-
-        final boolean isAccepted = Boolean.TRUE.equals(orderResponse.getIsAccepted());
-        final boolean isCancelled = Boolean.TRUE.equals(orderResponse.getIsCancelled());
-        final boolean isFinished = Boolean.TRUE.equals(orderResponse.getIsFinished());
-
-        if (!isAccepted && !isCancelled && !isFinished) {
-            orderResponse.setStatus(OrderStatus.ACTIVE_NOT_ACCEPTED.label);
-        } else if (isAccepted && !isCancelled && !isFinished) {
-            orderResponse.setStatus(OrderStatus.ACTIVE_ACCEPTED.label);
-        } else if (!isAccepted && isCancelled && isFinished) {
-            orderResponse.setStatus(OrderStatus.CANCELLED.label);
-        } else if (!isAccepted && !isCancelled && isFinished) {
-            orderResponse.setStatus(OrderStatus.DECLINED.label);
-        } else if (isAccepted && !isCancelled && isFinished) {
-            orderResponse.setStatus(OrderStatus.FINISHED.label);
-        } else {
-            orderResponse.setStatus(OrderStatus.STATUS_UNKNOWN.label);
-        }
         return orderResponse;
     }
 

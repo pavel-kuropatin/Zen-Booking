@@ -80,9 +80,9 @@ public class PropertyService {
         }
     }
 
-    public String getRatingOfProperty(final Long propertyId) {
+    public Double getRatingOfProperty(final Long propertyId) {
         final Optional<Double> rating = reviewRepository.getRatingOfProperty(propertyId);
-        return rating.map(aDouble -> String.valueOf(Math.round(aDouble * 10) / 10.0)).orElse("n/a");
+        return rating.map(aDouble -> Math.round(aDouble * 10) / 10.0).orElse(null);
     }
 
     public Property transformToNewProperty(final PropertyRequest propertyRequest) {

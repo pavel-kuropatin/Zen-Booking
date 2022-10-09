@@ -9,8 +9,10 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
@@ -29,9 +31,9 @@ public class UserEditRequest {
     @ValueOfEnum(enumClass = Gender.class, message = "Allowed genders are MALE, FEMALE, UNDEFINED")
     private String gender;
 
-    @NotBlank(message = "Enter birth date")
+    @NotNull(message = "Enter birth date")
     @AgeXPlus(minAge = 18, message = "Age should be 18+")
-    private String birthDate;
+    private LocalDate birthDate;
 
     @NotBlank(message = "Enter email")
     @Email(message = "Email should be valid")

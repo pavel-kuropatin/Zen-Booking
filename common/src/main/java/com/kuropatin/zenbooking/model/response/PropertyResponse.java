@@ -28,7 +28,7 @@ public class PropertyResponse {
     private Boolean hasInternet;
     private Boolean isPetsAllowed;
     private Boolean isAvailable;
-    private String rating;
+    private Double rating;
 
     @Override
     public String toString() {

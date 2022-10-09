@@ -55,4 +55,11 @@ public interface UserRepository extends CrudRepository<User, Long> {
                    "SET u.isBanned = false, u.updated = ?2 " +
                    "WHERE u.id = ?1")
     void unbanUser(final Long id, final Timestamp updated);
+
+    @Modifying
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, rollbackFor = SQLException.class)
+    @Query(value = "UPDATE User u " +
+                   "SET u.lastLogin = ?2 " +
+                   "WHERE u.id = ?1")
+    void updateLastLoginDate(final Long id, final Timestamp updated);
 }
