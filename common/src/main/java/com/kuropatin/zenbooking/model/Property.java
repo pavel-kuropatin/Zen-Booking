@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -98,11 +97,11 @@ public class Property {
     private User user;
 
     @Setter(value = AccessLevel.NONE)
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<PropertyImage> propertyImages;
 
-    @OneToOne(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToOne(mappedBy = "property")
     @JsonManagedReference
     private Order order;
 
