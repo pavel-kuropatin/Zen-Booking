@@ -1,7 +1,7 @@
 package com.kuropatin.zenbooking.security.service;
 
-import com.kuropatin.zenbooking.security.request.LoginRequest;
-import com.kuropatin.zenbooking.security.response.LoginResponse;
+import com.kuropatin.zenbooking.model.request.LoginRequest;
+import com.kuropatin.zenbooking.model.response.LoginResponse;
 import com.kuropatin.zenbooking.security.util.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

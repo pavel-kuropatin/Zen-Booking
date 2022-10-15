@@ -1,10 +1,13 @@
 package com.kuropatin.zenbooking.model.request;
 
 import com.kuropatin.zenbooking.model.PropertyType;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import com.kuropatin.zenbooking.validation.IntegerInRange;
 import com.kuropatin.zenbooking.validation.NullableBoolean;
 import com.kuropatin.zenbooking.validation.ShortInRange;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +15,12 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor
 @Getter
 @Setter
-public class PropertyRequest {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PropertyRequest implements Request {
 
     @NotBlank(message = "Enter property name")
     @Size(min = 2, max = 100, message = "Property name should be between 2 and 100 characters")
@@ -68,4 +73,9 @@ public class PropertyRequest {
     @NotBlank(message = "Enter if property available for booking")
     @NullableBoolean
     private Boolean isAvailable;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }

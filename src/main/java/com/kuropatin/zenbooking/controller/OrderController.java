@@ -5,6 +5,7 @@ import com.kuropatin.zenbooking.model.response.OrderResponse;
 import com.kuropatin.zenbooking.model.response.SuccessfulResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.OrderService;
+import com.kuropatin.zenbooking.util.LogHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -45,7 +47,11 @@ public class OrderController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getAllActive() {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToListOrderResponse(service.getActiveOrders(userId)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri);
+        final List<OrderResponse> response = service.transformToListOrderResponse(service.getActiveOrders(userId));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(summary = "Get list of all finished orders of logged user", description = "Description")
@@ -61,7 +67,11 @@ public class OrderController {
     @GetMapping(path = "/history", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<OrderResponse>> getAllFinished() {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToListOrderResponse(service.getOrderHistory(userId)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri);
+        final List<OrderResponse> response = service.transformToListOrderResponse(service.getOrderHistory(userId));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(summary = "Get order of logged user by order id", description = "Description")
@@ -80,7 +90,11 @@ public class OrderController {
     @GetMapping(path = "/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> getById(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToNewOrderResponse(service.getOrderById(orderId, userId)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri);
+        final OrderResponse response = service.transformToNewOrderResponse(service.getOrderById(orderId, userId));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(summary = "Cancel order of logged user with id {orderId}", description = "Description")
@@ -99,6 +113,10 @@ public class OrderController {
     @PutMapping(path = "/{orderId}/cancel", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulResponse> cancel(@PathVariable final Long orderId) {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.cancelOrder(orderId, userId), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri);
+        final SuccessfulResponse response = service.cancelOrder(orderId, userId);
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 }

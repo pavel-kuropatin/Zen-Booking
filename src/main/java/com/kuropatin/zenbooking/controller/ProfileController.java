@@ -6,13 +6,13 @@ import com.kuropatin.zenbooking.model.response.ErrorResponse;
 import com.kuropatin.zenbooking.model.response.UserResponse;
 import com.kuropatin.zenbooking.security.util.AuthenticationUtils;
 import com.kuropatin.zenbooking.service.UserService;
+import com.kuropatin.zenbooking.util.LogHelper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +20,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/profile")
@@ -45,7 +47,11 @@ public class ProfileController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> getUserInfo() {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToNewUserResponse(service.getUserById(userId)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri);
+        final UserResponse response = service.transformToNewUserResponse(service.getUserById(userId));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(summary = "Update info of logged user", description = "Description")
@@ -62,9 +68,15 @@ public class ProfileController {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> updateUserInfo(@Valid @RequestBody final UserEditRequest userEditRequest) {
+    public ResponseEntity<UserResponse> updateUserInfo(
+            @Valid @RequestBody final UserEditRequest request
+    ) {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToNewUserResponse(service.updateUser(userId, userEditRequest)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri, request);
+        final UserResponse response = service.transformToNewUserResponse(service.updateUser(userId, request));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 
     @Operation(summary = "Deposit money to logged user's account", description = "Description")
@@ -81,8 +93,14 @@ public class ProfileController {
             @Content(schema = @Schema(implementation = ErrorResponse.class))
     })
     @PutMapping(path = "/deposit", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> deposit(@Valid @RequestBody final AmountRequest amountRequest) {
+    public ResponseEntity<UserResponse> deposit(
+            @Valid @RequestBody final AmountRequest request
+    ) {
         final long userId = authenticationUtils.getId();
-        return new ResponseEntity<>(service.transformToNewUserResponse(service.deposit(userId, amountRequest)), HttpStatus.OK);
+        final URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+        LogHelper.logRequest(uri, request);
+        final UserResponse response = service.transformToNewUserResponse(service.deposit(userId, request));
+        LogHelper.logResponse(uri, response);
+        return ResponseEntity.ok().body(response);
     }
 }

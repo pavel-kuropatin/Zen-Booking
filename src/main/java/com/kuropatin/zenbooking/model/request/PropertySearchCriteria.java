@@ -1,12 +1,15 @@
 package com.kuropatin.zenbooking.model.request;
 
 import com.kuropatin.zenbooking.model.PropertyType;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import com.kuropatin.zenbooking.validation.DatePresentOrFuture;
 import com.kuropatin.zenbooking.validation.EmptyOrBigger;
 import com.kuropatin.zenbooking.validation.EmptyOrIntegerInRange;
 import com.kuropatin.zenbooking.validation.EmptyOrShortInRange;
 import com.kuropatin.zenbooking.validation.NullableBoolean;
 import com.kuropatin.zenbooking.validation.ValueOfEnum;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,10 +18,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@NoArgsConstructor
 @Getter
 @Setter
-public class PropertySearchCriteria {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PropertySearchCriteria implements Request {
 
     @NotBlank(message = "Enter property type")
     @ValueOfEnum(enumClass = PropertyType.class, message = "Allowed types are HOUSE, APARTMENT, ROOM, NOT_SPECIFIED")
@@ -71,4 +76,9 @@ public class PropertySearchCriteria {
 
     @EmptyOrBigger(min = 0, message = "Page number should be empty or bigger than 0")
     private Integer pageNumber;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 }

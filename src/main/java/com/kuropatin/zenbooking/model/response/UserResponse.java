@@ -3,6 +3,7 @@ package com.kuropatin.zenbooking.model.response;
 import com.kuropatin.zenbooking.model.Gender;
 import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,11 +11,12 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class UserResponse {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponse implements Response {
 
     private Long id;
     private String name;

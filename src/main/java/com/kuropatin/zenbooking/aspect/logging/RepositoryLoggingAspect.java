@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public final class ControllerLoggingAspect {
+public final class RepositoryLoggingAspect {
 
-    @Around("execution(* com.kuropatin.zenbooking.controller.*.*(..))")
+    @Around("execution(* com.kuropatin.zenbooking.repository.*.*(..))")
     public Object logAroundMethods(final ProceedingJoinPoint joinPoint) {
         return LoggingUtils.logAround(joinPoint);
     }

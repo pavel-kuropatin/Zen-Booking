@@ -3,15 +3,17 @@ package com.kuropatin.zenbooking.model.response;
 import com.kuropatin.zenbooking.model.PropertyType;
 import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class PropertyResponse {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class PropertyResponse implements Response {
 
     private Long id;
     private PropertyType type;

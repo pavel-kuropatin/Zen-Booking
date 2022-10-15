@@ -1,7 +1,10 @@
 package com.kuropatin.zenbooking.model.response;
 
 import com.kuropatin.zenbooking.util.ToStringUtils;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
@@ -9,7 +12,10 @@ import java.sql.Timestamp;
 
 @Getter
 @Setter
-public class SuccessfulResponse {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SuccessfulResponse implements Response {
 
     private Timestamp timestamp;
     private String status;
