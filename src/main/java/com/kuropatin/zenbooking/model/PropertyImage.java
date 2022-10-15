@@ -1,6 +1,7 @@
 package com.kuropatin.zenbooking.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,6 +48,11 @@ public class PropertyImage {
     @JoinColumn(name = "property_id")
     @JsonBackReference
     private Property property;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 
     @Override
     public boolean equals(Object o) {

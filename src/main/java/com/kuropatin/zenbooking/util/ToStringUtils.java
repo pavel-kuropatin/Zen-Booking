@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ToStringUtils {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper()
+            .findAndRegisterModules();
+
     private static final DefaultPrettyPrinter PRETTY_PRINTER = new DefaultPrettyPrinter()
             .withObjectIndenter(new DefaultIndenter().withIndent("    "))
             .withArrayIndenter(new DefaultIndenter().withIndent("    "));

@@ -1,5 +1,6 @@
 package com.kuropatin.zenbooking.model;
 
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -57,6 +58,11 @@ public class Admin {
 
     @Column(name = "updated")
     private Timestamp updated;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package com.kuropatin.zenbooking.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -107,6 +108,11 @@ public class Property {
 
     public void addPropertyImage(final PropertyImage propertyImage) {
         this.propertyImages.add(propertyImage);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
     }
 
     @Override

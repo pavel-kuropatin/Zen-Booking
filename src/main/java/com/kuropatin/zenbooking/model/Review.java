@@ -1,6 +1,7 @@
 package com.kuropatin.zenbooking.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -53,6 +54,11 @@ public class Review {
     @JoinColumn(name = "order_id")
     @JsonBackReference
     private Order order;
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
+    }
 
     @Override
     public boolean equals(Object o) {

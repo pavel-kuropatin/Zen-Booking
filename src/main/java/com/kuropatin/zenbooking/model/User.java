@@ -1,6 +1,7 @@
 package com.kuropatin.zenbooking.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.kuropatin.zenbooking.util.ToStringUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -96,6 +97,11 @@ public class User {
 
     public void addOrder(final Order order) {
         this.orders.add(order);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringUtils.toJsonString(this);
     }
 
     @Override
